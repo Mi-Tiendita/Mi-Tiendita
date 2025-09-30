@@ -651,7 +651,7 @@
                 const nomina = document.getElementById('nomina').value.trim();
                 const nombre = document.getElementById('nombre').value.trim();
                 const correo = document.getElementById('correo').value.trim();
-                datos = { empleado: 'Interno', rol, nomina, nombre, correo, empresa: 'Beiersdorf' };
+                datos = { empleado: 'Interno', rol, nomina, nombre, correo, empresa: '' };
             }
             localStorage.setItem('registroTiendita', JSON.stringify(datos));
             window.location.href = '/calendario/';
@@ -719,6 +719,7 @@
 
 
 </html>
+
 
 
 
