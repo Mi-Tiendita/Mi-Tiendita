@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mi Tiendita</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="img/icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="img/icon-512.png" sizes="512x512">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/img/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/icon-512.png" sizes="512x512">
 
     <style>
         :root {
@@ -470,7 +470,7 @@
 <body>
     <header>
         <div class="logo-container">
-            <a href="/tiendita/"><img src="img/logo-b.png" alt="Logo B"></a>
+            <a href="/tiendita/"><img src="/img/logo-b.png" alt="Logo B"></a>
             <span></span>
         </div>
 
@@ -492,17 +492,17 @@
     <div class="carousel-container">
         <button class="carousel-button left" aria-label="Anterior" onclick="prevImage()">‹</button>
         <div class="carousel" id="carousel">
-            <img src="img/banner_1.png" alt="Slide 1">
-            <img src="img/banner_2.png" alt="Slide 2">
-            <img src="img/banner_3.png" alt="Slide 3">
-            <img src="img/banner_4.png" alt="Slide 4">
+            <img src="/img/banner_1.png" alt="Slide 1">
+            <img src="/img/banner_2.png" alt="Slide 2">
+            <img src="/img/banner_3.png" alt="Slide 3">
+            <img src="/img/banner_4.png" alt="Slide 4">
         </div>
         <button class="carousel-button right" aria-label="Siguiente" onclick="nextImage()">›</button>
     </div>
 
     <section class="registro-section">
         <h2>Registro Mi Tiendita</h2>
-        <div class="registro-icon"><img src="img/sitelogo.png" alt="Formulario"></div>
+        <div class="registro-icon"><img src="/img/sitelogo.png" alt="Formulario"></div>
         <div class="form-container">
             <form id="registroForm">
                 <label for="tipoEmpleado">¿Eres empleado?</label>
@@ -570,27 +570,27 @@
     <section class="brands-section">
         <h2>Nuestras Marcas</h2>
         <div class="brands">
-            <div class="brand-item"><img src="img/logo-n.png" alt="logo-n">
+            <div class="brand-item"><img src="/img/logo-n.png" alt="logo-n">
                 <h3>NIVEA</h3>
                 <p>Cuidado esencial</p>
             </div>
-            <div class="brand-item"><img src="img/logo-e.png" alt="logo-e">
+            <div class="brand-item"><img src="/img/logo-e.png" alt="logo-e">
                 <h3>EUCERIN</h3>
                 <p>Dermatología avanzada</p>
             </div>
-            <div class="brand-item"><img src="img/logo-l.png" alt="logo-l">
+            <div class="brand-item"><img src="/img/logo-l.png" alt="logo-l">
                 <h3>LABELLO</h3>
                 <p>Cuidado de labios</p>
             </div>
-            <div class="brand-item"><img src="img/logo-a.png" alt="logo-a">
+            <div class="brand-item"><img src="/img/logo-a.png" alt="logo-a">
                 <h3>AQUAPHOR</h3>
                 <p>Reparación intensiva</p>
             </div>
-            <div class="brand-item"><img src="img/logo-c.png" alt="logo-c">
+            <div class="brand-item"><img src="/img/logo-c.png" alt="logo-c">
                 <h3>COPPERTONE</h3>
                 <p>Protección solar avanzada</p>
             </div>
-            <div class="brand-item"><img src="img/a-logo.png" alt="a-logo">
+            <div class="brand-item"><img src="/img/a-logo.png" alt="a-logo">
                 <h3>ATRIX</h3>
                 <p>Protección para tus manos</p>
             </div>
@@ -658,7 +658,7 @@
         });
 
         function mostrarAviso() {
-            fetch("docs/aviso.txt")
+            fetch("/docs/aviso.txt")
                 .then(r => { if (!r.ok) throw 0; return r.text(); })
                 .then(t => { document.getElementById("contenidoAviso").textContent = t; document.getElementById("modalAviso").style.display = "flex"; })
                 .catch(_ => { document.getElementById("contenidoAviso").textContent = "No se pudo cargar el aviso. Por favor, intenta de nuevo más tarde."; document.getElementById("modalAviso").style.display = "flex"; });
@@ -719,6 +719,7 @@
 
 
 </html>
+
 
 
 
