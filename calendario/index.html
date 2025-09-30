@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Reserva – Mi Tiendita</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="img/icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="img/icon-512.png" sizes="512x512">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/img/icon-192.png" type="image/png">
+    <link rel="apple-touch-icon" href="/img/icon-512.png" sizes="512x512">
 
     <style>
         :root {
@@ -605,7 +605,7 @@
 
 
         function mostrarAviso() {
-            fetch("docs/aviso.txt")
+            fetch("/docs/aviso.txt")
                 .then(r => { if (!r.ok) throw 0; return r.text(); })
                 .then(t => { $("avisoTexto").textContent = t; $("modalAviso").style.display = "flex"; })
                 .catch(_ => { $("avisoTexto").textContent = "No se pudo cargar el aviso."; $("modalAviso").style.display = "flex"; });
@@ -616,3 +616,4 @@
 
 
 </html>
+
