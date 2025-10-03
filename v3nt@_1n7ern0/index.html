@@ -1294,6 +1294,34 @@
 
         // Confirmar transacción (sin horarios; conserva bloqueo por recarga)
         // Confirmar transacción
+        // ✅ Ajustar visualmente stock y radios si se quedó sin stock
+        function ajustarStockVisual(draft, lecturas) {
+            lecturas.forEach(({ it, disp }) => {
+                if (disp < it.c) {
+                    // ⚠ Ajustar cantidad en el draft
+                    it.c = Math.max(0, disp);
+
+                    // 👉 actualizar radios en catálogo
+                    setCantidad(it.id, it.c);
+
+                    // 👉 mostrar badge AGOTADO si ya no hay stock
+                    const badge = document.querySelector(`[data-badge="${CSS.escape(it.id)}"]`);
+                    if (disp === 0 && badge) badge.style.display = "inline-block";
+
+                    // 👉 deshabilitar todos los radios excepto 0
+                    if (disp === 0) {
+                        const radiosWrap = document.querySelector(`[data-radios="${CSS.escape(it.id)}"]`);
+                        if (radiosWrap) {
+                            [...radiosWrap.querySelectorAll("label")].forEach(l => {
+                                const r = l.querySelector("input[type='radio']");
+                                if (r && r.value !== "0") l.remove();
+                            });
+                        }
+                    }
+                }
+            });
+        }
+
         document.getElementById('btnConfirmarPop').addEventListener('click', async () => {
             const nomina = vNomina.textContent || '';
 
@@ -1319,11 +1347,19 @@
                         return { it, ref, disp: Number(snap.data()?.disponible || 0) };
                     }));
                     // shortages
+                    // shortages
+                    let huboAjustes = false;
                     for (const { it, disp } of lecturas) {
                         if (disp < it.c) {
-                            return { ok: false, msg: `No hay stock suficiente de ${it.nombre}.` };
+                            huboAjustes = true;
                         }
                     }
+
+                    if (huboAjustes) {
+                        ajustarStockVisual(draft, lecturas);
+                        return { ok: false, msg: "⚠️ Algunos productos fueron ajustados por falta de stock. Revisa de nuevo tu pedido." };
+                    }
+
                     // descontar
                     lecturas.forEach(({ it, ref, disp }) => {
                         tx.update(ref, { disponible: disp - it.c });
