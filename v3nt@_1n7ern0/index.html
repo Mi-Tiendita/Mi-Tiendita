@@ -445,46 +445,18 @@
             position: relative;
         }
 
-        .confirmacion-header {
-            display: flex;
-            justify-content: space-between;
-            /* texto a la izquierda, folio a la derecha */
-            align-items: flex-start;
-            /* alinear arriba */
-            margin-bottom: 15px;
-        }
-
-        .info-empleado {
-            flex: 1;
-            /* ocupa todo el espacio disponible */
-        }
-
         /* FOLIO: colócalo a la derecha, pero alineado a la altura del Número de Nómina */
         .folio-box {
-            display: inline-block;
-            font-size: 1rem;
-            font-weight: bold;
-            min-width: 60px;
-            max-width: 100px;
-            word-wrap: break-word;
+            position: absolute;
             top: 45px;
             /* 👈 ajusta según la altura de tu "Número de Nómina" */
             right: 20px;
             background: #f0f3ff;
             border: 1px solid #cfd7ff;
             border-radius: 12px;
-            padding: 8px 16px;
+            padding: 12px 16px;
             min-width: 180px;
             text-align: center;
-        }
-
-        @media(max-width:480px) {
-            .folio-box {
-                font-size: 0.9rem;
-                padding: 6px 10px;
-                min-width: 50px;
-                max-width: 80px;
-            }
         }
 
         /* Total alineado a la izquierda */
@@ -1011,11 +983,10 @@
             }).join('') : '<p><i>Sin productos</i></p>';
 
             cont.innerHTML = `
-        <div class="confirmacion-header">
-          <div class="info-empleado">       
-          <b>Nómina:</b> ${nomina}</div>
-          <b>Nombre:</b> ${nombre}</div>
-          <b>Celular:</b> ${celular}</div>
+        <div style="margin-bottom:10px">
+          <div><b>Nómina:</b> ${nomina}</div>
+          <div><b>Nombre:</b> ${nombre}</div>
+          <div><b>Celular:</b> ${celular}</div>
         </div>
         <div><span style="color: #0d1c84;"><b>Productos Seleccionados:</b></span></div>
         ${htmlLineas}
