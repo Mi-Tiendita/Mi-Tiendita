@@ -445,6 +445,20 @@
             position: relative;
         }
 
+        .confirmacion-header {
+            display: flex;
+            justify-content: space-between;
+            /* texto a la izquierda, folio a la derecha */
+            align-items: flex-start;
+            /* alinear arriba */
+            margin-bottom: 15px;
+        }
+
+        .info-empleado {
+            flex: 1;
+            /* ocupa todo el espacio disponible */
+        }
+
         /* FOLIO: colócalo a la derecha, pero alineado a la altura del Número de Nómina */
         .folio-box {
             display: inline-block;
@@ -997,10 +1011,11 @@
             }).join('') : '<p><i>Sin productos</i></p>';
 
             cont.innerHTML = `
-        <div style="margin-bottom:10px">
-          <div><b>Nómina:</b> ${nomina}</div>
-          <div><b>Nombre:</b> ${nombre}</div>
-          <div><b>Celular:</b> ${celular}</div>
+        <div class="confirmacion-header">
+          <div class="info-empleado">       
+          <b>Nómina:</b> ${nomina}</div>
+          <b>Nombre:</b> ${nombre}</div>
+          <b>Celular:</b> ${celular}</div>
         </div>
         <div><span style="color: #0d1c84;"><b>Productos Seleccionados:</b></span></div>
         ${htmlLineas}
