@@ -1294,21 +1294,15 @@
 
         // Confirmar transacción (sin horarios; conserva bloqueo por recarga)
         // Confirmar transacción
-        // ✅ Ajustar visualmente stock y radios si se quedó sin stock
         function ajustarStockVisual(draft, lecturas) {
             lecturas.forEach(({ it, disp }) => {
                 if (disp < it.c) {
-                    // ⚠ Ajustar cantidad en el draft
                     it.c = Math.max(0, disp);
-
-                    // 👉 actualizar radios en catálogo
                     setCantidad(it.id, it.c);
 
-                    // 👉 mostrar badge AGOTADO si ya no hay stock
                     const badge = document.querySelector(`[data-badge="${CSS.escape(it.id)}"]`);
                     if (disp === 0 && badge) badge.style.display = "inline-block";
 
-                    // 👉 deshabilitar todos los radios excepto 0
                     if (disp === 0) {
                         const radiosWrap = document.querySelector(`[data-radios="${CSS.escape(it.id)}"]`);
                         if (radiosWrap) {
@@ -1318,9 +1312,29 @@
                             });
                         }
                     }
+
+                    // 🟥 Para el modal: agrega mensaje rojo junto al botón Eliminar
+                    const detalle = document.getElementById("detallePedido");
+                    if (detalle) {
+                        const linea = [...detalle.querySelectorAll(".linea")]
+                            .find(div => div.querySelector("small b")?.textContent === it.nombre);
+                        if (linea) {
+                            let msg = linea.querySelector(".agotado-msg");
+                            if (!msg) {
+                                msg = document.createElement("span");
+                                msg.className = "agotado-msg";
+                                msg.style.color = "red";
+                                msg.style.fontWeight = "700";
+                                msg.style.marginLeft = "10px";
+                                linea.appendChild(msg);
+                            }
+                            msg.textContent = "Producto agotado, elimínalo";
+                        }
+                    }
                 }
             });
         }
+
 
         document.getElementById('btnConfirmarPop').addEventListener('click', async () => {
             const nomina = vNomina.textContent || '';
@@ -1357,8 +1371,10 @@
 
                     if (huboAjustes) {
                         ajustarStockVisual(draft, lecturas);
+                        renderPopup(draft); // 🔄 refresca el modal con cantidades válidas
                         return { ok: false, msg: "⚠️ Algunos productos fueron ajustados por falta de stock. Revisa de nuevo tu pedido." };
                     }
+
 
                     // descontar
                     lecturas.forEach(({ it, ref, disp }) => {
