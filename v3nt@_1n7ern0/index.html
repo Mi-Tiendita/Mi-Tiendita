@@ -1362,6 +1362,18 @@
                 return;
             }
 
+            // 🚨 Validar que no existan productos agotados sin eliminar
+            const agotados = draft.filter(it => {
+                const stockDisponible = CATALOGO[it.id]?.stock ?? 0;
+                return stockDisponible <= 0; // productos sin stock
+            });
+
+            if (agotados.length > 0) {
+                alert("⚠️ Debes eliminar los productos agotados antes de confirmar tu pedido.");
+                return; // detenemos la confirmación
+            }
+
+
             // Validar stock al vuelo con transacción y bloquear nómina al éxito
             try {
                 const nomina = vNomina.textContent || '';
