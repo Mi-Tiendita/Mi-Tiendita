@@ -959,41 +959,60 @@
             const htmlLineas = items.length ? items.map((it, i) => {
                 const radiosMax = maxRadioFor(it.id);
                 const precioMax = maxPrecioFor(it.id);
-                const allowedMax = Math.max(1, Math.min(CATALOGO[it.id]?.stock ?? 1, precioMax, radiosMax));
+                const stockDisponible = CATALOGO[it.id]?.stock ?? 0;
+                const allowedMax = stockDisponible > 0
+                    ? Math.min(stockDisponible, precioMax, radiosMax)
+                    : 0;
+                // clamp hacia arriba si fuera necesario
+                if (it.c > allowedMax) { it.c = allowedMax; }
+
+                // 🚨 Si no hay stock, muestro aviso y no el combo
+                if (allowedMax === 0) {
+                    return `
+                    <div class="linea">
+                        <div style="flex:1">
+                        <small><b>${it.nombre}</b></small>
+                        </div>
+                        <span style="color:red;font-weight:700">Producto agotado, eliminarlo</span>
+                        <button class="quitar" data-idx="${i}">Eliminar</button>
+                    </div>
+                    `;
+                }
+
+                // si hay stock disponible, sí muestro combo 1..allowedMax
                 const opciones = Array.from({ length: allowedMax }, (_, q) => {
                     const val = q + 1; // 1..allowedMax (sin 0)
                     const sel = val === it.c ? 'selected' : '';
                     return `<option value="${val}" ${sel}>${val}</option>`;
                 }).join('');
-                // clamp hacia arriba si fuera necesario
-                if (it.c > allowedMax) { it.c = allowedMax; }
 
                 return `
-          <div class="linea">
-            <div style="flex:1">
-              <small><b>${it.nombre}</b></small>
-            </div>
-            <div>
-              <label style="font-size:12px;display:block;margin-bottom:2px">Cantidad</label>
-              <select data-idx="${i}" class="sel-ajuste">${opciones}</select>
-            </div>
-            <button class="quitar" data-idx="${i}">Eliminar</button>
-          </div>
-        `;
+                <div class="linea">
+                    <div style="flex:1">
+                    <small><b>${it.nombre}</b></small>
+                    </div>
+                    <div>
+                    <label style="font-size:12px;display:block;margin-bottom:2px">Cantidad</label>
+                    <select data-idx="${i}" class="sel-ajuste">${opciones}</select>
+                    </div>
+                    <button class="quitar" data-idx="${i}">Eliminar</button>
+                </div>
+                `;
+
             }).join('') : '<p><i>Sin productos</i></p>';
 
             cont.innerHTML = `
-        <div style="margin-bottom:10px">
-          <div><b>Nómina:</b> ${nomina}</div>
-          <div><b>Nombre:</b> ${nombre}</div>
-          <div><b>Celular:</b> ${celular}</div>
-        </div>
-        <div><span style="color: #0d1c84;"><b>Productos Seleccionados:</b></span></div>
-        ${htmlLineas}
-      `;
+                <div style="margin-bottom:10px">
+                <div><b>Nómina:</b> ${nomina}</div>
+                <div><b>Nombre:</b> ${nombre}</div>
+                <div><b>Celular:</b> ${celular}</div>
+                </div>
+                <div><span style="color: #0d1c84;"><b>Productos Seleccionados:</b></span></div>
+                ${htmlLineas}
+            `;
             document.getElementById('totalPopup').innerHTML = `
-            <span class="label">Total:</span>
-            <span class="amount">$${total.toLocaleString()} MXN</span>
+                <span class="label">Total:</span>
+                <span class="amount">$${total.toLocaleString()} MXN</span>
             `;
 
             // listeners
@@ -1296,45 +1315,39 @@
         // Confirmar transacción
         function ajustarStockVisual(draft, lecturas) {
             lecturas.forEach(({ it, disp }) => {
+                // 🔄 Actualiza el stock real en memoria
+                if (CATALOGO[it.id]) {
+                    CATALOGO[it.id].stock = disp;
+                }
+
                 if (disp < it.c) {
+                    // ⚠ Ajustar cantidad en el draft
                     it.c = Math.max(0, disp);
+
+                    // 👉 actualizar radios en catálogo
                     setCantidad(it.id, it.c);
 
+                    // 👉 mostrar badge AGOTADO si ya no hay stock
                     const badge = document.querySelector(`[data-badge="${CSS.escape(it.id)}"]`);
                     if (disp === 0 && badge) badge.style.display = "inline-block";
 
+                    // 👉 si está en 0, deshabilitar select en modal y poner mensaje
                     if (disp === 0) {
-                        const radiosWrap = document.querySelector(`[data-radios="${CSS.escape(it.id)}"]`);
-                        if (radiosWrap) {
-                            [...radiosWrap.querySelectorAll("label")].forEach(l => {
-                                const r = l.querySelector("input[type='radio']");
-                                if (r && r.value !== "0") l.remove();
-                            });
-                        }
-                    }
-
-                    // 🟥 Para el modal: agrega mensaje rojo junto al botón Eliminar
-                    const detalle = document.getElementById("detallePedido");
-                    if (detalle) {
-                        const linea = [...detalle.querySelectorAll(".linea")]
-                            .find(div => div.querySelector("small b")?.textContent === it.nombre);
-                        if (linea) {
-                            let msg = linea.querySelector(".agotado-msg");
-                            if (!msg) {
-                                msg = document.createElement("span");
-                                msg.className = "agotado-msg";
+                        const lineas = document.querySelectorAll(`#detallePedido .linea`);
+                        lineas.forEach(l => {
+                            if (l.innerHTML.includes(it.nombre)) {
+                                l.querySelector("select")?.remove();
+                                const msg = document.createElement("span");
+                                msg.textContent = "Producto agotado, eliminarlo";
                                 msg.style.color = "red";
                                 msg.style.fontWeight = "700";
-                                msg.style.marginLeft = "10px";
-                                linea.appendChild(msg);
+                                l.insertBefore(msg, l.querySelector(".quitar"));
                             }
-                            msg.textContent = "Producto agotado, elimínalo";
-                        }
+                        });
                     }
                 }
             });
         }
-
 
         document.getElementById('btnConfirmarPop').addEventListener('click', async () => {
             const nomina = vNomina.textContent || '';
