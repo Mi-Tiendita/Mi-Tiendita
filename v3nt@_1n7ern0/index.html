@@ -794,18 +794,33 @@
         }
 
         /* --------- Nómina: registro + nombre --------- */
-
         async function cargarNomina(nomina) {
-            if (!nomina) return { exists: false };
             try {
-                const resp = await fetch(`https://script.google.com/macros/s/AKfycbxVGs38CDn3tFKvcyfdVxObDlYKBws_DsiW1i9AtamBs6RgWM_VZrfyDKiys5_HY1mZ/exec?nomina=${encodeURIComponent(nomina)}`);
-                const data = await resp.json();
-                if (data && data.nombre) {
-                    return { exists: true, nombre: data.nombre };
+                const SHEET_ID = "1kNldpiYjgfXZ2MD5NB1tijwUcB4G-zaTQukadhY3JvM"; // tu hoja
+                const SHEET_NAME = "HC";
+                const URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+
+                const response = await fetch(URL);
+                const text = await response.text();
+                const json = JSON.parse(text.replace(/^.*?\(|\);?$/g, ""));
+                const rows = json.table.rows;
+                const cols = json.table.cols.map(c => c.label);
+
+                // buscar por columna "Numero"
+                for (const row of rows) {
+                    const nominaCelda = row.c[0];
+                    const nombreCelda = row.c[1];
+
+                    if (!nominaCelda || !nombreCelda) continue;
+
+                    const valorNomina = String(nominaCelda.v).trim();
+                    if (valorNomina === String(nomina).trim()) {
+                        return { exists: true, nombre: String(nombreCelda.v).trim() };
+                    }
                 }
                 return { exists: false };
-            } catch (err) {
-                console.error(err);
+            } catch (e) {
+                console.error("Error buscando nomina:", e);
                 return { exists: false };
             }
         }
@@ -827,8 +842,6 @@
             const d = s.data();
             return { exists: true, nombre: d?.nombre || '', correo: d?.correo || '' };
         }*/
-
-
 
         /* --------- Timer basado en ACEPTAR --------- */
         function keyTimer(nomina) { return `timer_end_${nomina}`; }
@@ -1534,5 +1547,6 @@
 </body>
 
 </html>
+
 
 
