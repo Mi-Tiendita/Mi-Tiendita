@@ -794,7 +794,23 @@
         }
 
         /* --------- Nómina: registro + nombre --------- */
+
         async function cargarNomina(nomina) {
+            if (!nomina) return { exists: false };
+            try {
+                const resp = await fetch(`https://script.google.com/macros/s/AKfycbxVGs38CDn3tFKvcyfdVxObDlYKBws_DsiW1i9AtamBs6RgWM_VZrfyDKiys5_HY1mZ/exec?nomina=${encodeURIComponent(nomina)}`);
+                const data = await resp.json();
+                if (data && data.nombre) {
+                    return { exists: true, nombre: data.nombre };
+                }
+                return { exists: false };
+            } catch (err) {
+                console.error(err);
+                return { exists: false };
+            }
+        }
+        
+        /*async function cargarNomina(nomina) {
             if (!nomina) return { exists: false };
 
             const [s, bloqueadoSnap] = await Promise.all([
@@ -810,7 +826,7 @@
 
             const d = s.data();
             return { exists: true, nombre: d?.nombre || '', correo: d?.correo || '' };
-        }
+        }*/
 
 
 
@@ -1518,4 +1534,5 @@
 </body>
 
 </html>
+
 
