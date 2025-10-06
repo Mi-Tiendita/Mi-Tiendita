@@ -805,17 +805,19 @@
                 const json = JSON.parse(text.replace(/^.*?\(|\);?$/g, ""));
                 const rows = json.table.rows;
         
+                // 🔍 Recorremos las filas
                 for (const row of rows) {
                     const nominaCelda = row.c[0];
                     const nombreCelda = row.c[1];
         
                     if (!nominaCelda || !nombreCelda) continue;
         
-                    const valorNomina = String(nominaCelda.v).trim();
-                    const inputNomina = String(nomina).trim();
+                    // usamos f (formateado) porque ahí está “4”, “35”, etc.
+                    const valorNomina = (nominaCelda.f || nominaCelda.v).toString().trim();
+                    const inputNomina = nomina.toString().trim();
         
                     if (valorNomina === inputNomina) {
-                        return { exists: true, nombre: String(nombreCelda.v).trim() };
+                        return { exists: true, nombre: (nombreCelda.v || "").trim() };
                     }
                 }
         
@@ -1548,6 +1550,7 @@
 </body>
 
 </html>
+
 
 
 
