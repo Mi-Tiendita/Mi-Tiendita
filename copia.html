@@ -1147,7 +1147,7 @@
                 // Si la hoja "HC" no es la primera (gid=0), obtén el GID desde la URL de la hoja específica (ej: /d/ID/edit#gid=123456789).
                 const SHEET_ID = '1kNldpiYjgfXZ2MD5NB1tijwUcB4G-zaTQukadhY3JvM';
                 const GID = '0'; // Cambia si "HC" tiene otro GID
-                const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;
+                const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`;                
                 await new Promise((resolve, reject) => {
                     fetch(CSV_URL)
                         .then(r => {
@@ -1215,3 +1215,4 @@
 </body>
 
 </html>
+
