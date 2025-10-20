@@ -1899,7 +1899,7 @@
                 errorNomina.style.display = 'block';
                 m_nomina.classList.add('error');
                 return;
-            } else {                
+            } else {
                 if (!m_nombre.value.trim()) m_nombre.value = infoNom.nombre || '';
                 errorNomina.style.display = 'none';
                 m_nomina.classList.remove('error');
@@ -1907,14 +1907,14 @@
 
             const nombre = m_nombre.value.trim();
             const celular = m_celular.value.trim();
-           
+
             let ok = true, errs = [];
             const mark = (el, bad) => el.classList.toggle('error', bad);
             mark(m_nomina, !nomina); if (!nomina) { ok = false; errs.push('La nómina es obligatoria.'); }
             mark(m_nombre, !nombre); if (!nombre) { ok = false; errs.push('El nombre es obligatorio.'); }
             mark(m_celular, !/^\d{10}$/.test(celular)); if (!/^\d{10}$/.test(celular)) { ok = false; errs.push('El celular debe tener 10 dígitos.'); }
             if (!ok) { alert('Corrige:\n\n' + errs.join('\n')); return; }
-            
+
             vNomina.textContent = nomina;
             vNombre.textContent = nombre;
             vCelular.textContent = celular;
@@ -1927,7 +1927,7 @@
             unlockScroll();
         });
 
-        document.getElementById('btnEnviar').addEventListener('click', () => {            
+        document.getElementById('btnEnviar').addEventListener('click', () => {
             const nomina = vNomina.textContent;
             const nombre = vNombre.textContent;
             const celular = vCelular.textContent;
@@ -1941,14 +1941,14 @@
             if (!hay) { ok = false; errs.push('Debes seleccionar al menos 1 caja.'); }
 
             if (!ok) { alert('Corrige:\n\n' + errs.join('\n')); return; }
-            
+
             document.getElementById('modalPreConfirm').style.display = 'flex';
         });
-        
+
         document.getElementById('btnPreNo').addEventListener('click', () => {
             document.getElementById('modalPreConfirm').style.display = 'none';
         });
-        
+
         document.getElementById('btnPreSi').addEventListener('click', async () => {
             document.getElementById('modalPreConfirm').style.display = 'none';
 
@@ -1980,7 +1980,7 @@
                     it.c = Math.max(0, disp);
 
                     setCantidad(it.id, it.c);
-                    
+
                     const badge = document.querySelector(`[data-badge="${CSS.escape(it.id)}"]`);
                     if (disp === 0 && badge) badge.style.display = "inline-block";
 
@@ -2003,31 +2003,31 @@
 
         document.getElementById('btnConfirmarPop').addEventListener('click', async () => {
             const nomina = vNomina.textContent || '';
-            
+
             const bloqueado = await verificarBloqueoAntesDeConfirmar(nomina);
-            if (bloqueado) return; 
+            if (bloqueado) return;
 
             const draft = construirDraftDeSeleccion();
             if (draft.length === 0) {
                 alert('No hay productos en el pedido.');
                 return;
             }
-            
+
             const agotados = draft.filter(it => {
                 const stockDisponible = CATALOGO[it.id]?.stock ?? 0;
-                return stockDisponible <= 0; 
+                return stockDisponible <= 0;
             });
 
             if (agotados.length > 0) {
                 alert("⚠️ Debes eliminar los productos agotados antes de confirmar tu pedido.");
-                return; 
+                return;
             }
 
             try {
                 const nomina = vNomina.textContent || '';
-                
+
                 const result = await db.runTransaction(async tx => {
-                    
+
                     const lecturas = await Promise.all(draft.map(async it => {
                         const ref = db.doc(`stock/${it.id}`);
                         const snap = await tx.get(ref);
@@ -2049,7 +2049,7 @@
                     lecturas.forEach(({ it, ref, disp }) => {
                         tx.update(ref, { disponible: disp - it.c });
                     });
-                    
+
                     if (nomina) {
                         tx.set(db.doc(`bloqueados/${nomina}`), {
                             fecha: firebase.firestore.FieldValue.serverTimestamp(),
@@ -2075,7 +2075,7 @@
                 alert('⚠️ ' + (e.message || 'Error al confirmar'));
             }
         });
-        
+
         document.getElementById('btnCancelarPop').addEventListener('click', async () => {
             const n = vNomina.textContent;
             if (!n) { alert('Falta número de nómina.'); return; }
@@ -2089,7 +2089,7 @@
                 document.getElementById('modalConfirmacion').style.display = 'none';
                 isModalOpen = false;
                 detachBeforeUnload();
-                
+
                 modalEmpleado.style.display = 'flex';
                 lockScroll();
 
