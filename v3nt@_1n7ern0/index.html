@@ -16,7 +16,6 @@
             --radio: 8px;
         }
 
-        /* --- Fix global de caja + overflow --- */
         *,
         *::before,
         *::after {
@@ -45,15 +44,12 @@
         .req {
             color: red;
             font-weight: bold;
-            /* opcional */
         }
 
         header img {
             height: 80px;
             border-radius: 50%;
-            /* fuerza a que sea circular */
             border: 3px solid #fff;
-            /* 👈 contorno blanco */
             background-color: #0d1c84;
         }
 
@@ -78,9 +74,7 @@
 
         .modal-actions.center {
             justify-content: center;
-            /* Centra los botones */
             gap: 20px;
-            /* Espacio entre botones */
         }
 
         .empleado-view {
@@ -197,7 +191,6 @@
             text-decoration: underline
         }
 
-        /* Total grande en modales */
         .total {
             font-weight: 800;
             text-align: right;
@@ -207,15 +200,24 @@
 
         .total .label {
             color: var(--azul);
-            /* palabra Total en azul corporativo */
         }
 
         .total .amount {
             color: #000;
-            /* monto en negro */
         }
 
-        /* Modales */
+        .numero-producto-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .item-label {
+            font-size: 12px;
+            color: black;
+        }
+
         .modal {
             position: fixed;
             inset: 0;
@@ -225,29 +227,23 @@
             align-items: center;
             z-index: 1000;
             padding: 16px;
-            /* respiro para evitar desbordes en móviles */
             overflow-x: hidden;
-            /* sin scroll horizontal en el overlay */
         }
 
         .modal-content {
             background: #fff;
-            /* 👇 usa width basada en viewport; 520px máx, sin pasarse */
             width: min(520px, 92vw);
             max-width: 520px;
             padding: 24px 28px;
-            /* más margen lateral para que los inputs no peguen */
             border-radius: var(--radio);
             max-height: 82vh;
             overflow-y: auto;
             overflow-x: hidden;
-            /* evita barra horizontal dentro del modal */
         }
 
         #modalEmpleado input[type="text"],
         #modalEmpleado input[type="tel"] {
             width: 100%;
-            /* ya no se pasan gracias a border-box */
             margin-bottom: 12px;
         }
 
@@ -286,26 +282,18 @@
             margin: 0 auto;
 
             border: 3px solid #FFD700;
-            /* borde amarillo tipo dorado */
             border-radius: 10px;
-            /* esquinas redondeadas */
             box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
-            /* brillo suave amarillo */
         }
 
-        /* Nombre del producto en azul organizacional */
         #modalConfirmacion .linea b {
             color: black;
-            /* usa tu variable corporativa */
             font-weight: 700;
         }
 
-        /* Botón "Eliminar" en rojo */
         #modalConfirmacion .quitar {
             background: #c10d0d;
-            /* rojo */
             color: #fff;
-            /* texto blanco */
             border: none;
             border-radius: 6px;
             padding: 4px 10px;
@@ -316,7 +304,6 @@
 
         #modalConfirmacion .quitar:hover {
             background: #a30808;
-            /* rojo más oscuro al pasar el mouse */
         }
 
         html.modal-open,
@@ -382,7 +369,6 @@
             cursor: pointer
         }
 
-        /* Banner/Timer */
         .banner {
             max-width: 920px;
             margin: 14px auto 0;
@@ -445,11 +431,9 @@
             position: relative;
         }
 
-        /* FOLIO: colócalo a la derecha, pero alineado a la altura del Número de Nómina */
         .folio-box {
             position: absolute;
             top: 45px;
-            /* 👈 ajusta según la altura de tu "Número de Nómina" */
             right: 20px;
             background: #f0f3ff;
             border: 1px solid #cfd7ff;
@@ -459,7 +443,6 @@
             text-align: center;
         }
 
-        /* Total alineado a la izquierda */
         #totalPopup {
             text-align: left !important;
             margin-top: 12px;
@@ -511,7 +494,6 @@
         }
     </style>
 
-    <!-- Firebase compat -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
@@ -522,10 +504,8 @@
         <h1>Venta Masiva Noviembre 2025</h1>
     </header>
 
-    <!-- Mensajes estado -->
     <div id="bannerEstado" class="banner info" style="display:none"></div>
 
-    <!-- Temporizador flotante -->
     <div id="timerFloat" class="timer-float">
         <div class="timer-box">
             <small>Tiempo restante</small>
@@ -534,7 +514,6 @@
     </div>
 
     <main class="contenido">
-        <!-- Vista de Información del Empleado (solo lectura) -->
         <section class="card" id="infoEmpleadoCard">
             <h2><b>Información del Empleado</b></h2>
             <div class="empleado-view">
@@ -554,55 +533,800 @@
             <div id="cuentaRegresiva" class="timer" style="display:none;margin-top:8px;"></div>
         </section>
 
-        <!-- Catálogo -->
         <section class="card" id="catalogoProductos">
             <h2>Catálogo de Productos</h2>
 
-            <!-- Producto 1 -->
-            <div class="producto" data-id="labello" data-nombre="Labello Labial">
-                <span class="numero-producto" data-num>01</span>
-                <img src="/img/producto_17.png" alt="Labial" />
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS"
+                data-nombre="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>01</span>
+                </div>
+                <img src="/img/item_1.jpg" alt="item_1" />
                 <div class="producto-info">
                     <div class="producto-titulo">
-                        <strong>LABELLO Bálsamo labial con color Fresa (4.8g)</strong>
-                        <span class="badge-agotado" style="display:none" data-badge="labello">Agotado</span>
+                        <strong>UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS</strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">Agotado</span>
                     </div>
-                    <span style="color: red;">CAJA CON 32 PIEZAS</span>
-                    <div class="radios" data-radios="labello">
-                        <!-- las opciones > stock se quitarán dinámicamente -->
-                        <label><input type="radio" name="p_labello" value="0" checked> 0 cajas</label>
-                        <label><input type="radio" name="p_labello" value="1"> 1 caja</label>
-                        <label><input type="radio" name="p_labello" value="2"> 2 cajas</label>
-                        <label><input type="radio" name="p_labello" value="3"> 3 cajas</label>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">
+
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" value="3"> 3
+                            cajas</label>
                     </div>
                 </div>
             </div>
 
             <!-- Producto 2 -->
-            <div class="producto" data-id="ACEITE EUCERIN" data-nombre="ACEITE EUCERIN">
-                <span class="numero-producto" data-num>02</span>
-                <img src="/img/producto_5.png" alt="ACEITE EUCERIN" />
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS"
+                data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>02</span>
+                </div>
+                <img src="/img/item_2.jpg" alt="item_2" />
                 <div class="producto-info">
                     <div class="producto-titulo">
-                        <strong>ACEITE EUCERIN DE DUCHA 200ML</strong>
-                        <span class="badge-agotado" style="display:none" data-badge="ACEITE EUCERIN">Agotado</span>
+                        <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS</strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">Agotado</span>
                     </div>
-                    <span style="color: red;">CAJA CON 6 PIEZAS</span>
-                    <div class="radios" data-radios="ACEITE EUCERIN">
-                        <label><input type="radio" name="p_eucerin" value="0" checked> 0 cajas</label>
-                        <label><input type="radio" name="p_eucerin" value="1"> 1 caja</label>
-                        <label><input type="radio" name="p_eucerin" value="2"> 2 cajas</label>
-                        <label><input type="radio" name="p_eucerin" value="3"> 3 cajas</label>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">
+
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" value="3"> 3
+                            cajas</label>
                     </div>
                 </div>
             </div>
 
             <!-- Producto 3 -->
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS"
+                data-nombre="UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>03</span>
+                </div>
+                <img src="/img/item_3.jpg" alt="item_3" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS</strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS">
 
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS" value="0" checked>
+                            0
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS" value="3"> 3
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS"
+                data-nombre="UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>04</span>
+                </div>
+                <img src="/img/item_4.jpg" alt="item_4" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 18 PIEZAS</span>
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS">
+
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="producto" data-id="PROTECTOR SOLAR COPPERTONE 207ML"
+                data-nombre="PROTECTOR SOLAR COPPERTONE 207ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>05</span>
+                </div>
+                <img src="/img/item_5.jpg" alt="item_5" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>PROTECTOR SOLAR COPPERTONE 207ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="PROTECTOR SOLAR COPPERTONE 207ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="PROTECTOR SOLAR COPPERTONE 207ML">
+
+                        <label><input type="radio" name="p_PROTECTOR SOLAR COPPERTONE 207ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_PROTECTOR SOLAR COPPERTONE 207ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_PROTECTOR SOLAR COPPERTONE 207ML" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_PROTECTOR SOLAR COPPERTONE 207ML" value="3"> 3
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="producto" data-id="ACEITE EUCERIN DE DUCHA 200ML" data-nombre="ACEITE EUCERIN DE DUCHA 200ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>06</span>
+                </div>
+                <img src="/img/item_6.jpg" alt="item_6" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>ACEITE EUCERIN DE DUCHA 200ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="ACEITE EUCERIN DE DUCHA 200ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 6 PIEZAS</span>
+                    <div class="radios" data-radios="ACEITE EUCERIN DE DUCHA 200ML">
+
+                        <label><input type="radio" name="p_ACEITE EUCERIN DE DUCHA 200ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_ACEITE EUCERIN DE DUCHA 200ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_ACEITE EUCERIN DE DUCHA 200ML" value="2"> 2
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 7 -->
+            <div class="producto" data-id="JABON EUCERIN BABY 400ML" data-nombre="JABON EUCERIN BABY 400ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>07</span>
+                </div>
+                <img src="/img/item_7.jpg" alt="item_7" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>JABON EUCERIN BABY 400ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="JABON EUCERIN BABY 400ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 6 PIEZAS</span>
+                    <div class="radios" data-radios="JABON EUCERIN BABY 400ML">
+
+                        <label><input type="radio" name="p_JABON EUCERIN BABY 400ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON EUCERIN BABY 400ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_JABON EUCERIN BABY 400ML" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON EUCERIN BABY 400ML" value="3"> 3
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON EUCERIN BABY 400ML" value="4"> 4
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON EUCERIN BABY 400ML" value="5"> 5
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 8 -->
+            <div class="producto" data-id="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML"
+                data-nombre="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>08</span>
+                </div>
+                <img src="/img/item_8.jpg" alt="item_8" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN ANTIPIGMENTO TUBO 75ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML">
+
+                        <label><input type="radio" name="p_CREMA EUCERIN ANTIPIGMENTO TUBO 75ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN ANTIPIGMENTO TUBO 75ML" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 9 -->
+            <div class="producto" data-id="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML"
+                data-nombre="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>09</span>
+                </div>
+                <img src="/img/item_9.jpg" alt="item_9" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML">
+
+                        <label><input type="radio" name="p_CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" value="0" checked>
+                            0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" value="3"> 3
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 10 -->
+            <div class="producto" data-id="CREMA EUCERIN SKIN BALANCE 48GMS"
+                data-nombre="CREMA EUCERIN SKIN BALANCE 48GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>10</span>
+                </div>
+                <img src="/img/item_10.jpg" alt="item_10" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN SKIN BALANCE 48GMS </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA EUCERIN SKIN BALANCE 48GMS">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA EUCERIN SKIN BALANCE 48GMS">
+
+                        <label><input type="radio" name="p_CREMA EUCERIN SKIN BALANCE 48GMS" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN SKIN BALANCE 48GMS" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN SKIN BALANCE 48GMS" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN SKIN BALANCE 48GMS" value="3"> 3
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN SKIN BALANCE 48GMS" value="4"> 4
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN SKIN BALANCE 48GMS" value="5"> 5
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 11 -->
+            <div class="producto" data-id="CREMA EUCERIN PIEL GRASA SPF50 75ML"
+                data-nombre="CREMA EUCERIN PIEL GRASA SPF50 75ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>11</span>
+                </div>
+                <img src="/img/item_11.jpg" alt="item_11" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN PIEL GRASA SPF50 75ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA EUCERIN PIEL GRASA SPF50 75ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA EUCERIN PIEL GRASA SPF50 75ML">
+
+                        <label><input type="radio" name="p_CREMA EUCERIN PIEL GRASA SPF50 75ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN PIEL GRASA SPF50 75ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN PIEL GRASA SPF50 75ML" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA EUCERIN PIEL GRASA SPF50 75ML" value="3"> 3
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 12 -->
+            <div class="producto" data-id="DESODORANTE NIVEA MEN DEEP CARBON 50ML"
+                data-nombre="DESODORANTE NIVEA MEN DEEP CARBON 50ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>12</span>
+                </div>
+                <img src="/img/item_12.jpg" alt="item_12" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>DESODORANTE NIVEA MEN DEEP CARBON 50ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="DESODORANTE NIVEA MEN DEEP CARBON 50ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="DESODORANTE NIVEA MEN DEEP CARBON 50ML">
+
+                        <label><input type="radio" name="p_DESODORANTE NIVEA MEN DEEP CARBON 50ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA MEN DEEP CARBON 50ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA MEN DEEP CARBON 50ML" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA MEN DEEP CARBON 50ML" value="3"> 3
+                            cajas</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA MEN DEEP CARBON 50ML" value="4"> 4
+                            cajas</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA MEN DEEP CARBON 50ML" value="5"> 5
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 13 -->
+            <div class="producto" data-id="DESODORANTE NIVEA DAMA TONO NATURAL 50ML"
+                data-nombre="DESODORANTE NIVEA DAMA TONO NATURAL 50ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>13</span>
+                </div>
+                <img src="/img/item_13.jpg" alt="item_13" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>DESODORANTE NIVEA DAMA TONO NATURAL 50ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="DESODORANTE NIVEA DAMA TONO NATURAL 50ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="DESODORANTE NIVEA DAMA TONO NATURAL 50ML">
+
+                        <label><input type="radio" name="p_DESODORANTE NIVEA DAMA TONO NATURAL 50ML" value="0" checked>
+                            0
+                            cajas</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA DAMA TONO NATURAL 50ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA DAMA TONO NATURAL 50ML" value="2"> 2
+                            cajas</label>
+                        <label><input type="radio" name="p_DESODORANTE NIVEA DAMA TONO NATURAL 50ML" value="3"> 3
+                            cajas</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 14 -->
+            <div class="producto" data-id="GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS"
+                data-nombre="GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>14</span>
+                </div>
+                <img src="/img/item_14.jpg" alt="item_14" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS">
+
+                        <label><input type="radio" name="p_GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS" value="0"
+                                checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 15 -->
+            <div class="producto" data-id="JABON NIVEA BOTANICAL BLOSSOM 591ML"
+                data-nombre="JABON NIVEA BOTANICAL BLOSSOM 591ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>15</span>
+                </div>
+                <img src="/img/item_15.jpg" alt="item_15" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>JABON NIVEA BOTANICAL BLOSSOM 591ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="JABON NIVEA BOTANICAL BLOSSOM 591ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="JABON NIVEA BOTANICAL BLOSSOM 591ML">
+
+                        <label><input type="radio" name="p_JABON NIVEA BOTANICAL BLOSSOM 591ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON NIVEA BOTANICAL BLOSSOM 591ML" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 16 -->
+            <div class="producto" data-id="JABON NIVEA IN MILK 250ML" data-nombre="JABON NIVEA IN MILK 250ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>16</span>
+                </div>
+                <img src="/img/item_16.jpg" alt="item_16" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>JABON NIVEA IN MILK 250ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="JABON NIVEA IN MILK 250ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="JABON NIVEA IN MILK 250ML">
+
+                        <label><input type="radio" name="p_JABON NIVEA IN MILK 250ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON NIVEA IN MILK 250ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_JABON NIVEA IN MILK 250ML" value="2"> 2
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 17 -->
+            <div class="producto" data-id="JABON NIVEA MEN ACTIVE CLEAN 500ML"
+                data-nombre="JABON NIVEA MEN ACTIVE CLEAN 500ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>17</span>
+                </div>
+                <img src="/img/item_17.jpg" alt="item_17" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>JABON NIVEA MEN ACTIVE CLEAN 500ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="JABON NIVEA MEN ACTIVE CLEAN 500ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 6 PIEZAS</span>
+                    <div class="radios" data-radios="JABON NIVEA MEN ACTIVE CLEAN 500ML">
+
+                        <label><input type="radio" name="p_JABON NIVEA MEN ACTIVE CLEAN 500ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON NIVEA MEN ACTIVE CLEAN 500ML" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 18 -->
+            <div class="producto" data-id="JABON NIVEA ROCK SALT 500ML" data-nombre="JABON NIVEA ROCK SALT 500ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>18</span>
+                </div>
+                <img src="/img/item_18.jpg" alt="item_18" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>JABON NIVEA ROCK SALT 500ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="JABON NIVEA ROCK SALT 500ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="JABON NIVEA ROCK SALT 500ML">
+
+                        <label><input type="radio" name="p_JABON NIVEA ROCK SALT 500ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_JABON NIVEA ROCK SALT 500ML" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 19 -->
+            <div class="producto" data-id="BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS"
+                data-nombre="BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>19</span>
+                </div>
+                <img src="/img/item_19.jpg" alt="item_19" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS">
+
+                        <label><input type="radio" name="p_BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS" value="2"> 2
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 20 -->
+            <div class="producto" data-id="CREMA NIVEA LATA 50ML" data-nombre="CREMA NIVEA LATA 50ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>20</span>
+                </div>
+                <img src="/img/item_20.jpg" alt="item_20" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA LATA 50ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA LATA 50ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 60 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA LATA 50ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA LATA 50ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA LATA 50ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA LATA 50ML" value="2"> 2
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 21 -->
+            <div class="producto" data-id="CREMA NIVEA SOFT TARRO 500ML" data-nombre="CREMA NIVEA SOFT TARRO 500ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>21</span>
+                </div>
+                <img src="/img/item_21.jpg" alt="item_21" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA SOFT TARRO 500ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA SOFT TARRO 500ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA SOFT TARRO 500ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA SOFT TARRO 500ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA SOFT TARRO 500ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA SOFT TARRO 500ML" value="2"> 2
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 22 -->
+            <div class="producto" data-id="CREMA NIVEA FACIAL 5 NUTRITIVA 200ML"
+                data-nombre="CREMA NIVEA FACIAL 5 NUTRITIVA 200ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>22</span>
+                </div>
+                <img src="/img/item_22.jpg" alt="item_22" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA FACIAL 5 NUTRITIVA 200ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA FACIAL 5 NUTRITIVA 200ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA FACIAL 5 NUTRITIVA 200ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 5 NUTRITIVA 200ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 5 NUTRITIVA 200ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 5 NUTRITIVA 200ML" value="2"> 2
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 23 -->
+            <div class="producto" data-id="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML"
+                data-nombre="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>23</span>
+                </div>
+                <img src="/img/item_23.jpg" alt="item_23" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA FACIAL 7 NUTRITIVA 375ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" value="2"> 2
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" value="3"> 3
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 24 -->
+            <div class="producto" data-id="CREMA NIVEA NUTRITIVA 1000ML" data-nombre="CREMA NIVEA NUTRITIVA 1000ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>24</span>
+                </div>
+                <img src="/img/item_24.jpg" alt="item_24" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA NUTRITIVA 1000ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA NUTRITIVA 1000ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 9 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA NUTRITIVA 1000ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA NUTRITIVA 1000ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA NUTRITIVA 1000ML" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 25 -->
+            <div class="producto" data-id="CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML"
+                data-nombre="CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>25</span>
+                </div>
+                <img src="/img/item_25.jpg" alt="item_25" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML" value="0"
+                                checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML" value="1"> 1
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 26 -->
+            <div class="producto" data-id="CREMA NIVEA HIDRATACION EXPRESS 220ML"
+                data-nombre="CREMA NIVEA HIDRATACION EXPRESS 220ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>26</span>
+                </div>
+                <img src="/img/item_26.jpg" alt="item_26" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA HIDRATACION EXPRESS 220ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA HIDRATACION EXPRESS 220ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA HIDRATACION EXPRESS 220ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA HIDRATACION EXPRESS 220ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA HIDRATACION EXPRESS 220ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA HIDRATACION EXPRESS 220ML" value="2"> 2
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA HIDRATACION EXPRESS 220ML" value="3"> 3
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 27 -->
+            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 100ML"
+                data-nombre="CREMA NIVEA PROTECCION SOLAR 100ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>27</span>
+                </div>
+                <img src="/img/item_27.jpg" alt="item_27" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA PROTECCION SOLAR 100ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA PROTECCION SOLAR 100ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA PROTECCION SOLAR 100ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="2"> 2
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="3"> 3
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="4"> 4
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="5"> 5
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="6"> 6
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="7"> 7
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="8"> 8
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="9"> 9
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 100ML" value="10"> 10
+                            caja</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 28 -->
+            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 220ML"
+                data-nombre="CREMA NIVEA PROTECCION SOLAR 220ML">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>28</span>
+                </div>
+                <img src="/img/item_28.jpg" alt="item_28" />
+                <div class="producto-info">
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA PROTECCION SOLAR 220ML </strong>
+                        <span class="badge-agotado" style="display:none"
+                            data-badge="CREMA NIVEA PROTECCION SOLAR 220ML">Agotado</span>
+                    </div>
+                    <span style="color: red;">CAJA CON 12 PIEZAS</span>
+                    <div class="radios" data-radios="CREMA NIVEA PROTECCION SOLAR 220ML">
+
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 220ML" value="0" checked> 0
+                            cajas</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 220ML" value="1"> 1
+                            caja</label>
+                        <label><input type="radio" name="p_CREMA NIVEA PROTECCION SOLAR 220ML" value="2"> 2
+                            caja</label>
+                    </div>
+                </div>
+            </div>
 
         </section>
 
-        <!-- Resumen -->
         <section class="card" id="resumenPedido">
             <h2>Resumen del Pedido</h2>
             <div id="listaResumen">No hay productos seleccionados</div>
@@ -615,7 +1339,6 @@
         <a href="javascript:void(0)" onclick="mostrarAviso()">Aviso de Privacidad</a>
     </footer>
 
-    <!-- Modal Aviso -->
     <div class="modal" id="modalAviso">
         <div class="modal-content">
             <button class="btn btn-gray"
@@ -625,7 +1348,6 @@
         </div>
     </div>
 
-    <!-- Modal Empleado (aparece al abrir la página) -->
     <div class="modal" id="modalEmpleado">
         <div class="modal-content" style="max-width:520px">
             <h3 style="text-align:center;color:var(--azul);font-weight:800;margin-top:0">Información del Empleado</h3>
@@ -638,7 +1360,6 @@
             <label><b>Número Celular</b> <span class="req">*</span></label>
             <input type="tel" id="m_celular" placeholder="10 dígitos" maxlength="10" />
 
-            <!-- AVISO DE NÓMINA NO REGISTRADA -->
             <div id="errorNomina" style="color:#c00;font-size:14px;font-weight:600;margin:8px 0 0;display:none;"></div>
 
             <div class="modal-actions" style="justify-content:center">
@@ -647,7 +1368,6 @@
         </div>
     </div>
 
-    <!-- Modal Pre-Confirmación -->
     <div class="modal" id="modalPreConfirm">
         <div class="modal-content" style="max-width:520px">
             <h3 style="text-align:center">
@@ -662,7 +1382,6 @@
         </div>
     </div>
 
-    <!-- Modal Confirmación de Compra -->
     <div class="modal" id="modalConfirmacion">
         <div class="modal-content">
             <div class="confirm-grid">
@@ -686,7 +1405,6 @@
     </div>
 
     <script>
-        /* ------------ Firebase ------------ */
         firebase.initializeApp({
             apiKey: "AIzaSyDvHy46iATTlnwpOgWgSib2Tm43SJPkjzY",
             authDomain: "registrotienditabmm.firebaseapp.com",
@@ -701,49 +1419,41 @@
             if (docSnap.exists) {
                 const data = docSnap.data();
                 if (data.motivo === "Se agotó el tiempo de compra") {
-                    // 🔴 Bloquea el botón de Confirmar
-                    const btn = document.getElementById("btnConfirmarPop"); // 👈 aquí el id correcto
+                    const btn = document.getElementById("btnConfirmarPop");
                     if (btn) {
                         btn.disabled = true;
                         btn.style.background = "#ccc";
                         btn.style.cursor = "not-allowed";
                     }
 
-                    // 🔴 Mensaje en alerta
                     alert("⛔ Se agotó el tiempo de compra. Debes ingresar de nuevo.");
 
-                    // 🔄 Cierra modal de confirmación y abre modal de empleado
                     document.getElementById("modalConfirmacion").style.display = "none";
                     document.getElementById("modalEmpleado").style.display = "flex";
 
-                    // 👇 agrega esto
                     setTimeout(() => location.reload(), 250);
 
-                    return true; // indica que ya está bloqueado
+                    return true;
                 }
             }
-            return false; // puede seguir
+            return false;
         }
 
-        /* ----------- Config ----------- */
         const EXT_URL = "https://script.google.com/macros/s/AKfycbzgMKRaneoWHg4OoBaYIEN04p74LPvNLY0lWfrvRTMvHhRBMnu0_NmckAg10xwEsQ9QIA/exec";
-        const DURACION_MS = 10 * 60 * 1000; // 10 minutos al ACEPTAR
+        const DURACION_MS = 10 * 60 * 1000;
 
-        /* --------- Estado --------- */
         const productosEls = [...document.querySelectorAll('.producto')];
-        const CATALOGO = {}; // id -> { precios, stock, nombre }
+        const CATALOGO = {};
         const listaResumen = document.getElementById('listaResumen');
         const bannerEstado = document.getElementById('bannerEstado');
         const timerEl = document.getElementById('cuentaRegresiva');
         const timerFloat = document.getElementById('timerFloat');
         const timerFloatText = document.getElementById('timerFloatText');
 
-        // Vista de empleado (solo lectura)
         const vNomina = document.getElementById('vNomina');
         const vNombre = document.getElementById('vNombre');
         const vCelular = document.getElementById('vCelular');
 
-        // Modal Empleado
         const modalEmpleado = document.getElementById('modalEmpleado');
         const m_nomina = document.getElementById('m_nomina');
         const m_nombre = document.getElementById('m_nombre');
@@ -753,16 +1463,14 @@
         let isModalOpen = false;
         let pushedStateForModal = false;
         let ventanaFin = null;
-        let folioActual = null; // generado al presionar SI en pre-confirmación
+        let folioActual = null;
 
-        /* ======== utilidades ======== */
         function setBanner(type, msg) {
             bannerEstado.className = `banner ${type}`;
             bannerEstado.textContent = msg;
             bannerEstado.style.display = msg ? 'block' : 'none';
         }
 
-        // Radios helpers
         const getCantidad = (id) => {
             const radios = document.querySelectorAll(`[data-radios="${CSS.escape(id)}"] input[type="radio"]`);
             const r = [...radios].find(x => x.checked);
@@ -793,8 +1501,6 @@
             listaResumen.innerHTML = lineas.length ? `<p>${lineas.join('</p><p>')}</p>` : 'No hay productos seleccionados';
         }
 
-        /* --------- Nómina: registro + nombre --------- */      
-        
         async function cargarNomina(nomina) {
             if (!nomina) return { exists: false };
 
@@ -813,7 +1519,6 @@
             return { exists: true, nombre: d?.nombre || '', correo: d?.correo || '' };
         }
 
-        /* --------- Timer basado en ACEPTAR --------- */
         function keyTimer(nomina) { return `timer_end_${nomina}`; }
         function mostrarTimer(show) {
             timerEl.style.display = show ? 'block' : 'none';
@@ -856,7 +1561,6 @@
                 setBanner('error', 'Tu ventana de compra ha expirado.');
                 document.getElementById('btnEnviar').disabled = true;
 
-                // 🔴 Bloquear la nómina en Firebase
                 const nomina = vNomina.textContent || '';
                 if (nomina) {
                     db.doc(`bloqueados/${nomina}`).set({
@@ -864,7 +1568,6 @@
                         motivo: 'Se agotó el tiempo de compra'
                     }, { merge: true })
                         .then(() => {
-                            // ✅ Solo recarga cuando ya se guardó en Firebase
                             sessionStorage.setItem('reload_reason', 'timeout');
                             setTimeout(() => location.reload(), 250);
                         })
@@ -878,9 +1581,7 @@
 
         }
 
-        /* --------- Catálogo + Stock --------- */
         async function cargarCatalogoYStock() {
-            // Numerar 01, 02, ...
             productosEls.forEach((el, idx) => {
                 const numEl = el.querySelector('[data-num]');
                 if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
@@ -894,14 +1595,12 @@
                     db.doc(`stock/${id}`).get()
                 ]);
                 if (!catSnap.exists || !stockSnap.exists) {
-                    // si falta info lo ocultamos
                     el.remove();
                     return;
                 }
                 const precios = catSnap.data()?.precios ?? {};
                 const stock = Number(stockSnap.data()?.disponible ?? 0);
 
-                // 8) Si no hay stock, eliminar del catálogo (no visible)
                 if (stock <= 0) {
                     el.remove();
                     return;
@@ -909,24 +1608,20 @@
 
                 CATALOGO[id] = { precios, stock, nombre };
 
-                // 9) Quitar opciones de cantidad que no se puedan seleccionar (no visibles)
                 const radiosWrap = el.querySelector(`[data-radios="${CSS.escape(id)}"]`);
                 if (radiosWrap) {
                     const labels = [...radiosWrap.querySelectorAll('label')];
                     labels.forEach(l => {
                         const r = l.querySelector('input[type="radio"]');
                         const v = parseInt(r?.value || 0);
-                        // permitimos 0 (visible para "ninguna" en catálogo), 1..stock y además que exista precio
                         if (v > 0 && (v > stock || CATALOGO[id].precios[String(v)] == null)) {
-                            l.remove(); // quitar, no solo deshabilitar
+                            l.remove();
                         }
                     });
-                    // Si después de filtrar solo queda la opción 0, mantenla; el usuario podrá elegir luego otro producto.
                 }
             }));
         }
 
-        /* --------- Draft y render de modal confirmación --------- */
         function construirDraftDeSeleccion() {
             const items = [];
             for (const el of document.querySelectorAll('.producto')) {
@@ -941,7 +1636,6 @@
         }
 
         function renderPopup(items) {
-            // recalcular subtotales y total
             items.forEach(it => {
                 const precios = CATALOGO[it.id]?.precios || {};
                 it.s = Number(precios[String(it.c)] || 0);
@@ -954,7 +1648,6 @@
             const nombre = vNombre.textContent || '';
             const celular = vCelular.textContent || '';
 
-            // límite permitido (para el select en modal): 1..min(stock, maxPrecio, radiosMax). Omitimos 0 (se elimina con botón).
             const htmlLineas = items.length ? items.map((it, i) => {
                 const radiosMax = maxRadioFor(it.id);
                 const precioMax = maxPrecioFor(it.id);
@@ -962,10 +1655,8 @@
                 const allowedMax = stockDisponible > 0
                     ? Math.min(stockDisponible, precioMax, radiosMax)
                     : 0;
-                // clamp hacia arriba si fuera necesario
                 if (it.c > allowedMax) { it.c = allowedMax; }
 
-                // 🚨 Si no hay stock, muestro aviso y no el combo
                 if (allowedMax === 0) {
                     return `
                     <div class="linea">
@@ -978,9 +1669,8 @@
                     `;
                 }
 
-                // si hay stock disponible, sí muestro combo 1..allowedMax
                 const opciones = Array.from({ length: allowedMax }, (_, q) => {
-                    const val = q + 1; // 1..allowedMax (sin 0)
+                    const val = q + 1;
                     const sel = val === it.c ? 'selected' : '';
                     return `<option value="${val}" ${sel}>${val}</option>`;
                 }).join('');
@@ -1014,7 +1704,6 @@
                 <span class="amount">$${total.toLocaleString()} MXN</span>
             `;
 
-            // listeners
             cont.querySelectorAll('.quitar').forEach(btn => {
                 btn.onclick = () => {
                     const idx = parseInt(btn.dataset.idx);
@@ -1039,11 +1728,7 @@
             document.getElementById('btnConfirmarPop').disabled = !hayAlgo;
         }
 
-        /* --------- Folio consecutivo (desde 1) --------- */
         async function generarFolioConsecutivo(nomina, nombre) {
-            // Necesitas una colección/Documento contador:
-            // Doc: counters/folios  con campo { seq:Number }
-            // Esta transacción crea el doc si no existe, y suma 1. Devuelve 1,2,3,...
             const counterRef = db.doc('counters/folios');
             return db.runTransaction(async (tx) => {
                 const snap = await tx.get(counterRef);
@@ -1053,7 +1738,6 @@
                 }
                 const next = seq + 1;
                 tx.set(counterRef, { seq: next }, { merge: true });
-                // opcional: guardar una bitácora del folio emitido
                 tx.set(db.doc(`folios/${next}`), {
                     folio: next,
                     nomina: nomina || '',
@@ -1064,7 +1748,6 @@
             });
         }
 
-        /* --------- Envío a Apps Script (solo campos requeridos) --------- */
         function enviarPedido(folio, items) {
             const productosStr = items
                 .filter(i => i.c > 0)
@@ -1084,11 +1767,9 @@
             });
         }
 
-        /* ====== beforeunload solo con modal de confirmación abierto ====== */
         function beforeUnloadHandler(e) {
             const reason = sessionStorage.getItem('reload_reason');
             if (reason === 'timeout') {
-                // 🚫 Evita marcarlo como recarga manual
                 return;
             }
 
@@ -1103,7 +1784,7 @@
         window.addEventListener('pagehide', () => {
             const reason = sessionStorage.getItem('reload_reason');
             if (reason === 'timeout') {
-                return; // ✅ no marcar como reload manual
+                return;
             }
             if (isModalOpen) {
                 const n = vNomina.textContent;
@@ -1168,7 +1849,6 @@
                 isModalOpen = false;
                 detachBeforeUnload();
 
-                // 👇 abrir modal de empleado
                 modalEmpleado.style.display = 'flex';
                 lockScroll();
 
@@ -1177,13 +1857,10 @@
             }
         });
 
-        /* --------- Eventos --------- */
-        // Celular solo dígitos (ambos en modal y vista principal no editable)
         m_celular.addEventListener('input', function () {
             this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);
         });
 
-        // Nómina en modal: autollenar nombre; si borran nómina, limpiar nombre
         m_nomina.addEventListener('input', async () => {
             const n = m_nomina.value.trim();
 
@@ -1197,18 +1874,15 @@
             const info = await cargarNomina(n);
 
             if (info.exists) {
-                // ✅ Está registrado y no bloqueado
                 m_nombre.value = info.nombre || '';
                 errorNomina.style.display = 'none';
                 m_nomina.classList.remove('error');
             } else if (info.bloqueado) {
-                // 🚫 Caso bloqueado (cualquier motivo: tiempo, recarga, cancelación)
                 m_nombre.value = '';
                 errorNomina.textContent = `⛔ ${info.motivo}`;
                 errorNomina.style.display = 'block';
                 m_nomina.classList.add('error');
             } else {
-                // ❌ Caso nómina no registrada
                 m_nombre.value = '';
                 errorNomina.textContent = 'Este número de nómina no está registrado';
                 errorNomina.style.display = 'block';
@@ -1216,19 +1890,16 @@
             }
         });
 
-        // Aceptar modal de empleado
         document.getElementById('btnModalAceptar').addEventListener('click', async () => {
             const nomina = m_nomina.value.trim();
 
-            // Verifica que la nómina exista; si no, muestra el aviso y no deja continuar
             const infoNom = await cargarNomina(nomina);
             if (!infoNom.exists) {
                 errorNomina.textContent = 'Este número de nómina no está registrado';
                 errorNomina.style.display = 'block';
                 m_nomina.classList.add('error');
                 return;
-            } else {
-                // rellena nombre por si aún no estaba
+            } else {                
                 if (!m_nombre.value.trim()) m_nombre.value = infoNom.nombre || '';
                 errorNomina.style.display = 'none';
                 m_nomina.classList.remove('error');
@@ -1236,34 +1907,27 @@
 
             const nombre = m_nombre.value.trim();
             const celular = m_celular.value.trim();
-
-            // Validaciones: 3 campos llenos, celular 10 dígitos
+           
             let ok = true, errs = [];
             const mark = (el, bad) => el.classList.toggle('error', bad);
             mark(m_nomina, !nomina); if (!nomina) { ok = false; errs.push('La nómina es obligatoria.'); }
             mark(m_nombre, !nombre); if (!nombre) { ok = false; errs.push('El nombre es obligatorio.'); }
             mark(m_celular, !/^\d{10}$/.test(celular)); if (!/^\d{10}$/.test(celular)) { ok = false; errs.push('El celular debe tener 10 dígitos.'); }
             if (!ok) { alert('Corrige:\n\n' + errs.join('\n')); return; }
-
-            // Refrescar vista de solo lectura
+            
             vNomina.textContent = nomina;
             vNombre.textContent = nombre;
             vCelular.textContent = celular;
 
-            // Iniciar o restaurar timer 10 min
             if (!restaurarTimerSiExiste(nomina)) {
                 iniciarTimer10Min(nomina);
             }
 
-            // Cerrar modal
             modalEmpleado.style.display = 'none';
             unlockScroll();
         });
 
-
-        // Enviar → Pre-confirmación
-        document.getElementById('btnEnviar').addEventListener('click', () => {
-            // Validar que ya hay datos del empleado y al menos 1 producto
+        document.getElementById('btnEnviar').addEventListener('click', () => {            
             const nomina = vNomina.textContent;
             const nombre = vNombre.textContent;
             const celular = vCelular.textContent;
@@ -1277,22 +1941,18 @@
             if (!hay) { ok = false; errs.push('Debes seleccionar al menos 1 caja.'); }
 
             if (!ok) { alert('Corrige:\n\n' + errs.join('\n')); return; }
-
-            // Mostrar modal pre-confirmación
+            
             document.getElementById('modalPreConfirm').style.display = 'flex';
         });
-
-        // Pre-confirm: NO → cerrar
+        
         document.getElementById('btnPreNo').addEventListener('click', () => {
             document.getElementById('modalPreConfirm').style.display = 'none';
         });
-
-        // Pre-confirm: SI → generar folio y abrir modal de confirmación
+        
         document.getElementById('btnPreSi').addEventListener('click', async () => {
             document.getElementById('modalPreConfirm').style.display = 'none';
 
             const draft = construirDraftDeSeleccion();
-            // Generar folio consecutivo (desde 1) y pintarlo
             const nomina = vNomina.textContent || '';
             const nombre = vNombre.textContent || '';
             try {
@@ -1310,27 +1970,20 @@
             try { history.pushState({ modalOpen: true }, ''); pushedStateForModal = true; } catch (_) { }
         });
 
-        // Confirmar transacción (sin horarios; conserva bloqueo por recarga)
-        // Confirmar transacción
         function ajustarStockVisual(draft, lecturas) {
             lecturas.forEach(({ it, disp }) => {
-                // 🔄 Actualiza el stock real en memoria
                 if (CATALOGO[it.id]) {
                     CATALOGO[it.id].stock = disp;
                 }
 
                 if (disp < it.c) {
-                    // ⚠ Ajustar cantidad en el draft
                     it.c = Math.max(0, disp);
 
-                    // 👉 actualizar radios en catálogo
                     setCantidad(it.id, it.c);
-
-                    // 👉 mostrar badge AGOTADO si ya no hay stock
+                    
                     const badge = document.querySelector(`[data-badge="${CSS.escape(it.id)}"]`);
                     if (disp === 0 && badge) badge.style.display = "inline-block";
 
-                    // 👉 si está en 0, deshabilitar select en modal y poner mensaje
                     if (disp === 0) {
                         const lineas = document.querySelectorAll(`#detallePedido .linea`);
                         lineas.forEach(l => {
@@ -1350,42 +2003,36 @@
 
         document.getElementById('btnConfirmarPop').addEventListener('click', async () => {
             const nomina = vNomina.textContent || '';
-
-            // 🔍 Verifica bloqueo antes de permitir continuar
+            
             const bloqueado = await verificarBloqueoAntesDeConfirmar(nomina);
-            if (bloqueado) return; // 🚫 no deja comprar si ya está bloqueado
+            if (bloqueado) return; 
 
             const draft = construirDraftDeSeleccion();
             if (draft.length === 0) {
                 alert('No hay productos en el pedido.');
                 return;
             }
-
-            // 🚨 Validar que no existan productos agotados sin eliminar
+            
             const agotados = draft.filter(it => {
                 const stockDisponible = CATALOGO[it.id]?.stock ?? 0;
-                return stockDisponible <= 0; // productos sin stock
+                return stockDisponible <= 0; 
             });
 
             if (agotados.length > 0) {
                 alert("⚠️ Debes eliminar los productos agotados antes de confirmar tu pedido.");
-                return; // detenemos la confirmación
+                return; 
             }
 
-
-            // Validar stock al vuelo con transacción y bloquear nómina al éxito
             try {
                 const nomina = vNomina.textContent || '';
-                // Run transaction stock
+                
                 const result = await db.runTransaction(async tx => {
-                    // leer stock
+                    
                     const lecturas = await Promise.all(draft.map(async it => {
                         const ref = db.doc(`stock/${it.id}`);
                         const snap = await tx.get(ref);
                         return { it, ref, disp: Number(snap.data()?.disponible || 0) };
                     }));
-                    // shortages
-                    // shortages
                     let huboAjustes = false;
                     for (const { it, disp } of lecturas) {
                         if (disp < it.c) {
@@ -1395,16 +2042,14 @@
 
                     if (huboAjustes) {
                         ajustarStockVisual(draft, lecturas);
-                        renderPopup(draft); // 🔄 refresca el modal con cantidades válidas
+                        renderPopup(draft);
                         return { ok: false, msg: "⚠️ Algunos productos fueron ajustados por falta de stock. Revisa de nuevo tu pedido." };
                     }
 
-
-                    // descontar
                     lecturas.forEach(({ it, ref, disp }) => {
                         tx.update(ref, { disponible: disp - it.c });
                     });
-                    // bloquear nómina
+                    
                     if (nomina) {
                         tx.set(db.doc(`bloqueados/${nomina}`), {
                             fecha: firebase.firestore.FieldValue.serverTimestamp(),
@@ -1430,8 +2075,7 @@
                 alert('⚠️ ' + (e.message || 'Error al confirmar'));
             }
         });
-
-        // Cancelar confirmación → bloquear nómina
+        
         document.getElementById('btnCancelarPop').addEventListener('click', async () => {
             const n = vNomina.textContent;
             if (!n) { alert('Falta número de nómina.'); return; }
@@ -1445,8 +2089,7 @@
                 document.getElementById('modalConfirmacion').style.display = 'none';
                 isModalOpen = false;
                 detachBeforeUnload();
-
-                // 👇 Redirige al modal del empleado
+                
                 modalEmpleado.style.display = 'flex';
                 lockScroll();
 
@@ -1456,8 +2099,6 @@
             }
         });
 
-
-        // Aviso de privacidad
         function mostrarAviso() {
             fetch('/docs/aviso.txt')
                 .then(r => { if (!r.ok) throw 0; return r.text(); })
@@ -1466,13 +2107,11 @@
         }
         window.mostrarAviso = mostrarAviso;
 
-        // === Scroll Lock robusto (funciona en iOS/Android/desktop) ===
         let __scrollY = 0;
         function lockScroll() {
             __scrollY = window.scrollY || document.documentElement.scrollTop || 0;
             document.documentElement.classList.add('modal-open');
             document.body.classList.add('modal-open');
-            // Fijar el body para que no se mueva
             document.body.style.position = 'fixed';
             document.body.style.top = `-${__scrollY}px`;
             document.body.style.left = '0';
@@ -1488,26 +2127,22 @@
             document.body.style.left = '';
             document.body.style.right = '';
             document.body.style.width = '';
-            window.scrollTo(0, __scrollY); // Regresa donde estaba
+            window.scrollTo(0, __scrollY);
         }
 
-        /* --------- Init --------- */
         (async () => {
             try {
                 await aplicarBloqueoDiferidoSiExiste();
                 await cargarCatalogoYStock();
                 actualizarResumen();
-                // Mostrar modal de empleado al cargar
                 modalEmpleado.style.display = 'flex';
                 document.body.classList.add('modal-open');
                 lockScroll();
-                // Si ya tenía timer por sesión (misma nómina), se restaurará al ACEPTAR (para no arrancarlo sin validar datos)
             } catch (e) {
                 alert('Config de catálogo/stock incompleta: ' + (e.message || e));
             }
         })();
 
-        // Actualizar resumen cuando cambien radios
         document.addEventListener('change', (ev) => {
             if (ev.target && ev.target.matches('input[type="radio"]')) {
                 actualizarResumen();
@@ -1517,9 +2152,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
