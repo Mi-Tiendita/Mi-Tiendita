@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin – Citas Tiendita</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Citas Tiendita</title>
+
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/img/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="/img/icon-512.png" sizes="512x512">
+
   <style>
-    :root{
-      --azul:#0d1c84;--gris:#f4f6fb;--borde:#d9ddea;--sombra:0 2px 10px rgba(0,0,0,.06)
-    }
+    :root{--azul:#0d1c84;--gris:#f4f6fb;--borde:#d9ddea;--sombra:0 2px 10px rgba(0,0,0,.06)}
     *{box-sizing:border-box}
     body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:var(--gris);color:#111}
     header{background:#fff;border-bottom:1px solid var(--borde);box-shadow:var(--sombra);padding:14px 18px;display:flex;align-items:center;gap:12px}
     header h1{margin:0;color:var(--azul);font-size:20px}
     main{max-width:1120px;margin:22px auto;padding:0 16px}
-
     .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
     .kpi{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:14px 16px;box-shadow:var(--sombra)}
     .kpi .label{font-size:13px;color:#334}
     .kpi .value{font-size:28px;font-weight:800;color:var(--azul);margin-top:6px}
-
     .filtros{display:flex;gap:12px;align-items:center;margin-bottom:14px}
     .filtros label{font-size:12px;color:#334;font-weight:600}
     .filtros select,.filtros input{padding:9px;border:1px solid var(--borde);border-radius:10px;outline:none;background:#fff}
     .filtros input{min-width:220px}
-
     .tablewrap{background:#fff;border:1px solid var(--borde);border-radius:12px;box-shadow:var(--sombra);overflow:hidden}
     table{width:100%;border-collapse:collapse}
     thead{background:#eef2ff}
@@ -31,12 +31,7 @@
     th{color:#223}
     tbody tr:hover{background:#fafbff}
     .chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#eef6ff;color:#063c76}
-
-    @media(max-width:900px){
-      .kpis{grid-template-columns:repeat(2,1fr)}
-      .filtros{flex-wrap:wrap}
-      .filtros input{flex:1}
-    }
+    @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.filtros{flex-wrap:wrap}.filtros input{flex:1}}
   </style>
 </head>
 <body>
@@ -68,87 +63,94 @@
       <table>
         <thead>
           <tr>
-            <th>Fecha</th>
-            <th>Hora</th>
-            <th>Nómina</th>
-            <th>Nombre</th>
-            <th>Atendido</th>
+            <th>Fecha</th><th>Hora</th><th>Nómina</th><th>Nombre</th><th>Atendido</th>
           </tr>
         </thead>
-        <tbody id="tbody">
-          <tr><td colspan="5">Cargando…</td></tr>
-        </tbody>
+        <tbody id="tbody"><tr><td colspan="5">Cargando…</td></tr></tbody>
       </table>
     </section>
   </main>
 
   <script>
-    /* === CONFIG: usa GViz como tu Agenda === */
-    const SHEET_ID   = "1ggD0pertPgbEzcLX7r3Bw4BDtXiMzJ2m2yVjD72qSVk";
+    /* === CONFIG GViz === */
+    const SHEET_ID = "1ggD0pertPgbEzcLX7r3Bw4BDtXiMzJ2m2yVjD72qSVk";
     const SHEET_NAME = "Citas";
-    const GVIZ_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
+    const GVIZ_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
-    /* === Helpers de fecha (semana inicia domingo) === */
-    const toDate = (iso) => new Date(iso + "T00:00:00");
-    const sameDay   = (a,b) => a===b;
-    const sameMonth = (iso,ref) => iso.slice(0,7)===ref.slice(0,7);
-    function isSameWeekSundayStart(iso, refIso){
-      const d = toDate(iso), r = toDate(refIso);
-      const start = new Date(r); start.setDate(r.getDate()-r.getDay()); // Domingo
-      const end   = new Date(start); end.setDate(start.getDate()+6);   // Sábado
+    /* === Fecha local MX === */
+    function todayISO_MX(){
+      // Hora local de CDMX sin depender del navegador del usuario
+      const now = new Date();
+      const fmt = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Mexico_City',year:'numeric',month:'2-digit',day:'2-digit'});
+      return fmt.format(now); // YYYY-MM-DD
+    }
+    const toDate   = (iso)=> new Date(iso+"T00:00:00");
+    const sameDay  = (a,b)=> a===b;
+    const sameMonth=(iso,ref)=> iso.slice(0,7)===ref.slice(0,7);
+    function isSameWeekSundayStart(iso,refIso){
+      const d=toDate(iso), r=toDate(refIso);
+      const start=new Date(r); start.setDate(r.getDate()-r.getDay()); // dom
+      const end=new Date(start); end.setDate(start.getDate()+6);       // sáb
       return d>=start && d<=end;
     }
 
     /* === Estado === */
-    let DATA = [];            // Todas las filas normalizadas {Fecha, Hora, Nomina, Nombre}
-    let FECHA_ACTUAL = "";    // Fecha seleccionada en el combo
-    let CHECKS_DIA = 0;       // Contador de atendidos del día (no persiste)
+    let DATA=[];          // {Fecha, Hora, Nomina, Nombre}
+    let FECHA_ACTUAL="";  // seleccion en combo
+    let CHECKS_DIA=0;
 
-    const $ = (id)=>document.getElementById(id);
-    const tbody = $('tbody'), kMes=$('kpiMes'), kSem=$('kpiSemana'), kHoy=$('kpiHoy'), kAti=$('kpiAtendidos');
+    const $=id=>document.getElementById(id);
+    const tbody=$('tbody'), kMes=$('kpiMes'), kSem=$('kpiSemana'), kHoy=$('kpiHoy'), kAti=$('kpiAtendidos');
 
-    /* === Carga vía GViz === */
+    /* === GViz fetch === */
     async function fetchRowsGViz(){
-      const r = await fetch(GVIZ_URL, {cache:"no-store"});
-      const t = await r.text();
-      const json = JSON.parse(t.replace(/^[\s\S]*?setResponse\(/,'').replace(/\);\s*$/,''));
-      const cols = json.table.cols.map(c => c.label || c.id || "");
-      const rows = json.table.rows.map(row=>{
-        const obj={};
-        (row.c||[]).forEach((cell,i)=> obj[cols[i]||("col"+i)] = (cell && (cell.f ?? cell.v)) ?? "");
+      const r=await fetch(GVIZ_URL,{cache:"no-store"});
+      const t=await r.text();
+      const json=JSON.parse(t.replace(/^[\s\S]*?setResponse\(/,'').replace(/\);\s*$/,''));
+      const cols=json.table.cols.map(c=>c.label||c.id||"");
+      const rows=json.table.rows.map(row=>{
+        const obj={}; (row.c||[]).forEach((cell,i)=>obj[cols[i]||("col"+i)]=(cell && (cell.f??cell.v))??"");
         return obj;
       });
-      // Normaliza nombres clave
       return rows.map(r=>({
-        Fecha : String(r["Fecha"]||"").slice(0,10),
-        Hora  : String(r["Hora"] ||"").slice(0,5),
-        Nomina: String(r["Nomina"]||r["Nómina"]||""),
-        Nombre: String(r["Nombre"]||"")
+        Fecha:String(r["Fecha"]||"").slice(0,10),
+        Hora:String(r["Hora"]||"").slice(0,5),
+        Nomina:String(r["Nomina"]||r["Nómina"]||""),
+        Nombre:String(r["Nombre"]||"")
       })).filter(r=>r.Fecha);
     }
 
     function poblarFechas(){
-      const sel = $('fechaSel');
-      const fechas = [...new Set(DATA.map(r=>r.Fecha))].sort((a,b)=> a<b ? 1 : -1); // descendente
+      const sel=$('fechaSel');
+      const hoy = todayISO_MX();
+
+      // Fechas únicas, SOLO >= hoy, orden ASCENDENTE
+      const fechas = [...new Set(DATA.map(r=>r.Fecha))]
+        .filter(f=>f>=hoy)
+        .sort((a,b)=>a.localeCompare(b)); // asc
+
       sel.innerHTML = fechas.map(f=>`<option value="${f}">${f}</option>`).join('');
-      FECHA_ACTUAL = fechas[0] || "";
+
+      // Selección por defecto: hoy si existe; si no, la primera futura
+      FECHA_ACTUAL = fechas.includes(hoy) ? hoy : (fechas[0] || "");
       sel.value = FECHA_ACTUAL;
+
       sel.onchange = ()=>{ FECHA_ACTUAL = sel.value; render(); };
     }
 
     function filasFiltradas(){
-      const q = ($('buscar').value||"").toLowerCase().trim();
+      const q=($('buscar').value||"").toLowerCase().trim();
       return DATA.filter(r=>{
-        const okFecha = !FECHA_ACTUAL || r.Fecha===FECHA_ACTUAL;
-        const okTxt = !q || r.Nombre.toLowerCase().includes(q) || r.Nomina.toLowerCase().includes(q);
+        const okFecha=!FECHA_ACTUAL || r.Fecha===FECHA_ACTUAL;
+        const okTxt=!q || r.Nombre.toLowerCase().includes(q) || r.Nomina.toLowerCase().includes(q);
         return okFecha && okTxt;
-      }).sort((a,b)=> (a.Hora||"").localeCompare(b.Hora||""));
+      }).sort((a,b)=>(a.Hora||"").localeCompare(b.Hora||""));
     }
 
     function renderTabla(rows){
       if(!rows.length){
-        tbody.innerHTML = `<tr><td colspan="5">Sin registros</td></tr>`;
-        CHECKS_DIA = 0; kAti.textContent = "0";
+        tbody.innerHTML=`<tr><td colspan="5">Sin registros</td></tr>`;
+        CHECKS_DIA=0; kAti.textContent="0";
         return;
       }
       tbody.innerHTML = rows.map(r=>{
@@ -163,44 +165,36 @@
           </tr>`;
       }).join('');
 
-      // Reinicia y engancha listeners
-      CHECKS_DIA = 0; kAti.textContent = "0";
+      CHECKS_DIA=0; kAti.textContent="0";
       [...document.querySelectorAll('.chk')].forEach(ch=>{
-        ch.addEventListener('change', ()=>{
-          CHECKS_DIA += ch.checked ? 1 : -1;
+        ch.addEventListener('change',()=>{
+          CHECKS_DIA += ch.checked?1:-1;
           if(CHECKS_DIA<0) CHECKS_DIA=0;
-          kAti.textContent = String(CHECKS_DIA);
+          kAti.textContent=String(CHECKS_DIA);
         });
       });
     }
 
     function renderKPIs(){
-      if(!FECHA_ACTUAL){ kMes.textContent=kSem.textContent=kHoy.textContent="0"; return; }
-      const mes = DATA.filter(r=> sameMonth(r.Fecha, FECHA_ACTUAL)).length;
-      const sem = DATA.filter(r=> isSameWeekSundayStart(r.Fecha, FECHA_ACTUAL)).length;
-      const dia = DATA.filter(r=> sameDay(r.Fecha, FECHA_ACTUAL)).length;
-      kMes.textContent = mes; kSem.textContent = sem; kHoy.textContent = dia;
+      if(!FECHA_ACTUAL){kMes.textContent=kSem.textContent=kHoy.textContent="0";return;}
+      const mes=DATA.filter(r=>sameMonth(r.Fecha,FECHA_ACTUAL)).length;
+      const sem=DATA.filter(r=>isSameWeekSundayStart(r.Fecha,FECHA_ACTUAL)).length;
+      const dia=DATA.filter(r=>sameDay(r.Fecha,FECHA_ACTUAL)).length;
+      kMes.textContent=mes; kSem.textContent=sem; kHoy.textContent=dia;
     }
 
-    function render(){
-      const rows = filasFiltradas();
-      renderTabla(rows);
-      renderKPIs();
-    }
-
-    // Buscar en vivo
+    function render(){ const rows=filasFiltradas(); renderTabla(rows); renderKPIs(); }
     $('buscar').addEventListener('input', render);
 
-    // Boot
     (async function(){
       try{
-        tbody.innerHTML = `<tr><td colspan="5">Cargando…</td></tr>`;
+        tbody.innerHTML=`<tr><td colspan="5">Cargando…</td></tr>`;
         DATA = await fetchRowsGViz();
         poblarFechas();
         render();
       }catch(e){
-        tbody.innerHTML = `<tr><td colspan="5">Error al cargar</td></tr>`;
         console.error(e);
+        tbody.innerHTML=`<tr><td colspan="5">Error al cargar</td></tr>`;
       }
     })();
   </script>
