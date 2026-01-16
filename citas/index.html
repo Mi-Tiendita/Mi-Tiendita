@@ -63,10 +63,10 @@
       <table>
         <thead>
           <tr>
-            <th>Fecha</th><th>Hora</th><th>Nómina</th><th>Nombre</th><th>Atendido</th>
+            <th>Fecha</th><th>Hora</th><th>Nómina</th><th>Nombre</th><th>Empresa</th><th>Atendido</th>
           </tr>
         </thead>
-        <tbody id="tbody"><tr><td colspan="5">Cargando…</td></tr></tbody>
+        <tbody id="tbody"><tr><td colspan="6">Cargando…</td></tr></tbody>
       </table>
     </section>
   </main>
@@ -79,7 +79,6 @@
 
     /* === Fecha local MX === */
     function todayISO_MX(){
-      // Hora local de CDMX sin depender del navegador del usuario
       const now = new Date();
       const fmt = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Mexico_City',year:'numeric',month:'2-digit',day:'2-digit'});
       return fmt.format(now); // YYYY-MM-DD
@@ -95,7 +94,7 @@
     }
 
     /* === Estado === */
-    let DATA=[];          // {Fecha, Hora, Nomina, Nombre}
+    let DATA=[];          // {Fecha, Hora, Nomina, Nombre, Empresa}
     let FECHA_ACTUAL="";  // seleccion en combo
     let CHECKS_DIA=0;
 
@@ -116,7 +115,8 @@
         Fecha:String(r["Fecha"]||"").slice(0,10),
         Hora:String(r["Hora"]||"").slice(0,5),
         Nomina:String(r["Nomina"]||r["Nómina"]||""),
-        Nombre:String(r["Nombre"]||"")
+        Nombre:String(r["Nombre"]||""),
+        Empresa:String(r["Empresa"]||"")
       })).filter(r=>r.Fecha);
     }
 
@@ -124,14 +124,12 @@
       const sel=$('fechaSel');
       const hoy = todayISO_MX();
 
-      // Fechas únicas, SOLO >= hoy, orden ASCENDENTE
       const fechas = [...new Set(DATA.map(r=>r.Fecha))]
         .filter(f=>f>=hoy)
         .sort((a,b)=>a.localeCompare(b)); // asc
 
       sel.innerHTML = fechas.map(f=>`<option value="${f}">${f}</option>`).join('');
 
-      // Selección por defecto: hoy si existe; si no, la primera futura
       FECHA_ACTUAL = fechas.includes(hoy) ? hoy : (fechas[0] || "");
       sel.value = FECHA_ACTUAL;
 
@@ -149,7 +147,7 @@
 
     function renderTabla(rows){
       if(!rows.length){
-        tbody.innerHTML=`<tr><td colspan="5">Sin registros</td></tr>`;
+        tbody.innerHTML=`<tr><td colspan="6">Sin registros</td></tr>`;
         CHECKS_DIA=0; kAti.textContent="0";
         return;
       }
@@ -161,6 +159,7 @@
             <td>${r.Hora||""}</td>
             <td>${r.Nomina||""}</td>
             <td>${r.Nombre||""}</td>
+            <td>${r.Empresa||""}</td>
             <td><input type="checkbox" class="chk" ${enabled}></td>
           </tr>`;
       }).join('');
@@ -188,13 +187,13 @@
 
     (async function(){
       try{
-        tbody.innerHTML=`<tr><td colspan="5">Cargando…</td></tr>`;
+        tbody.innerHTML=`<tr><td colspan="6">Cargando…</td></tr>`;
         DATA = await fetchRowsGViz();
         poblarFechas();
         render();
       }catch(e){
         console.error(e);
-        tbody.innerHTML=`<tr><td colspan="5">Error al cargar</td></tr>`;
+        tbody.innerHTML=`<tr><td colspan="6">Error al cargar</td></tr>`;
       }
     })();
   </script>
