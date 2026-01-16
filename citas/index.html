@@ -1,368 +1,208 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Citas Tiendita</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin – Citas Tiendita</title>
+  <style>
+    :root{
+      --azul:#0d1c84;--gris:#f4f6fb;--borde:#d9ddea;--sombra:0 2px 10px rgba(0,0,0,.06)
+    }
+    *{box-sizing:border-box}
+    body{font-family:Segoe UI,Arial,sans-serif;margin:0;background:var(--gris);color:#111}
+    header{background:#fff;border-bottom:1px solid var(--borde);box-shadow:var(--sombra);padding:14px 18px;display:flex;align-items:center;gap:12px}
+    header h1{margin:0;color:var(--azul);font-size:20px}
+    main{max-width:1120px;margin:22px auto;padding:0 16px}
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/img/icon-192.png" type="image/png">
-    <link rel="apple-touch-icon" href="/img/icon-512.png" sizes="512x512">
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+    .kpi{background:#fff;border:1px solid var(--borde);border-radius:12px;padding:14px 16px;box-shadow:var(--sombra)}
+    .kpi .label{font-size:13px;color:#334}
+    .kpi .value{font-size:28px;font-weight:800;color:var(--azul);margin-top:6px}
 
-    <style>
-        :root {
-            --azul: #0d1c84;
-            --gris: #f4f6fb;
-            --borde: #d9ddea;
-            --sombra: 0 2px 10px rgba(0, 0, 0, .06);
-            --ok: #18a05e;
-            --warn: #e6b800;
-        }
+    .filtros{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .filtros label{font-size:12px;color:#334;font-weight:600}
+    .filtros select,.filtros input{padding:9px;border:1px solid var(--borde);border-radius:10px;outline:none;background:#fff}
+    .filtros input{min-width:220px}
 
-        * {
-            box-sizing: border-box
-        }
+    .tablewrap{background:#fff;border:1px solid var(--borde);border-radius:12px;box-shadow:var(--sombra);overflow:hidden}
+    table{width:100%;border-collapse:collapse}
+    thead{background:#eef2ff}
+    th,td{padding:10px 12px;border-bottom:1px solid var(--borde);text-align:left;font-size:14px}
+    th{color:#223}
+    tbody tr:hover{background:#fafbff}
+    .chip{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;background:#eef6ff;color:#063c76}
 
-        body {
-            font-family: Segoe UI, Arial, sans-serif;
-            margin: 0;
-            background: var(--gris);
-            color: #111
-        }
-
-        header {
-            background: #fff;
-            border-bottom: 1px solid var(--borde);
-            box-shadow: var(--sombra);
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        header h1 {
-            margin: 0;
-            color: var(--azul);
-            font-size: 20px
-        }
-
-        main {
-            max-width: 1120px;
-            margin: 22px auto;
-            padding: 0 16px
-        }
-
-        /* KPIs */
-        .kpis {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 16px
-        }
-
-        .kpi {
-            background: #fff;
-            border: 1px solid var(--borde);
-            border-radius: 12px;
-            padding: 14px 16px;
-            box-shadow: var(--sombra)
-        }
-
-        .kpi .label {
-            font-size: 13px;
-            color: #334
-        }
-
-        .kpi .value {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--azul);
-            margin-top: 6px
-        }
-
-        /* Filtros */
-        .filters {
-            background: #fff;
-            border: 1px solid var(--borde);
-            border-radius: 12px;
-            padding: 12px 16px;
-            margin-bottom: 14px;
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            align-items: end
-        }
-
-        .filters label {
-            font-size: 12px;
-            color: #334
-        }
-
-        .filters input {
-            width: 100%;
-            padding: 9px;
-            border: 1px solid var(--borde);
-            border-radius: 10px
-        }
-
-        .btn {
-            background: var(--azul);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 10px 14px;
-            cursor: pointer;
-            font-weight: 700
-        }
-
-        .btn:disabled {
-            opacity: .5;
-            cursor: not-allowed
-        }
-
-        /* Tabla */
-        .tablewrap {
-            background: #fff;
-            border: 1px solid var(--borde);
-            border-radius: 12px;
-            box-shadow: var(--sombra);
-            overflow: hidden
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse
-        }
-
-        thead {
-            background: #eef2ff
-        }
-
-        th,
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--borde);
-            text-align: left;
-            font-size: 14px
-        }
-
-        th {
-            color: #223
-        }
-
-        tbody tr:hover {
-            background: #fafbff
-        }
-
-        .chip {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: 12px;
-            background: #eef6ff;
-            color: #063c76
-        }
-
-        .right {
-            display: flex;
-            justify-content: flex-end
-        }
-
-        .muted {
-            color: #667
-        }
-
-        @media (max-width:900px) {
-            .kpis {
-                grid-template-columns: repeat(2, 1fr)
-            }
-
-            .filters {
-                grid-template-columns: repeat(2, 1fr)
-            }
-        }
-    </style>
+    @media(max-width:900px){
+      .kpis{grid-template-columns:repeat(2,1fr)}
+      .filtros{flex-wrap:wrap}
+      .filtros input{flex:1}
+    }
+  </style>
 </head>
-
 <body>
-    <header>
-        <img src="/img/sitelogo.png" alt="tiendita" style="height:28px">
-        <h1>Administrador – Citas Tiendita</h1>
-    </header>
+  <header>
+    <img src="/img/sitelogo.png" alt="tiendita" style="height:28px">
+    <h1>Administrador – Citas Tiendita</h1>
+  </header>
 
-    <main>
-        <!-- KPIs -->
-        <section class="kpis">
-            <div class="kpi">
-                <div class="label">Registros del mes</div>
-                <div id="kpiMes" class="value">0</div>
-            </div>
-            <div class="kpi">
-                <div class="label">Registros de la semana</div>
-                <div id="kpiSemana" class="value">0</div>
-            </div>
-            <div class="kpi">
-                <div class="label">Registros del día</div>
-                <div id="kpiHoy" class="value">0</div>
-            </div>
-            <div class="kpi">
-                <div class="label">Atendidos (checks del día)</div>
-                <div id="kpiAtendidos" class="value">0</div>
-            </div>
-        </section>
+  <main>
+    <!-- KPIs -->
+    <section class="kpis">
+      <div class="kpi"><div class="label">Registros del mes</div><div id="kpiMes" class="value">0</div></div>
+      <div class="kpi"><div class="label">Registros de la semana</div><div id="kpiSemana" class="value">0</div></div>
+      <div class="kpi"><div class="label">Registros del día</div><div id="kpiHoy" class="value">0</div></div>
+      <div class="kpi"><div class="label">Atendidos (checks del día)</div><div id="kpiAtendidos" class="value">0</div></div>
+    </section>
 
-        <!-- Filtros -->
-        <section aria-label="Filtros">
-            <div class="filtros" style="display:flex;gap:12px;align-items:center;">
-                <label for="fechaSel" style="font-weight:600;">Seleccionar fecha:</label>
-                <select id="fechaSel"></select>
+    <!-- Filtros -->
+    <section aria-label="Filtros" class="filtros">
+      <label for="fechaSel">Seleccionar fecha:</label>
+      <select id="fechaSel"></select>
 
-                <label for="buscar" style="margin-left:8px;font-weight:600;">Buscar:</label>
-                <input id="buscar" type="search" placeholder="Nombre o Nómina">
-            </div>
-        </section>
+      <label for="buscar">Buscar:</label>
+      <input id="buscar" type="search" placeholder="Nombre o Nómina" />
+    </section>
 
-        <!-- Tabla -->
-        <section class="tablewrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Hora</th>
-                        <th>Nómina</th>
-                        <th>Nombre</th>
-                        <th>Atendido</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody"></tbody>
-            </table>
-        </section>
-    </main>
+    <!-- Tabla -->
+    <section class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Nómina</th>
+            <th>Nombre</th>
+            <th>Atendido</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <tr><td colspan="5">Cargando…</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
 
-    <script>
-        // ==== CONFIG ====
-        // Endpoint que devuelve todas las filas con columnas: Nomina, Nombre, Fecha (YYYY-MM-DD), Hora
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxX-WYr1TRLHFLmoaZa4JfUpAJcwWQ5xt2w-qnbFxJ2uzsJsGQ0L6VT4jVzlYrdhcRm/exec';
+  <script>
+    /* === CONFIG: usa GViz como tu Agenda === */
+    const SHEET_ID   = "1ggD0pertPgbEzcLX7r3Bw4BDtXiMzJ2m2yVjD72qSVk";
+    const SHEET_NAME = "Citas";
+    const GVIZ_URL   = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(SHEET_NAME)}`;
 
-        // ==== UTILIDADES FECHA ====
-        const TZ = 'America/Mexico_City';
-        const $ = (id) => document.getElementById(id);
-        const tbody = $('tbody'), kMes = $('kpiMes'), kSem = $('kpiSemana'), kHoy = $('kpiHoy'), kAti = $('kpiAtendidos');
+    /* === Helpers de fecha (semana inicia domingo) === */
+    const toDate = (iso) => new Date(iso + "T00:00:00");
+    const sameDay   = (a,b) => a===b;
+    const sameMonth = (iso,ref) => iso.slice(0,7)===ref.slice(0,7);
+    function isSameWeekSundayStart(iso, refIso){
+      const d = toDate(iso), r = toDate(refIso);
+      const start = new Date(r); start.setDate(r.getDate()-r.getDay()); // Domingo
+      const end   = new Date(start); end.setDate(start.getDate()+6);   // Sábado
+      return d>=start && d<=end;
+    }
 
-        const toLocalDate = (iso) => new Date(iso + 'T00:00:00'); // evita desfases
-        const sameDay = (a, b) => a === b;
-        const sameMonth = (iso, refIso) => iso.slice(0, 7) === refIso.slice(0, 7);
-        const sundayOfWeek = (iso) => { const d = toLocalDate(iso); const out = new Date(d); out.setDate(d.getDate() - d.getDay()); return out; };
-        const isSameWeekSundayStart = (iso, refIso) => {
-            const a = toLocalDate(iso), start = sundayOfWeek(refIso), end = new Date(start); end.setDate(start.getDate() + 6);
-            return a >= start && a <= end;
-        };
+    /* === Estado === */
+    let DATA = [];            // Todas las filas normalizadas {Fecha, Hora, Nomina, Nombre}
+    let FECHA_ACTUAL = "";    // Fecha seleccionada en el combo
+    let CHECKS_DIA = 0;       // Contador de atendidos del día (no persiste)
 
-        // ==== ESTADO ====
-        let DATA = [];        // todas las filas
-        let FECHA_ACTUAL = ''; // lo que está elegido en el select
-        let CHECKS_DIA = 0;   // contador de atendidos del día (no persistente)
+    const $ = (id)=>document.getElementById(id);
+    const tbody = $('tbody'), kMes=$('kpiMes'), kSem=$('kpiSemana'), kHoy=$('kpiHoy'), kAti=$('kpiAtendidos');
 
-        // ==== CARGA INICIAL ====
-        (async function init() {
-            await cargarTodo();
-            poblarFechas();
-            // Selecciona hoy si existe, de lo contrario la más reciente
-            const hoy = new Date().toISOString().slice(0, 10);
-            const sel = $('fechaSel');
-            sel.value = [...sel.options].some(o => o.value === hoy) ? hoy : (sel.options[0]?.value || '');
-            FECHA_ACTUAL = sel.value;
-            render();
-            // eventos
-            sel.addEventListener('change', () => { FECHA_ACTUAL = sel.value; render(); });
-            $('buscar').addEventListener('input', render);
-        })();
+    /* === Carga vía GViz === */
+    async function fetchRowsGViz(){
+      const r = await fetch(GVIZ_URL, {cache:"no-store"});
+      const t = await r.text();
+      const json = JSON.parse(t.replace(/^[\s\S]*?setResponse\(/,'').replace(/\);\s*$/,''));
+      const cols = json.table.cols.map(c => c.label || c.id || "");
+      const rows = json.table.rows.map(row=>{
+        const obj={};
+        (row.c||[]).forEach((cell,i)=> obj[cols[i]||("col"+i)] = (cell && (cell.f ?? cell.v)) ?? "");
+        return obj;
+      });
+      // Normaliza nombres clave
+      return rows.map(r=>({
+        Fecha : String(r["Fecha"]||"").slice(0,10),
+        Hora  : String(r["Hora"] ||"").slice(0,5),
+        Nomina: String(r["Nomina"]||r["Nómina"]||""),
+        Nombre: String(r["Nombre"]||"")
+      })).filter(r=>r.Fecha);
+    }
 
-        async function cargarTodo() {
-            tbody.innerHTML = `<tr><td colspan="5">Cargando…</td></tr>`;
-            try {
-                const res = await fetch(API_URL);
-                const json = await res.json();
-                // Normaliza claves esperadas: Nomina, Nombre, Fecha, Hora
-                DATA = (json.rows || json || []).map(r => ({
-                    Nomina: r.Nomina ?? r.nomina ?? '',
-                    Nombre: r.Nombre ?? r.nombre ?? '',
-                    Fecha: r.Fecha ?? r.fecha ?? '',
-                    Hora: r.Hora ?? r.hora ?? ''
-                })).filter(r => r.Fecha); // solo con fecha válida
-            } catch (e) {
-                tbody.innerHTML = `<tr><td colspan="5">Error al cargar: ${e.message}</td></tr>`;
-                DATA = [];
-            }
-        }
+    function poblarFechas(){
+      const sel = $('fechaSel');
+      const fechas = [...new Set(DATA.map(r=>r.Fecha))].sort((a,b)=> a<b ? 1 : -1); // descendente
+      sel.innerHTML = fechas.map(f=>`<option value="${f}">${f}</option>`).join('');
+      FECHA_ACTUAL = fechas[0] || "";
+      sel.value = FECHA_ACTUAL;
+      sel.onchange = ()=>{ FECHA_ACTUAL = sel.value; render(); };
+    }
 
-        function poblarFechas() {
-            const sel = $('fechaSel');
-            const fechas = [...new Set(DATA.map(r => r.Fecha))].sort((a, b) => a < b ? 1 : -1); // recientes primero
-            sel.innerHTML = fechas.map(f => `<option value="${f}">${f}</option>`).join('');
-        }
+    function filasFiltradas(){
+      const q = ($('buscar').value||"").toLowerCase().trim();
+      return DATA.filter(r=>{
+        const okFecha = !FECHA_ACTUAL || r.Fecha===FECHA_ACTUAL;
+        const okTxt = !q || r.Nombre.toLowerCase().includes(q) || r.Nomina.toLowerCase().includes(q);
+        return okFecha && okTxt;
+      }).sort((a,b)=> (a.Hora||"").localeCompare(b.Hora||""));
+    }
 
-        // --- Filtro activo (fecha + búsqueda) ---
-        function filasFiltradas() {
-            const q = ($('buscar').value || '').toLowerCase().trim();
-            return DATA.filter(r => {
-                const matchFecha = !FECHA_ACTUAL || r.Fecha === FECHA_ACTUAL;
-                const matchTxt = !q ||
-                    (String(r.Nomina || '').toLowerCase().includes(q)) ||
-                    (String(r.Nombre || '').toLowerCase().includes(q));
-                return matchFecha && matchTxt;
-            });
-        }
-
-        function renderTabla(rows) {
-            if (!rows.length) {
-                tbody.innerHTML = `<tr><td colspan="5">Sin registros</td></tr>`;
-                CHECKS_DIA = 0;
-                kAti.textContent = '0';
-                return;
-            }
-            tbody.innerHTML = rows.map(r => {
-                const habilitado = sameDay(r.Fecha, FECHA_ACTUAL) ? '' : 'disabled';
-                return `
+    function renderTabla(rows){
+      if(!rows.length){
+        tbody.innerHTML = `<tr><td colspan="5">Sin registros</td></tr>`;
+        CHECKS_DIA = 0; kAti.textContent = "0";
+        return;
+      }
+      tbody.innerHTML = rows.map(r=>{
+        const enabled = r.Fecha===FECHA_ACTUAL ? "" : "disabled";
+        return `
           <tr>
             <td><span class="chip">${r.Fecha}</span></td>
-            <td>${r.Hora || ''}</td>
-            <td>${r.Nomina || ''}</td>
-            <td>${r.Nombre || ''}</td>
-            <td><input type="checkbox" class="chk" ${habilitado}></td>
+            <td>${r.Hora||""}</td>
+            <td>${r.Nomina||""}</td>
+            <td>${r.Nombre||""}</td>
+            <td><input type="checkbox" class="chk" ${enabled}></td>
           </tr>`;
-            }).join('');
+      }).join('');
 
-            // reinicia contador del día y re-engancha eventos
-            CHECKS_DIA = 0;
-            kAti.textContent = '0';
-            [...document.querySelectorAll('.chk')].forEach(ch => {
-                ch.addEventListener('change', () => {
-                    // solo cuentan los habilitados (día actual seleccionado)
-                    CHECKS_DIA += ch.checked ? 1 : -1;
-                    if (CHECKS_DIA < 0) CHECKS_DIA = 0;
-                    kAti.textContent = String(CHECKS_DIA);
-                });
-            });
-        }
+      // Reinicia y engancha listeners
+      CHECKS_DIA = 0; kAti.textContent = "0";
+      [...document.querySelectorAll('.chk')].forEach(ch=>{
+        ch.addEventListener('change', ()=>{
+          CHECKS_DIA += ch.checked ? 1 : -1;
+          if(CHECKS_DIA<0) CHECKS_DIA=0;
+          kAti.textContent = String(CHECKS_DIA);
+        });
+      });
+    }
 
-        function renderKPIs() {
-            if (!FECHA_ACTUAL) { kMes.textContent = kSem.textContent = kHoy.textContent = '0'; return; }
-            const mes = DATA.filter(r => sameMonth(r.Fecha, FECHA_ACTUAL)).length;
-            const sem = DATA.filter(r => isSameWeekSundayStart(r.Fecha, FECHA_ACTUAL)).length;
-            const dia = DATA.filter(r => sameDay(r.Fecha, FECHA_ACTUAL)).length;
-            kMes.textContent = mes;
-            kSem.textContent = sem;
-            kHoy.textContent = dia;
-        }
+    function renderKPIs(){
+      if(!FECHA_ACTUAL){ kMes.textContent=kSem.textContent=kHoy.textContent="0"; return; }
+      const mes = DATA.filter(r=> sameMonth(r.Fecha, FECHA_ACTUAL)).length;
+      const sem = DATA.filter(r=> isSameWeekSundayStart(r.Fecha, FECHA_ACTUAL)).length;
+      const dia = DATA.filter(r=> sameDay(r.Fecha, FECHA_ACTUAL)).length;
+      kMes.textContent = mes; kSem.textContent = sem; kHoy.textContent = dia;
+    }
 
-        function render() {
-            const rows = filasFiltradas();
-            renderTabla(rows);
-            renderKPIs();
-        }
-    </script>
+    function render(){
+      const rows = filasFiltradas();
+      renderTabla(rows);
+      renderKPIs();
+    }
+
+    // Buscar en vivo
+    $('buscar').addEventListener('input', render);
+
+    // Boot
+    (async function(){
+      try{
+        tbody.innerHTML = `<tr><td colspan="5">Cargando…</td></tr>`;
+        DATA = await fetchRowsGViz();
+        poblarFechas();
+        render();
+      }catch(e){
+        tbody.innerHTML = `<tr><td colspan="5">Error al cargar</td></tr>`;
+        console.error(e);
+      }
+    })();
+  </script>
 </body>
-
 </html>
