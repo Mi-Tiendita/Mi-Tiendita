@@ -199,7 +199,7 @@
 
 <body>
     <header>
-        <img src="/img/icon-192.png" alt="Beiersdorf" />
+        <img src="/img/getsitelogo.png" alt="Beiersdorf" />
         <h1>Venta Masiva Abril 2026</h1>
     </header>
     <main class="contenido">
@@ -570,6 +570,22 @@
             <button class="confirmar" onclick="confirmarEnvio()">Confirmar Pedido</button>
         </div>
     </div>
+
+    <div class="modal" id="modalAvisoSeleccion">
+        <div class="modal-content" style="text-align: center;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; background-color: #f4f6fb; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc;">
+                <img src="/img/icono-aviso.png" alt="Icono" style="max-width: 100%; max-height: 100%; border-radius: 50%;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
+                <span style="color: #999; font-size: 12px; display: none;">Ícono</span>
+            </div>
+            
+            <p style="font-size: 16px; margin-bottom: 25px; line-height: 1.5; color: #333;">
+                ✅ Hemos recibido tu solicitud. Recuerda que el envío no asegura tu lugar; si resultas seleccionado, te avisaremos para confirmar tu pedido.
+            </p>
+            
+            <button class="confirmar" style="margin: 0 auto; display: inline-block; padding: 10px 30px; font-size: 16px;" onclick="ejecutarEnvio()">Aceptar</button>
+        </div>
+    </div>
+
     <script>
         const EXT_URL = "https://script.google.com/macros/s/AKfycbzgMKRaneoWHg4OoBaYIEN04p74LPvNLY0lWfrvRTMvHhRBMnu0_NmckAg10xwEsQ9QIA/exec";
         const productos = document.querySelectorAll('.producto');
@@ -688,7 +704,18 @@
                     document.getElementById("modalAviso").style.display = "flex";
                 });
         }
+        
+        // Función actualizada: Oculta el resumen y muestra el nuevo aviso
         function confirmarEnvio() {
+            document.getElementById("modalConfirmacion").style.display = "none";
+            document.getElementById("modalAvisoSeleccion").style.display = "flex";
+        }
+
+        // Nueva función: Se ejecuta al dar "Aceptar" en el modal de aviso
+        function ejecutarEnvio() {
+            // Ocultamos el nuevo modal
+            document.getElementById("modalAvisoSeleccion").style.display = "none";
+            
             const productosSeleccionados = [];
             productos.forEach(p => {
                 const nombre = p.dataset.nombre;
@@ -719,9 +746,8 @@
                     Total: totalResumen.textContent.replace('$', '').replace(' MXN', '').replace(',', '')
                 })
             });
-            document.getElementById("modalConfirmacion").style.display = "none";
-            alert("✅ Tu pedido se ha guardado exitosamente.");
-            setTimeout(() => window.location.href = "/gracias/", 500);
+            alert("✅ Hemos recibido tu solicitud. Recuerda que el envío no asegura tu lugar; si resultas seleccionado, te avisaremos para confirmar tu pedido.");
+            setTimeout(() => window.location.href = "/gracias_vme/", 500);
         }
     </script>
 </body>
