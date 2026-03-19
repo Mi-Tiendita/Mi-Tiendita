@@ -31,9 +31,16 @@
             align-items: center;
             gap: 20px;
         }
+        
+        .logo-principal {
+            height: 60px;
+            object-fit: contain;
+        }
 
-        header img {
-            height: 30px;
+        .logo-secundario {
+            height: 60px; 
+            object-fit: contain;
+            margin-left: auto; 
         }
 
         .contenido {
@@ -199,8 +206,9 @@
 
 <body>
     <header>
-        <img src="/img/getsitelogo.png" alt="Beiersdorf" />
-        <h1>Venta Masiva Abril 2026</h1>
+        <img src="/img/getsitelogo.png" alt="Beiersdorf" class="logo-principal" />
+        <h1>Venta Masiva Abril 2026</h1>        
+        <img src="/img/logo_digital.png" alt="Digital" class="logo-secundario" />
     </header>
     <main class="contenido">
         <section class="formulario">
