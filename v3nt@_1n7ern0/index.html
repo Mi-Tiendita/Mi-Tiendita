@@ -53,6 +53,16 @@
             background-color: #0d1c84;
         }
 
+        /* --- NUEVO CSS PARA LOGO DERECHO --- */
+        .logo-derecho {
+            margin-left: auto;
+            height: 60px;
+            border-radius: 0;
+            border: none;
+            background-color: transparent;
+            object-fit: contain;
+        }
+
         .contenido {
             padding: 20px
         }
@@ -280,7 +290,6 @@
             padding: 18px 20px;
             text-align: center;
             margin: 0 auto;
-
             border: 3px solid #FFD700;
             border-radius: 10px;
             box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
@@ -403,7 +412,9 @@
             right: 12px;
             top: 20%;
             z-index: 1100;
-            display: none
+            display: none;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .timer-box {
@@ -420,7 +431,8 @@
         .timer-box small {
             display: block;
             font-weight: 400;
-            opacity: .9
+            opacity: .9;
+            margin-bottom: 3px;
         }
 
         .confirm-grid {
@@ -467,12 +479,17 @@
                 left: 0;
                 top: auto;
                 bottom: 10px;
-                display: none
+                display: none;
+                flex-direction: row !important;
+                justify-content: center;
+                gap: 15px;
             }
 
             .timer-box {
-                margin: 0 auto;
-                border-radius: 999px
+                margin: 0;
+                border-radius: 999px;
+                min-width: auto;
+                padding: 10px 20px;
             }
 
             .producto {
@@ -489,7 +506,11 @@
             }
 
             .folio-box {
-                order: -1
+                order: -1;
+                position: relative;
+                top: auto;
+                right: auto;
+                margin-bottom: 15px;
             }
         }
     </style>
@@ -501,14 +522,21 @@
 <body>
     <header>
         <a href="/v3nt@_1n7ern0">
-          <img src="/img/sitelogo.png" alt="MiTiendita">
+            <img src="/img/sitelogo.png" alt="MiTiendita">
         </a>
-        <h1>Venta Masiva Noviembre 2025</h1>
+        <h1>Venta Masiva Abril 2026</h1>
+        
+        <img src="/img/logo_digital.png" alt="Logo" class="logo-derecho" onerror="this.style.display='none'">
     </header>
 
     <div id="bannerEstado" class="banner info" style="display:none"></div>
 
     <div id="timerFloat" class="timer-float">
+        <div class="timer-box" style="background: #0f8f2e;">
+            <small>Total a Pagar</small>
+            <span id="totalFloatText" style="font-size:18px;">$0 MXN</span>
+        </div>
+        
         <div class="timer-box">
             <small>Tiempo restante</small>
             <span id="timerFloatText">7:00</span>
@@ -538,7 +566,6 @@
         <section class="card" id="catalogoProductos">
             <h2>Catálogo de Productos</h2>
 
-            <!-- Producto 1 -->
             <div class="producto" data-id="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS"
                 data-nombre="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">
                 <div class="numero-producto-wrapper">
@@ -567,7 +594,6 @@
                 </div>
             </div>
 
-            <!-- Producto 2 -->
             <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS"
                 data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">
                 <div class="numero-producto-wrapper">
@@ -596,7 +622,6 @@
                 </div>
             </div>
 
-            <!-- Producto 3 -->
             <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS"
                 data-nombre="UNGÜENTO AQUAPHOR REPARADOR TARRO 396GMS">
                 <div class="numero-producto-wrapper">
@@ -626,7 +651,6 @@
                 </div>
             </div>
 
-            <!-- Producto 4 -->
             <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS"
                 data-nombre="UNGÜENTO AQUAPHOR REPARADOR TARRO 80GMS">
                 <div class="numero-producto-wrapper">
@@ -651,7 +675,6 @@
                 </div>
             </div>
 
-            <!-- Producto 5 -->
             <div class="producto" data-id="PROTECTOR SOLAR COPPERTONE 207ML"
                 data-nombre="PROTECTOR SOLAR COPPERTONE 207ML">
                 <div class="numero-producto-wrapper">
@@ -680,7 +703,6 @@
                 </div>
             </div>
 
-            <!-- Producto 6 -->
             <div class="producto" data-id="ACEITE EUCERIN DE DUCHA 200ML" data-nombre="ACEITE EUCERIN DE DUCHA 200ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -706,7 +728,6 @@
                 </div>
             </div>
 
-            <!-- Producto 7 -->
             <div class="producto" data-id="JABON EUCERIN BABY 400ML" data-nombre="JABON EUCERIN BABY 400ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -738,7 +759,6 @@
                 </div>
             </div>
 
-            <!-- Producto 8 -->
             <div class="producto" data-id="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML"
                 data-nombre="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML">
                 <div class="numero-producto-wrapper">
@@ -763,7 +783,6 @@
                 </div>
             </div>
 
-            <!-- Producto 9 -->
             <div class="producto" data-id="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML"
                 data-nombre="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML">
                 <div class="numero-producto-wrapper">
@@ -793,7 +812,6 @@
                 </div>
             </div>
 
-            <!-- Producto 10 -->
             <div class="producto" data-id="CREMA EUCERIN SKIN BALANCE 48GMS"
                 data-nombre="CREMA EUCERIN SKIN BALANCE 48GMS">
                 <div class="numero-producto-wrapper">
@@ -826,7 +844,6 @@
                 </div>
             </div>
 
-            <!-- Producto 11 -->
             <div class="producto" data-id="CREMA EUCERIN PIEL GRASA SPF50 75ML"
                 data-nombre="CREMA EUCERIN PIEL GRASA SPF50 75ML">
                 <div class="numero-producto-wrapper">
@@ -855,7 +872,6 @@
                 </div>
             </div>
 
-            <!-- Producto 12 -->
             <div class="producto" data-id="DESODORANTE NIVEA MEN DEEP CARBON 50ML"
                 data-nombre="DESODORANTE NIVEA MEN DEEP CARBON 50ML">
                 <div class="numero-producto-wrapper">
@@ -888,7 +904,6 @@
                 </div>
             </div>
 
-            <!-- Producto 13 -->
             <div class="producto" data-id="DESODORANTE NIVEA DAMA TONO NATURAL 50ML"
                 data-nombre="DESODORANTE NIVEA DAMA TONO NATURAL 50ML">
                 <div class="numero-producto-wrapper">
@@ -916,7 +931,6 @@
                 </div>
             </div>
 
-            <!-- Producto 14 -->
             <div class="producto" data-id="GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS"
                 data-nombre="GEL NIVEA MEN LIMPIADOR ALOE & VERA TUBO 125GMS">
                 <div class="numero-producto-wrapper">
@@ -942,7 +956,6 @@
                 </div>
             </div>
 
-            <!-- Producto 15 -->
             <div class="producto" data-id="JABON NIVEA BOTANICAL BLOSSOM 591ML"
                 data-nombre="JABON NIVEA BOTANICAL BLOSSOM 591ML">
                 <div class="numero-producto-wrapper">
@@ -967,7 +980,6 @@
                 </div>
             </div>
 
-            <!-- Producto 16 -->
             <div class="producto" data-id="JABON NIVEA IN MILK 250ML" data-nombre="JABON NIVEA IN MILK 250ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -993,7 +1005,6 @@
                 </div>
             </div>
 
-            <!-- Producto 17 -->
             <div class="producto" data-id="JABON NIVEA MEN ACTIVE CLEAN 500ML"
                 data-nombre="JABON NIVEA MEN ACTIVE CLEAN 500ML">
                 <div class="numero-producto-wrapper">
@@ -1018,7 +1029,6 @@
                 </div>
             </div>
 
-            <!-- Producto 18 -->
             <div class="producto" data-id="JABON NIVEA ROCK SALT 500ML" data-nombre="JABON NIVEA ROCK SALT 500ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -1042,7 +1052,6 @@
                 </div>
             </div>
 
-            <!-- Producto 19 -->
             <div class="producto" data-id="BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS"
                 data-nombre="BALSAMO NIVEA HIDRA COLOR NUDE 4.8GMS">
                 <div class="numero-producto-wrapper">
@@ -1069,7 +1078,6 @@
                 </div>
             </div>
 
-            <!-- Producto 20 -->
             <div class="producto" data-id="CREMA NIVEA LATA 50ML" data-nombre="CREMA NIVEA LATA 50ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -1095,7 +1103,6 @@
                 </div>
             </div>
 
-            <!-- Producto 21 -->
             <div class="producto" data-id="CREMA NIVEA SOFT TARRO 500ML" data-nombre="CREMA NIVEA SOFT TARRO 500ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -1121,7 +1128,6 @@
                 </div>
             </div>
 
-            <!-- Producto 22 -->
             <div class="producto" data-id="CREMA NIVEA FACIAL 5 NUTRITIVA 200ML"
                 data-nombre="CREMA NIVEA FACIAL 5 NUTRITIVA 200ML">
                 <div class="numero-producto-wrapper">
@@ -1148,7 +1154,6 @@
                 </div>
             </div>
 
-            <!-- Producto 23 -->
             <div class="producto" data-id="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML"
                 data-nombre="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">
                 <div class="numero-producto-wrapper">
@@ -1177,7 +1182,6 @@
                 </div>
             </div>
 
-            <!-- Producto 24 -->
             <div class="producto" data-id="CREMA NIVEA NUTRITIVA 1000ML" data-nombre="CREMA NIVEA NUTRITIVA 1000ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -1201,7 +1205,6 @@
                 </div>
             </div>
 
-            <!-- Producto 25 -->
             <div class="producto" data-id="CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML"
                 data-nombre="CREMA NIVEA MEN MAX HIDRATACION BOTELLA 500ML">
                 <div class="numero-producto-wrapper">
@@ -1227,7 +1230,6 @@
                 </div>
             </div>
 
-            <!-- Producto 26 -->
             <div class="producto" data-id="CREMA NIVEA HIDRATACION EXPRESS 220ML"
                 data-nombre="CREMA NIVEA HIDRATACION EXPRESS 220ML">
                 <div class="numero-producto-wrapper">
@@ -1256,7 +1258,6 @@
                 </div>
             </div>
 
-            <!-- Producto 27 -->
             <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 100ML"
                 data-nombre="CREMA NIVEA PROTECCION SOLAR 100ML">
                 <div class="numero-producto-wrapper">
@@ -1299,7 +1300,6 @@
                 </div>
             </div>
 
-            <!-- Producto 28 -->
             <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 220ML"
                 data-nombre="CREMA NIVEA PROTECCION SOLAR 220ML">
                 <div class="numero-producto-wrapper">
@@ -1326,7 +1326,6 @@
                 </div>
             </div>
 
-            <!-- Producto 29 -->
             <div class="producto" data-id="CREMA NIVEA TONO NATURAL 220ML" data-nombre="CREMA NIVEA TONO NATURAL 220ML">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
@@ -1350,7 +1349,6 @@
                 </div>
             </div>
 
-            <!-- Producto 30 -->
             <div class="producto" data-id="CREMA NIVEA HIDRATACION EXP 400ML"
                 data-nombre="CREMA NIVEA HIDRATACION EXP 400ML">
                 <div class="numero-producto-wrapper">
@@ -1454,6 +1452,22 @@
         </div>
     </div>
 
+    <div class="modal" id="modalFotografia">
+        <div class="modal-content" style="text-align: center; max-width: 400px; padding: 30px 20px;">
+            <img src="/img/icono-camara.png" alt="Cámara" style="width: 80px; height: 80px; margin: 0 auto 15px auto; object-fit: contain;" onerror="this.style.display='none';">
+            <h2 style="color: var(--azul); font-size: 26px; margin-bottom: 5px; text-align: center;">Toma una fotografía</h2>
+            <p style="color: #666; margin-bottom: 25px;">Guarda este comprobante de tu pedido</p>
+            
+            <p style="margin: 0; font-size: 16px; font-weight: bold;">FOLIO</p>
+            <div id="fotoFolio" style="font-size: 48px; font-weight: 900; color: var(--azul); margin-bottom: 20px; line-height: 1;">—</div>
+            
+            <p style="margin: 0; font-size: 16px; font-weight: bold;">TOTAL A PAGAR</p>
+            <div id="fotoTotal" style="font-size: 38px; font-weight: 800; color: #222; margin-bottom: 30px; line-height: 1;">$0.00 MXN</div>
+            
+            <button class="btn btn-green" id="btnAceptarFoto" style="font-size: 18px; padding: 12px 30px; width: 100%;">Aceptar</button>
+        </div>
+    </div>
+
     <script>
         firebase.initializeApp({
             apiKey: "AIzaSyDvHy46iATTlnwpOgWgSib2Tm43SJPkjzY",
@@ -1541,14 +1555,24 @@
             return ks.length ? Math.max(...ks) : 0;
         };
 
+        // --- ACTUALIZACIÓN DE RESUMEN PARA CALCULAR TOTAL ---
         function actualizarResumen() {
+            let sumTotal = 0;
             const lineas = productosEls
                 .map(el => {
                     const id = el.dataset.id, n = el.dataset.nombre, c = getCantidad(id);
-                    return c > 0 ? `${n} x ${c}` : null;
+                    if (c > 0) {
+                        const precios = CATALOGO[id]?.precios || {};
+                        const s = Number(precios[String(c)] || 0);
+                        sumTotal += s;
+                        return `${n} x ${c}`;
+                    }
+                    return null;
                 })
                 .filter(Boolean);
             listaResumen.innerHTML = lineas.length ? `<p>${lineas.join('</p><p>')}</p>` : 'No hay productos seleccionados';
+            const tf = document.getElementById('totalFloatText');
+            if (tf) tf.textContent = `$${sumTotal.toLocaleString()} MXN`;
         }
 
         async function cargarNomina(nomina) {
@@ -1572,7 +1596,7 @@
         function keyTimer(nomina) { return `timer_end_${nomina}`; }
         function mostrarTimer(show) {
             timerEl.style.display = show ? 'block' : 'none';
-            timerFloat.style.display = show ? 'block' : 'none';
+            timerFloat.style.display = show ? 'flex' : 'none'; // Cambiado a flex para la caja de total
         }
         function iniciarTimer10Min(nomina) {
             const finMs = Date.now() + DURACION_MS;
@@ -1848,8 +1872,6 @@
             }
         });
 
-
-
         async function aplicarBloqueoDiferidoSiExiste() {
             const markedNomina = localStorage.getItem('blocked_due_to_reload_nomina');
             if (!markedNomina) return;
@@ -2114,16 +2136,30 @@
                     return;
                 }
 
+                // Guardamos el pedido en el excel de apps script
                 enviarPedido(folioActual, draft.filter(i => i.c > 0));
+
+                // --- NUEVA LÓGICA DE FOTO DESPUÉS DE CONFIRMAR ---
+                const totalConfirmado = draft.filter(i => i.c > 0).reduce((a, b) => a + Number(b.s || 0), 0);
+                document.getElementById('fotoFolio').textContent = String(folioActual);
+                document.getElementById('fotoTotal').textContent = `$${totalConfirmado.toLocaleString()} MXN`;
+
                 document.getElementById('modalConfirmacion').style.display = 'none';
-                isModalOpen = false;
-                detachBeforeUnload();
-                if (pushedStateForModal) { try { history.back(); } catch (_) { } pushedStateForModal = false; }
-                alert('✅ Tu pedido se ha guardado exitosamente.');
-                setTimeout(() => location.href = '/gracias/', 250);
+                document.getElementById('modalFotografia').style.display = 'flex';
+                // (Mantenemos isModalOpen en true para que no recarguen accidentalmente)
+
             } catch (e) {
                 alert('⚠️ ' + (e.message || 'Error al confirmar'));
             }
+        });
+
+        // --- LISTENER PARA EL BOTÓN ACEPTAR DE LA FOTOGRAFÍA ---
+        document.getElementById('btnAceptarFoto').addEventListener('click', () => {
+            alert('✅ Tu pedido se ha guardado exitosamente.');
+            isModalOpen = false;
+            detachBeforeUnload();
+            if (pushedStateForModal) { try { history.back(); } catch (_) { } pushedStateForModal = false; }
+            setTimeout(() => location.href = '/gracias/', 250);
         });
 
         document.getElementById('btnCancelarPop').addEventListener('click', async () => {
@@ -2202,7 +2238,3 @@
 </body>
 
 </html>
-
-
-
-
