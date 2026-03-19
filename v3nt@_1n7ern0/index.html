@@ -1644,6 +1644,15 @@
             sessionStorage.removeItem('reload_reason');
             return false;
         }
+
+        // --- NUEVA FUNCIÓN PARA DETENER EL RELOJ ---
+        function detenerReloj() {
+            if (window._tmr) {
+                clearInterval(window._tmr);
+                window._tmr = null;
+            }
+        }
+
         function actualizarCuenta() {
             if (!ventanaFin) { mostrarTimer(false); return; }
             const left = Math.max(0, Math.floor((ventanaFin - new Date()) / 1000));
@@ -2158,10 +2167,11 @@
                     return;
                 }
 
-                // Guardamos el pedido en el excel de apps script
+                // --- ENVIAR DATOS A APPS SCRIPT Y DETENER EL RELOJ ---
                 enviarPedido(folioActual, draft.filter(i => i.c > 0));
-
-                // --- NUEVA LÓGICA DE FOTO DESPUÉS DE CONFIRMAR ---
+                detenerReloj(); 
+                
+                // Mostrar info de fotografía
                 const totalConfirmado = draft.filter(i => i.c > 0).reduce((a, b) => a + Number(b.s || 0), 0);
                 document.getElementById('fotoFolio').textContent = String(folioActual);
                 document.getElementById('fotoTotal').textContent = `$${totalConfirmado.toLocaleString()} MXN`;
