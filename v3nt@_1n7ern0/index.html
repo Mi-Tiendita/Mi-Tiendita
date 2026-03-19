@@ -513,6 +513,26 @@
                 margin-bottom: 15px;
             }
         }
+
+        /* --- ANIMACIÓN DE DESTELLO AMARILLO --- */
+        @keyframes resplandorAmarillo {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+                border: 3px solid transparent;
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+                border: 3px solid #FFD700;
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+                border: 3px solid transparent;
+            }
+        }
+
+        .alerta-brillante {
+            animation: resplandorAmarillo 1.5s infinite;
+        }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -1378,7 +1398,7 @@
         <section class="card" id="resumenPedido">
             <h2>Resumen del Pedido</h2>
             <div id="listaResumen">No hay productos seleccionados</div>
-            <button id="btnEnviar">Enviar Pedido</button>
+            <button id="btnEnviar">CONTINUAR</button>
         </section>
     </main>
 
@@ -1452,9 +1472,11 @@
         </div>
     </div>
 
-    <div class="modal" id="modalFotografia">
-        <div class="modal-content" style="text-align: center; max-width: 400px; padding: 30px 20px;">
-            <img src="/img/icono-camara.png" alt="Cámara" style="width: 80px; height: 80px; margin: 0 auto 15px auto; object-fit: contain;" onerror="this.style.display='none';">
+   <div class="modal" id="modalFotografia">
+        <div class="modal-content alerta-brillante" style="text-align: center; max-width: 400px; padding: 30px 20px;">
+            
+            <img src="/img/icono-camara.png" alt="Foto" style="width: 80px; height: 80px; margin: 0 auto 15px auto; display: block; object-fit: contain;">
+
             <h2 style="color: var(--azul); font-size: 26px; margin-bottom: 5px; text-align: center;">Toma una fotografía</h2>
             <p style="color: #666; margin-bottom: 25px;">Guarda este comprobante de tu pedido</p>
             
