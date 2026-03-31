@@ -368,18 +368,6 @@
                     <b>Nombre</b>
                     <span id="vNombre">—</span>
                 </div>
-                <div class="empleado-item">
-                    <b>Celular</b>
-                    <span id="vCelular">—</span>
-                </div>
-                <div class="empleado-item">
-                    <b>Correo</b>
-                    <span id="vCorreo">—</span>
-                </div>
-                <div class="empleado-item">
-                    <b>Empresa</b>
-                    <span id="vEmpresa">—</span>
-                </div>
             </div>
         </section>
 
@@ -966,15 +954,6 @@
             <label><b>Nombre</b></label>
             <input type="text" id="m_nombre" placeholder="Se llenará automáticamente" disabled style="color:#000;" />
 
-            <label><b>Número Celular</b> <span class="req">*</span></label>
-            <input type="tel" id="m_celular" placeholder="10 dígitos" maxlength="10" />
-            
-            <label><b>Correo Electrónico</b> <span class="req">*</span></label>
-            <input type="email" id="m_correo" placeholder="usuario@dominio.com" />
-            
-            <label><b>¿De qué empresa nos visitas?</b> <span class="req">*</span></label>
-            <input type="text" id="m_empresa" placeholder="Si no aplicas, escribe Ninguna" />
-
             <div id="errorNomina" style="color:#c00;font-size:14px;font-weight:600;margin:8px 0 0;display:none;"></div>
 
             <div style="display:flex; justify-content:center; gap: 10px; margin-top: 14px;">
@@ -1001,25 +980,13 @@
         
         const m_nomina = document.getElementById('m_nomina');
         const m_nombre = document.getElementById('m_nombre');
-        const m_celular = document.getElementById('m_celular');
-        const m_correo = document.getElementById('m_correo');
-        const m_empresa = document.getElementById('m_empresa');
         const errorNomina = document.getElementById('errorNomina');
         const modalEmpleado = document.getElementById('modalEmpleado');
         
         const vFolio = document.getElementById('vFolio');
         const vNombre = document.getElementById('vNombre');
-        const vCelular = document.getElementById('vCelular');
-        const vCorreo = document.getElementById('vCorreo');
-        const vEmpresa = document.getElementById('vEmpresa');
         
         const totalFloatText = document.getElementById('totalFloatText');
-
-        // Limita a números y máximo 10
-        m_celular.addEventListener('input', function (e) {
-            this.value = this.value.replace(/[^0-9]/g, '');
-            if (this.value.length > 10) this.value = this.value.slice(0, 10);
-        });
 
         // --- SISTEMA DE LOGEO Y FIREBASE ---
         
@@ -1086,26 +1053,17 @@
             }
 
             const nombre = m_nombre.value.trim();
-            const celular = m_celular.value.trim();
-            const correo = m_correo.value.trim();
-            const empresa = m_empresa.value.trim();
 
             let ok = true, errs = [];
             const mark = (el, bad) => el.classList.toggle('error', bad);
             
             mark(m_nomina, !folio); if (!folio) { ok = false; errs.push('El folio es obligatorio.'); }
             mark(m_nombre, !nombre); if (!nombre) { ok = false; errs.push('El nombre es obligatorio.'); }
-            mark(m_celular, !/^\d{10}$/.test(celular)); if (!/^\d{10}$/.test(celular)) { ok = false; errs.push('El celular debe tener 10 dígitos.'); }
-            mark(m_correo, !/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(correo)); if (!/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(correo)) { ok = false; errs.push('El correo no es válido.'); }
-            mark(m_empresa, !empresa); if (!empresa) { ok = false; errs.push('La empresa es obligatoria.'); }
             
             if (!ok) { alert('Corrige:\n\n' + errs.join('\n')); return; }
 
             vFolio.textContent = folio;
             vNombre.textContent = nombre;
-            vCelular.textContent = celular;
-            vCorreo.textContent = correo;
-            vEmpresa.textContent = empresa;
 
             modalEmpleado.style.display = 'none';
             unlockScroll();
@@ -1122,17 +1080,13 @@
                 const nombre = el.dataset.nombre;
                 const id = el.dataset.nombre; 
 
-                const [catSnap, stockSnap] = await Promise.all([
-                    db.doc(`catalogo/${id}`).get(),
-                    db.doc(`stock_e/${id}`).get() // STOCK EXTERNO
-                ]);
+                const stockSnap = await db.doc(`stock_e/${id}`).get(); // SOLO STOCK EXTERNO
                 
-                if (!catSnap.exists || !stockSnap.exists) {
+                if (!stockSnap.exists) {
                     el.remove();
                     return;
                 }
                 
-                const precios = catSnap.data()?.precios ?? {};
                 const stock = Number(stockSnap.data()?.disponible ?? 0);
 
                 if (stock <= 0) {
@@ -1140,7 +1094,7 @@
                     return;
                 }
 
-                CATALOGO[id] = { precios, stock, nombre };
+                CATALOGO[id] = { stock, nombre };
 
                 const radiosWrap = el.querySelector(`.radios`);
                 if(radiosWrap){
@@ -1216,9 +1170,6 @@
 
             let info = `<p><strong>Folio:</strong> ${vFolio.textContent}</p>`;
             info += `<p><strong>Nombre:</strong> ${vNombre.textContent}</p>`;
-            info += `<p><strong>Celular:</strong> ${vCelular.textContent}</p>`;
-            info += `<p><strong>Correo:</strong> ${vCorreo.textContent}</p>`;
-            info += `<p><strong>Empresa:</strong> ${vEmpresa.textContent}</p>`;
             info += `<h4>Productos Seleccionados:</h4>`;
             
             productosEls.forEach(p => {
@@ -1233,6 +1184,8 @@
             
             document.getElementById("detallePedido").innerHTML = info;
             document.getElementById("modalConfirmacion").style.display = "flex";
+            isModalOpen = true;
+            attachBeforeUnload();
         });
 
         function confirmarEnvio() {
@@ -1319,11 +1272,11 @@
                     mode: 'no-cors',
                     body: new URLSearchParams({
                         tipo: 'Externo',
-                        folio: folio,
+                        folio: folio, 
                         Nombre: vNombre.textContent,
-                        Correo: vCorreo.textContent,
-                        Celular: vCelular.textContent,
-                        Empresa: vEmpresa.textContent,
+                        Correo: "N/A", // Se llena N/A porque quitamos el campo del formulario inicial
+                        Celular: "N/A",
+                        Empresa: "N/A",
                         Productos: productosStr,
                         Total: totalResumen.textContent.replace('$', '').replace(' MXN', '').replace(',', '')
                     })
@@ -1345,9 +1298,12 @@
         
         document.getElementById('btnAceptarFoto').addEventListener('click', () => {
             alert('✅ Tu pedido se ha guardado exitosamente.');
+            isModalOpen = false;
+            detachBeforeUnload();
             setTimeout(() => location.href = '/gracias_vme/', 250);
         });
         
+        // --- MANEJO DE VENTANA, RECARGA Y SEGURIDAD ---
         let __scrollY = 0;
         function lockScroll() {
             __scrollY = window.scrollY || document.documentElement.scrollTop || 0;
@@ -1365,13 +1321,61 @@
             document.body.style.width = '';
             window.scrollTo(0, __scrollY);
         }
+        
+        function beforeUnloadHandler(e) {
+            if (isModalOpen && (vFolio.textContent && vFolio.textContent !== '—')) {
+                e.preventDefault(); e.returnValue = '';
+            }
+        }
+        function attachBeforeUnload() { window.addEventListener('beforeunload', beforeUnloadHandler); }
+        function detachBeforeUnload() { window.removeEventListener('beforeunload', beforeUnloadHandler); }
+
+        window.addEventListener('pagehide', () => {
+            if (isModalOpen) {
+                const n = vFolio.textContent;
+                if (n && n !== '—') {
+                    try { localStorage.setItem('blocked_due_to_reload_nomina_ext', n); } catch (_) { }
+                    modalEmpleado.style.display = 'flex';
+                    lockScroll();
+                }
+            }
+        });
+        
+        async function aplicarBloqueoDiferidoSiExiste() {
+            const markedNomina = localStorage.getItem('blocked_due_to_reload_nomina_ext');
+            if (!markedNomina) return;
+            localStorage.removeItem('blocked_due_to_reload_nomina_ext');
+            try {
+                await db.doc(`bloqueados/${markedNomina}`).set({
+                    fecha: firebase.firestore.FieldValue.serverTimestamp(),
+                    motivo: 'Recargó la página durante confirmación'
+                }, { merge: true });
+                alert('Tu folio fue bloqueado por recargar la página durante la compra.');
+            } catch (_) { }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (!isModalOpen) return;
+            const isReloadKey = (e.key === 'F5') || ((e.ctrlKey || e.metaKey) && (e.key === 'r' || e.key === 'R'));
+            if (!isReloadKey) return;
+            e.preventDefault();
+            const n = vFolio.textContent;
+            if (!n || n === '—') return;
+            const ok = confirm('Si recarga la página se bloqueará su folio y no podrá comprar. ¿Deseas continuar?');
+            if (ok) {
+                try { localStorage.setItem('blocked_due_to_reload_nomina_ext', n); } catch (_) { }
+                setTimeout(() => location.reload(), 250);
+            }
+        });
 
         // Initialize App
         (async () => {
             try {
+                await aplicarBloqueoDiferidoSiExiste();
                 await cargarCatalogoYStock();
                 actualizarResumen();
                 
+                // Mostrar Modal de Ingreso para Externos
                 modalEmpleado.style.display = 'flex';
                 lockScroll();
             } catch (e) {
