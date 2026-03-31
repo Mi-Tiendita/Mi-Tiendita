@@ -70,6 +70,12 @@
         label {
             display: block;
             margin: 8px 0 4px;
+            font-weight: bold;
+        }
+        
+        .req {
+            color: red;
+            font-weight: bold;
         }
 
         input[type="text"],
@@ -89,6 +95,7 @@
             border: 1px solid #ccc;
             border-radius: var(--radio);
             padding: 15px;
+            align-items: center;
         }
 
         .producto img {
@@ -108,6 +115,7 @@
 
         .radios label {
             margin-right: 10px;
+            font-weight: normal;
         }
 
         #btnEnviar {
@@ -146,6 +154,7 @@
             display: none;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
         }
 
         .modal-content {
@@ -157,6 +166,7 @@
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: 0 0 12px rgba(13, 28, 132, 0.6);
         }
 
         .modal-content h3 {
@@ -169,6 +179,7 @@
             border-radius: var(--radio);
             border: none;
             cursor: pointer;
+            font-weight: bold;
         }
 
         .cancelar {
@@ -176,7 +187,7 @@
             color: white;
         }
 
-        .confirmar {
+        .confirmar, .btn-green {
             background: green;
             color: white;
         }
@@ -189,6 +200,93 @@
             border: none;
             font-size: 20px;
             cursor: pointer;
+            color: #333;
+        }
+        
+        /* --- ESTILOS DE STOCK E ITEMS --- */
+        .numero-producto-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .item-label {
+            font-size: 12px;
+            color: black;
+        }
+        
+        .numero-producto {
+            background: #eef2ff;
+            color: #223;
+            min-width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+        .badge-agotado {
+            display: inline-block;
+            background: #eee;
+            color: #666;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+        
+        .timer-float {
+            position: fixed;
+            right: 12px;
+            top: 20%;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .timer-box {
+            background: #0d1c84;
+            color: #fff;
+            padding: 10px 14px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, .2);
+            min-width: 170px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .timer-box small {
+            display: block;
+            font-weight: 400;
+            opacity: .9;
+            margin-bottom: 3px;
+        }
+        
+        .empleado-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .empleado-item {
+            background: #f8f9ff;
+            border: 1px solid #e4e8ff;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .empleado-item b {
+            display: block;
+            color: #222;
+            margin-bottom: 4px;
+        }
+
+        .empleado-item span {
+            color: #333;
         }
 
         @media (max-width: 600px) {
@@ -200,99 +298,213 @@
             .producto img {
                 max-width: 100%;
             }
+            
+            .timer-float {
+                right: 0;
+                left: 0;
+                top: auto;
+                bottom: 10px;
+                flex-direction: row !important;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .timer-box {
+                margin: 0;
+                border-radius: 999px;
+                min-width: auto;
+                padding: 10px 20px;
+            }
+        }
+        
+        /* --- ANIMACIÓN DE DESTELLO AMARILLO --- */
+        @keyframes resplandorAmarillo {
+            0% {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+                border: 3px solid transparent;
+            }
+            50% {
+                box-shadow: 0 0 25px rgba(255, 215, 0, 1);
+                border: 3px solid #FFD700;
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
+                border: 3px solid transparent;
+            }
+        }
+
+        .alerta-brillante {
+            animation: resplandorAmarillo 1.5s infinite;
         }
     </style>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
     <header>
         <img src="/img/getsitelogo.png" alt="Beiersdorf" class="logo-principal" />
         <h1>Venta Masiva Abril 2026</h1>
-        <img src="/img/logo_digital.png" alt="Digital" class="logo-secundario" />
+        <img src="/img/logo_digital.png" alt="Digital" class="logo-secundario" onerror="this.style.display='none'" />
     </header>
+    
+    <div id="timerFloat" class="timer-float">
+        <div class="timer-box" style="background: #0f8f2e;">
+            <small>Total a Pagar</small>
+            <span id="totalFloatText" style="font-size:18px;">$0 MXN</span>
+        </div>
+    </div>
+    
     <main class="contenido">
-        <section class="formulario">
-            <h2>Información del Cliente</h2>
-            <input type="text" placeholder="Nombre Completo *" id="nombre" />
-            <input type="tel" placeholder="Número Celular *" id="celular" maxlength="10" />
-            <input type="email" placeholder="Correo Electrónico *" id="correo" />
-            <input type="text" placeholder="¿De qué empresa nos visitas? (Si no aplicas, escribe Ninguna) *"
-                id="empresa" />
+        <section class="card" id="infoEmpleadoCard">
+            <h2><b>Información del Cliente</b></h2>
+            <div class="empleado-view">
+                <div class="empleado-item">
+                    <b>Folio Asignado</b>
+                    <span id="vFolio">—</span>
+                </div>
+                <div class="empleado-item">
+                    <b>Nombre</b>
+                    <span id="vNombre">—</span>
+                </div>
+                <div class="empleado-item">
+                    <b>Celular</b>
+                    <span id="vCelular">—</span>
+                </div>
+                <div class="empleado-item">
+                    <b>Correo</b>
+                    <span id="vCorreo">—</span>
+                </div>
+                <div class="empleado-item">
+                    <b>Empresa</b>
+                    <span id="vEmpresa">—</span>
+                </div>
+            </div>
         </section>
+
         <section id="catalogoProductos">
             <h2>Catálogo de Productos</h2>
-            <div class="producto" data-nombre="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" data-precio="432">
+            
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" data-nombre="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" data-precio="432">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>01</span>
+                </div>
                 <img src="/img/item_1.jpg" alt="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" />
                 <div class="producto-info">
-                    <strong>UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS</strong><br>
+                    <div class="producto-titulo">
+                        <strong>UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$432 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">
                         <label><input type="radio" name="producto1" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto1" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto1" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" data-precio="792 ">
+            
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" data-precio="792">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>02</span>
+                </div>
                 <img src="/img/item_2.jpg" alt="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" />
                 <div class="producto-info">
-                    <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS</strong><br>
+                    <div class="producto-titulo">
+                        <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$792 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">
                         <label><input type="radio" name="producto2" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto2" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto2" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS" data-precio="1560 ">
+            
+            <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS" data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS" data-precio="1560">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>03</span>
+                </div>
                 <img src="/img/item_3.jpg" alt="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS" />
                 <div class="producto-info">
-                    <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS</strong><br>
+                    <div class="producto-titulo">
+                        <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$1,560 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS">
                         <label><input type="radio" name="producto3" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto3" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto3" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="PROTECTOR SOLAR COPPERTONE 207ML" data-precio="1488">
+            
+            <div class="producto" data-id="PROTECTOR SOLAR COPPERTONE 207ML" data-nombre="PROTECTOR SOLAR COPPERTONE 207ML" data-precio="1488">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>04</span>
+                </div>
                 <img src="/img/item_4.jpg" alt="PROTECTOR SOLAR COPPERTONE 207ML" />
                 <div class="producto-info">
-                    <strong>PROTECTOR SOLAR COPPERTONE 207ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>PROTECTOR SOLAR COPPERTONE 207ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="PROTECTOR SOLAR COPPERTONE 207ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$1,488 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="PROTECTOR SOLAR COPPERTONE 207ML">
                         <label><input type="radio" name="producto4" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto4" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto4" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="PROTECTOR SOLAR COPPERTONE COMPLETE 207ML" data-precio="570">
+            
+            <div class="producto" data-id="PROTECTOR SOLAR COPPERTONE COMPLETE 207ML" data-nombre="PROTECTOR SOLAR COPPERTONE COMPLETE 207ML" data-precio="570">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>05</span>
+                </div>
                 <img src="/img/item_5.jpg" alt="PROTECTOR SOLAR COPPERTONE COMPLETE 207ML" />
                 <div class="producto-info">
-                    <strong>PROTECTOR SOLAR COPPERTONE COMPLETE 207ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>PROTECTOR SOLAR COPPERTONE COMPLETE 207ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="PROTECTOR SOLAR COPPERTONE COMPLETE 207ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$570 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="PROTECTOR SOLAR COPPERTONE COMPLETE 207ML">
                         <label><input type="radio" name="producto5" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto5" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto5" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="PROTECTOR SOLAR COPPERTONE FACE 74ML" data-precio="336">
+            
+            <div class="producto" data-id="PROTECTOR SOLAR COPPERTONE FACE 74ML" data-nombre="PROTECTOR SOLAR COPPERTONE FACE 74ML" data-precio="336">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>06</span>
+                </div>
                 <img src="/img/item_6.jpg" alt="PROTECTOR SOLAR COPPERTONE FACE 74ML" />
                 <div class="producto-info">
-                    <strong>PROTECTOR SOLAR COPPERTONE FACE 74ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>PROTECTOR SOLAR COPPERTONE FACE 74ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="PROTECTOR SOLAR COPPERTONE FACE 74ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$336 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="PROTECTOR SOLAR COPPERTONE FACE 74ML">
                         <label><input type="radio" name="producto6" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto6" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto6" value="2" /> 2 cajas</label>
@@ -300,13 +512,21 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="ACEITE EUCERIN DE DUCHA 200ML" data-precio="288">
+            
+            <div class="producto" data-id="ACEITE EUCERIN DE DUCHA 200ML" data-nombre="ACEITE EUCERIN DE DUCHA 200ML" data-precio="288">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>07</span>
+                </div>
                 <img src="/img/item_7.jpg" alt="ACEITE EUCERIN DE DUCHA 200ML" />
                 <div class="producto-info">
-                    <strong>ACEITE EUCERIN DE DUCHA 200ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>ACEITE EUCERIN DE DUCHA 200ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="ACEITE EUCERIN DE DUCHA 200ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 6 PIEZAS</span>
                     <p class="precio">$288 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="ACEITE EUCERIN DE DUCHA 200ML">
                         <label><input type="radio" name="producto7" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto7" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto7" value="2" /> 2 cajas</label>
@@ -314,39 +534,63 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML" data-precio="816">
+            
+            <div class="producto" data-id="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML" data-nombre="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML" data-precio="816">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>08</span>
+                </div>
                 <img src="/img/item_8.jpg" alt="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML" />
                 <div class="producto-info">
-                    <strong>CREMA EUCERIN ANTIPIGMENTO TUBO 75ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN ANTIPIGMENTO TUBO 75ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$816 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA EUCERIN ANTIPIGMENTO TUBO 75ML">
                         <label><input type="radio" name="producto8" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto8" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto8" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" data-precio="840">
+            
+            <div class="producto" data-id="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" data-nombre="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" data-precio="840">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>09</span>
+                </div>
                 <img src="/img/item_9.jpg" alt="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML" />
                 <div class="producto-info">
-                    <strong>CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$840 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA EUCERIN ECZEMA BABY IN SHOWER 400ML">
                         <label><input type="radio" name="producto9" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto9" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto9" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA EUCERIN PIEL GRASA SPF50 75ML" data-precio="1380">
+            
+            <div class="producto" data-id="CREMA EUCERIN PIEL GRASA SPF50 75ML" data-nombre="CREMA EUCERIN PIEL GRASA SPF50 75ML" data-precio="1380">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>10</span>
+                </div>
                 <img src="/img/item_10.jpg" alt="CREMA EUCERIN PIEL GRASA SPF50 75ML" />
                 <div class="producto-info">
-                    <strong>CREMA EUCERIN PIEL GRASA SPF50 75ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA EUCERIN PIEL GRASA SPF50 75ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA EUCERIN PIEL GRASA SPF50 75ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$1,380 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA EUCERIN PIEL GRASA SPF50 75ML">
                         <label><input type="radio" name="producto10" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto10" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto10" value="2" /> 2 cajas</label>
@@ -354,37 +598,61 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA LATA 400ML" data-precio="372">
+            
+            <div class="producto" data-id="CREMA NIVEA LATA 400ML" data-nombre="CREMA NIVEA LATA 400ML" data-precio="372">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>11</span>
+                </div>
                 <img src="/img/item_11.jpg" alt="CREMA NIVEA LATA 400ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA LATA 400ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA LATA 400ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA LATA 400ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$372 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA LATA 400ML">
                         <label><input type="radio" name="producto11" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto11" value="1" /> 1 caja</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA SOFT MILK 1000ML 50ML" data-precio="396">
+            
+            <div class="producto" data-id="CREMA NIVEA SOFT MILK 1000ML 50ML" data-nombre="CREMA NIVEA SOFT MILK 1000ML 50ML" data-precio="396">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>12</span>
+                </div>
                 <img src="/img/item_12.jpg" alt="CREMA NIVEA SOFT MILK 1000ML 50ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA SOFT MILK 1000ML 50ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA SOFT MILK 1000ML 50ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA SOFT MILK 1000ML 50ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$396 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA SOFT MILK 1000ML 50ML">
                         <label><input type="radio" name="producto12" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto12" value="1" /> 1 caja</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA LATA 50ML" data-precio="444">
+            
+            <div class="producto" data-id="CREMA NIVEA LATA 50ML" data-nombre="CREMA NIVEA LATA 50ML" data-precio="444">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>13</span>
+                </div>
                 <img src="/img/item_13.jpg" alt="CREMA NIVEA LATA 50ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA LATA 50ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA LATA 50ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA LATA 50ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 60 PIEZAS</span>
                     <p class="precio">$444 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA LATA 50ML">
                         <label><input type="radio" name="producto13" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto13" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto13" value="2" /> 2 cajas</label>
@@ -392,63 +660,103 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA LATA 60ML" data-precio="612">
+            
+            <div class="producto" data-id="CREMA NIVEA LATA 60ML" data-nombre="CREMA NIVEA LATA 60ML" data-precio="612">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>14</span>
+                </div>
                 <img src="/img/item_14.jpg" alt="CREMA NIVEA LATA 60ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA LATA 60ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA LATA 60ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA LATA 60ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 36 PIEZAS</span>
                     <p class="precio">$612 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA LATA 60ML">
                         <label><input type="radio" name="producto14" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto14" value="1" /> 1 caja</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="JABON NIVEA IN MILK 250ML" data-precio="120">
+            
+            <div class="producto" data-id="JABON NIVEA IN MILK 250ML" data-nombre="JABON NIVEA IN MILK 250ML" data-precio="120">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>15</span>
+                </div>
                 <img src="/img/item_15.jpg" alt="JABON NIVEA IN MILK 250ML" />
                 <div class="producto-info">
-                    <strong>JABON NIVEA IN MILK 250ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>JABON NIVEA IN MILK 250ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="JABON NIVEA IN MILK 250ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$120 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="JABON NIVEA IN MILK 250ML">
                         <label><input type="radio" name="producto15" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto15" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto15" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA SOFT MILK 1000ML" data-precio="156">
+            
+            <div class="producto" data-id="CREMA NIVEA SOFT MILK 1000ML" data-nombre="CREMA NIVEA SOFT MILK 1000ML" data-precio="156">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>16</span>
+                </div>
                 <img src="/img/item_16.jpg" alt="CREMA NIVEA SOFT MILK 1000ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA SOFT MILK 1000ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA SOFT MILK 1000ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA SOFT MILK 1000ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 9 PIEZAS</span>
                     <p class="precio">$156 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA SOFT MILK 1000ML">
                         <label><input type="radio" name="producto16" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto16" value="1" /> 1 caja</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA INTENSE HEALING 500ML" data-precio="120">
+            
+            <div class="producto" data-id="CREMA NIVEA INTENSE HEALING 500ML" data-nombre="CREMA NIVEA INTENSE HEALING 500ML" data-precio="120">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>17</span>
+                </div>
                 <img src="/img/item_17.jpg" alt="CREMA NIVEA INTENSE HEALING 500ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA INTENSE HEALING 500ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA INTENSE HEALING 500ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA INTENSE HEALING 500ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$120 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA INTENSE HEALING 500ML">
                         <label><input type="radio" name="producto17" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto17" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto17" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" data-precio="768">
+            
+            <div class="producto" data-id="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" data-nombre="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" data-precio="768">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>18</span>
+                </div>
                 <img src="/img/item_18.jpg" alt="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA FACIAL 7 NUTRITIVA 375ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA FACIAL 7 NUTRITIVA 375ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$768 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">
                         <label><input type="radio" name="producto18" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto18" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto18" value="2" /> 2 cajas</label>
@@ -456,13 +764,21 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-precio="900">
+            
+            <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-nombre="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-precio="900">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>19</span>
+                </div>
                 <img src="/img/item_19.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 250ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA Q10 REAFIRMANTE 250ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA Q10 REAFIRMANTE 250ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA Q10 REAFIRMANTE 250ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$900 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA Q10 REAFIRMANTE 250ML">
                         <label><input type="radio" name="producto19" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto19" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto19" value="2" /> 2 cajas</label>
@@ -470,13 +786,21 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA Q10 REAFIRMANTE 473ML" data-precio="828">
+            
+            <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 473ML" data-nombre="CREMA NIVEA Q10 REAFIRMANTE 473ML" data-precio="828">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>20</span>
+                </div>
                 <img src="/img/item_20.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 473ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA Q10 REAFIRMANTE 473ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA Q10 REAFIRMANTE 473ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA Q10 REAFIRMANTE 473ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 6 PIEZAS</span>
                     <p class="precio">$828 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA Q10 REAFIRMANTE 473ML">
                         <label><input type="radio" name="producto20" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto20" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto20" value="2" /> 2 cajas</label>
@@ -484,38 +808,62 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA SOFT TARRO 500ML" data-precio="684">
+            
+            <div class="producto" data-id="CREMA NIVEA SOFT TARRO 500ML" data-nombre="CREMA NIVEA SOFT TARRO 500ML" data-precio="684">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>21</span>
+                </div>
                 <img src="/img/item_21.jpg" alt="CREMA NIVEA SOFT TARRO 500ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA SOFT TARRO 500ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA SOFT TARRO 500ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA SOFT TARRO 500ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$684 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA SOFT TARRO 500ML">
                         <label><input type="radio" name="producto21" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto21" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto21" value="2" /> 2 cajas</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA PROTECCION SOLAR 100ML" data-precio="318">
+            
+            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 100ML" data-nombre="CREMA NIVEA PROTECCION SOLAR 100ML" data-precio="318">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>22</span>
+                </div>
                 <img src="/img/item_22.jpg" alt="CREMA NIVEA PROTECCION SOLAR 100ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA PROTECCION SOLAR 100ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA PROTECCION SOLAR 100ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA PROTECCION SOLAR 100ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$318 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA PROTECCION SOLAR 100ML">
                         <label><input type="radio" name="producto22" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto22" value="1" /> 1 caja</label>
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA PROTECCION SOLAR 220ML" data-precio="180">
+            
+            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 220ML" data-nombre="CREMA NIVEA PROTECCION SOLAR 220ML" data-precio="180">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>23</span>
+                </div>
                 <img src="/img/item_23.jpg" alt="CREMA NIVEA PROTECCION SOLAR 220ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA PROTECCION SOLAR 220ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA PROTECCION SOLAR 220ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA PROTECCION SOLAR 220ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$180 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA PROTECCION SOLAR 220ML">
                         <label><input type="radio" name="producto23" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto23" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto23" value="2" /> 2 cajas</label>
@@ -523,13 +871,21 @@
                     </div>
                 </div>
             </div>
-            <div class="producto" data-nombre="CREMA NIVEA TONO NATURAL 220ML" data-precio="276">
+            
+            <div class="producto" data-id="CREMA NIVEA TONO NATURAL 220ML" data-nombre="CREMA NIVEA TONO NATURAL 220ML" data-precio="276">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>24</span>
+                </div>
                 <img src="/img/item_24.jpg" alt="CREMA NIVEA TONO NATURAL 220ML" />
                 <div class="producto-info">
-                    <strong>CREMA NIVEA TONO NATURAL 220ML</strong><br>
+                    <div class="producto-titulo">
+                        <strong>CREMA NIVEA TONO NATURAL 220ML</strong>
+                        <span class="badge-agotado" style="display:none" data-badge="CREMA NIVEA TONO NATURAL 220ML">Agotado</span>
+                    </div>
                     <span>CAJA CON 12 PIEZAS</span>
                     <p class="precio">$276 MXN</p>
-                    <div class="radios">
+                    <div class="radios" data-radios="CREMA NIVEA TONO NATURAL 220ML">
                         <label><input type="radio" name="producto24" value="0" checked /> 0 cajas</label>
                         <label><input type="radio" name="producto24" value="1" /> 1 caja</label>
                         <label><input type="radio" name="producto24" value="2" /> 2 cajas</label>
@@ -537,6 +893,7 @@
                 </div>
             </div>
         </section>
+        
         <section id="resumenPedido">
             <h2>Resumen del Pedido</h2>
             <div id="listaResumen">No hay productos seleccionados</div>
@@ -544,10 +901,11 @@
             <button id="btnEnviar">Enviar Pedido</button>
         </section>
     </main>
+    
     <footer class="pie">
-        © 2025 Tiendita BMM – Venta Masiva | <a href="javascript:void(0)" onclick="mostrarAviso()">Aviso de
-            Privacidad</a>
+        © 2025 Tiendita BMM – Venta Masiva | <a href="javascript:void(0)" onclick="mostrarAviso()">Aviso de Privacidad</a>
     </footer>
+    
     <div class="modal" id="modalAviso">
         <div class="modal-content">
             <button class="close-modal" onclick="document.getElementById('modalAviso').style.display='none'">✖</button>
@@ -555,23 +913,20 @@
             <pre id="contenidoAviso" style="white-space: pre-line; font-family: inherit;"></pre>
         </div>
     </div>
+    
     <div class="modal" id="modalConfirmacion">
         <div class="modal-content">
             <h3>Confirmar Pedido</h3>
             <div id="detallePedido"></div>
-            <button class="cancelar"
-                onclick="document.getElementById('modalConfirmacion').style.display='none'">Cancelar</button>
+            <button class="cancelar" onclick="document.getElementById('modalConfirmacion').style.display='none'">Cancelar</button>
             <button class="confirmar" onclick="confirmarEnvio()">Confirmar Pedido</button>
         </div>
     </div>
 
     <div class="modal" id="modalAvisoSeleccion">
         <div class="modal-content" style="text-align: center;">
-            <div
-                style="width: 80px; height: 80px; margin: 0 auto 15px auto; background-color: #f4f6fb; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc;">
-                <img src="/img/icono-aviso.png" alt="Icono"
-                    style="max-width: 100%; max-height: 100%; border-radius: 50%;"
-                    onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; background-color: #f4f6fb; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc;">
+                <img src="/img/icono-aviso.png" alt="Icono" style="max-width: 100%; max-height: 100%; border-radius: 50%;" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';" />
                 <span style="color: #999; font-size: 12px; display: none;">Ícono</span>
             </div>
 
@@ -580,101 +935,293 @@
                 avisaremos para confirmar tu pedido.
             </p>
 
-            <button class="confirmar"
-                style="margin: 0 auto; display: inline-block; padding: 10px 30px; font-size: 16px;"
-                onclick="ejecutarEnvio()">Aceptar</button>
+            <button class="confirmar" style="margin: 0 auto; display: inline-block; padding: 10px 30px; font-size: 16px;" onclick="ejecutarEnvio()">Aceptar</button>
+        </div>
+    </div>
+    
+    <div class="modal" id="modalFotografia">
+        <div class="modal-content alerta-brillante" style="text-align: center; max-width: 400px; padding: 30px 20px;">
+            <img src="/img/icono-camara.png" alt="Foto" style="width: 80px; height: 80px; margin: 0 auto 15px auto; display: block; object-fit: contain;">
+
+            <h2 style="color: var(--azul); font-size: 26px; margin-bottom: 5px; text-align: center;">Toma una fotografía</h2>
+            <p style="color: #666; margin-bottom: 25px;">Guarda este comprobante de tu pedido</p>
+            
+            <p style="margin: 0; font-size: 16px; font-weight: bold;">FOLIO</p>
+            <div id="fotoFolio" style="font-size: 48px; font-weight: 900; color: var(--azul); margin-bottom: 20px; line-height: 1;">—</div>
+            
+            <p style="margin: 0; font-size: 16px; font-weight: bold;">TOTAL A PAGAR</p>
+            <div id="fotoTotal" style="font-size: 38px; font-weight: 800; color: #222; margin-bottom: 30px; line-height: 1;">$0.00 MXN</div>
+            
+            <button class="btn-green" id="btnAceptarFoto" style="font-size: 18px; padding: 12px 30px; width: 100%; border-radius: 8px; border:none; cursor:pointer;">Aceptar</button>
+        </div>
+    </div>
+
+    <div class="modal" id="modalEmpleado">
+        <div class="modal-content" style="max-width:520px; border: 5px solid var(--azul); box-shadow: 0 0 12px rgba(13, 28, 132, 0.6);">
+            <h3 style="text-align:center;color:var(--azul);font-weight:800;margin-top:0">Validación de Usuario</h3>
+            
+            <label><b>Folio de Invitación</b> <span class="req">*</span></label>
+            <input type="text" id="m_nomina" placeholder="Ingresa tu folio" />
+
+            <label><b>Nombre</b></label>
+            <input type="text" id="m_nombre" placeholder="Se llenará automáticamente" disabled style="color:#000;" />
+
+            <label><b>Número Celular</b> <span class="req">*</span></label>
+            <input type="tel" id="m_celular" placeholder="10 dígitos" maxlength="10" />
+            
+            <label><b>Correo Electrónico</b> <span class="req">*</span></label>
+            <input type="email" id="m_correo" placeholder="usuario@dominio.com" />
+            
+            <label><b>¿De qué empresa nos visitas?</b> <span class="req">*</span></label>
+            <input type="text" id="m_empresa" placeholder="Si no aplicas, escribe Ninguna" />
+
+            <div id="errorNomina" style="color:#c00;font-size:14px;font-weight:600;margin:8px 0 0;display:none;"></div>
+
+            <div style="display:flex; justify-content:center; gap: 10px; margin-top: 14px;">
+                <button class="btn-green" id="btnModalAceptar" style="padding: 10px 16px; border: none; border-radius: 8px; cursor: pointer; font-weight: 700;">ACEPTAR</button>
+            </div>
         </div>
     </div>
 
     <script>
+        // --- INICIALIZACIÓN FIREBASE ---
+        firebase.initializeApp({
+            apiKey: "AIzaSyDvHy46iATTlnwpOgWgSib2Tm43SJPkjzY",
+            authDomain: "registrotienditabmm.firebaseapp.com",
+            projectId: "registrotienditabmm"
+        });
+        const db = firebase.firestore();
+
         const EXT_URL = "https://script.google.com/macros/s/AKfycbzgMKRaneoWHg4OoBaYIEN04p74LPvNLY0lWfrvRTMvHhRBMnu0_NmckAg10xwEsQ9QIA/exec";
-        const productos = document.querySelectorAll('.producto');
+
+        const productosEls = [...document.querySelectorAll('.producto')];
+        const CATALOGO = {};
         const listaResumen = document.getElementById('listaResumen');
         const totalResumen = document.getElementById('totalResumen');
-        const celular = document.getElementById('celular');
-        celular.addEventListener('input', function (e) {
+        
+        const m_nomina = document.getElementById('m_nomina');
+        const m_nombre = document.getElementById('m_nombre');
+        const m_celular = document.getElementById('m_celular');
+        const m_correo = document.getElementById('m_correo');
+        const m_empresa = document.getElementById('m_empresa');
+        const errorNomina = document.getElementById('errorNomina');
+        const modalEmpleado = document.getElementById('modalEmpleado');
+        
+        const vFolio = document.getElementById('vFolio');
+        const vNombre = document.getElementById('vNombre');
+        const vCelular = document.getElementById('vCelular');
+        const vCorreo = document.getElementById('vCorreo');
+        const vEmpresa = document.getElementById('vEmpresa');
+        
+        const totalFloatText = document.getElementById('totalFloatText');
+
+        // Limita a números y máximo 10
+        m_celular.addEventListener('input', function (e) {
             this.value = this.value.replace(/[^0-9]/g, '');
-            if (this.value.length > 10) {
-                this.value = this.value.slice(0, 10);
+            if (this.value.length > 10) this.value = this.value.slice(0, 10);
+        });
+
+        // --- SISTEMA DE LOGEO Y FIREBASE ---
+        
+        async function cargarFolio(folio) {
+            if (!folio) return { exists: false };
+
+            const [s, bloqueadoSnap] = await Promise.all([
+                db.doc(`folios_e/${folio}`).get(),
+                db.doc(`bloqueados/${folio}`).get() 
+            ]);
+
+            if (bloqueadoSnap.exists) {
+                return { exists: false, bloqueado: true, motivo: bloqueadoSnap.data()?.motivo || 'Bloqueado' };
+            }
+
+            if (!s.exists) return { exists: false };
+
+            const d = s.data();
+            return { exists: true, nombre: d?.nombre || '' };
+        }
+        
+        m_nomina.addEventListener('input', async () => {
+            const f = m_nomina.value.trim();
+
+            if (!f) {
+                m_nombre.value = '';
+                errorNomina.style.display = 'none';
+                m_nomina.classList.remove('error');
+                return;
+            }
+
+            const info = await cargarFolio(f);
+
+            if (info.exists) {
+                m_nombre.value = info.nombre || '';
+                errorNomina.style.display = 'none';
+                m_nomina.classList.remove('error');
+            } else if (info.bloqueado) {
+                m_nombre.value = '';
+                errorNomina.textContent = `⛔ ${info.motivo}`;
+                errorNomina.style.display = 'block';
+                m_nomina.classList.add('error');
+            } else {
+                m_nombre.value = '';
+                errorNomina.textContent = 'Este folio no está registrado.';
+                errorNomina.style.display = 'block';
+                m_nomina.classList.add('error');
             }
         });
-        window.addEventListener('DOMContentLoaded', () => {
-            actualizarResumen();
+        
+        document.getElementById('btnModalAceptar').addEventListener('click', async () => {
+            const folio = m_nomina.value.trim();
+
+            const infoNom = await cargarFolio(folio);
+            if (!infoNom.exists) {
+                errorNomina.textContent = 'Este folio no está registrado o ya realizó una compra.';
+                errorNomina.style.display = 'block';
+                m_nomina.classList.add('error');
+                return;
+            } else {
+                if (!m_nombre.value.trim()) m_nombre.value = infoNom.nombre || '';
+                errorNomina.style.display = 'none';
+                m_nomina.classList.remove('error');
+            }
+
+            const nombre = m_nombre.value.trim();
+            const celular = m_celular.value.trim();
+            const correo = m_correo.value.trim();
+            const empresa = m_empresa.value.trim();
+
+            let ok = true, errs = [];
+            const mark = (el, bad) => el.classList.toggle('error', bad);
+            
+            mark(m_nomina, !folio); if (!folio) { ok = false; errs.push('El folio es obligatorio.'); }
+            mark(m_nombre, !nombre); if (!nombre) { ok = false; errs.push('El nombre es obligatorio.'); }
+            mark(m_celular, !/^\d{10}$/.test(celular)); if (!/^\d{10}$/.test(celular)) { ok = false; errs.push('El celular debe tener 10 dígitos.'); }
+            mark(m_correo, !/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(correo)); if (!/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(correo)) { ok = false; errs.push('El correo no es válido.'); }
+            mark(m_empresa, !empresa); if (!empresa) { ok = false; errs.push('La empresa es obligatoria.'); }
+            
+            if (!ok) { alert('Corrige:\n\n' + errs.join('\n')); return; }
+
+            vFolio.textContent = folio;
+            vNombre.textContent = nombre;
+            vCelular.textContent = celular;
+            vCorreo.textContent = correo;
+            vEmpresa.textContent = empresa;
+
+            modalEmpleado.style.display = 'none';
+            unlockScroll();
         });
-        productos.forEach(producto => {
-            const radios = producto.querySelectorAll('input[type="radio"]');
-            radios.forEach(radio => {
-                radio.addEventListener('change', actualizarResumen);
+        
+        // --- CATÁLOGO Y STOCK ---
+        async function cargarCatalogoYStock() {
+            productosEls.forEach((el, idx) => {
+                const numEl = el.querySelector('[data-num]');
+                if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
             });
-        });
+
+            await Promise.all(productosEls.map(async el => {
+                const nombre = el.dataset.nombre;
+                const id = el.dataset.nombre; 
+
+                const [catSnap, stockSnap] = await Promise.all([
+                    db.doc(`catalogo/${id}`).get(),
+                    db.doc(`stock_e/${id}`).get() // STOCK EXTERNO
+                ]);
+                
+                if (!catSnap.exists || !stockSnap.exists) {
+                    el.remove();
+                    return;
+                }
+                
+                const precios = catSnap.data()?.precios ?? {};
+                const stock = Number(stockSnap.data()?.disponible ?? 0);
+
+                if (stock <= 0) {
+                    el.remove();
+                    return;
+                }
+
+                CATALOGO[id] = { precios, stock, nombre };
+
+                const radiosWrap = el.querySelector(`.radios`);
+                if(radiosWrap){
+                   radiosWrap.dataset.radios = id;
+                   const labels = [...radiosWrap.querySelectorAll('label')];
+                   labels.forEach(l => {
+                       const r = l.querySelector('input[type="radio"]');
+                       const v = parseInt(r?.value || 0);
+                       if (v > 0 && v > stock) {
+                           l.remove();
+                       }
+                   });
+                }
+            }));
+        }
+
         function actualizarResumen() {
             let total = 0;
             let resumen = '<h4>Productos Seleccionados:</h4>';
             let tieneProductos = false;
-            productos.forEach(p => {
+            productosEls.forEach(p => {
                 const nombre = p.dataset.nombre;
-                const precio = parseInt(p.dataset.precio);
+                const precioBase = parseInt(p.dataset.precio); 
                 const radios = p.querySelectorAll('input[type="radio"]');
-                const cantidad = parseInt([...radios].find(r => r.checked)?.value || 0);
+                const r = [...radios].find(r => r.checked);
+                const cantidad = r ? parseInt(r.value) : 0;
+                
                 if (cantidad > 0) {
-                    const subtotal = precio * cantidad;
+                    const subtotal = precioBase * cantidad;
                     resumen += `<p>${nombre} x ${cantidad} = $${subtotal.toLocaleString()} MXN</p>`;
                     total += subtotal;
                     tieneProductos = true;
                 }
             });
+            
             if (!tieneProductos) {
                 resumen = 'No hay productos seleccionados';
             }
             listaResumen.innerHTML = resumen;
             totalResumen.textContent = `$${total.toLocaleString()} MXN`;
+            if (totalFloatText) totalFloatText.textContent = `$${total.toLocaleString()} MXN`;
         }
+
+        document.addEventListener('change', (ev) => {
+            if (ev.target && ev.target.matches('input[type="radio"]')) {
+                actualizarResumen();
+            }
+        });
+
+        // --- MANEJO DE CONFIRMACIÓN ---
         document.getElementById("btnEnviar").addEventListener("click", () => {
-            let valid = true;
-            let errores = [];
-            const campos = ["nombre", "celular", "correo", "empresa"];
-            campos.forEach(id => {
-                const campo = document.getElementById(id);
-                campo.classList.remove("error");
-                if (!campo.value.trim()) {
-                    campo.classList.add("error");
-                    valid = false;
-                    errores.push(`El campo ${id.replace(/([A-Z])/g, ' $1').toLowerCase()} es obligatorio.`);
-                }
-                if (id === "celular" && !/^\d{10}$/.test(campo.value)) {
-                    campo.classList.add("error");
-                    valid = false;
-                    errores.push("El número de celular debe tener exactamente 10 dígitos numéricos.");
-                }
-                if (id === "correo" && !/^[^@\s]+@[^@\s]+\.com$/.test(campo.value)) {
-                    campo.classList.add("error");
-                    valid = false;
-                    errores.push("El correo debe tener un formato válido (ejemplo: usuario@dominio.com).");
-                }
-            });
+            const folio = vFolio.textContent;
+            
+            let ok = true, errs = [];
+            if (!folio || folio === '—') { ok = false; errs.push('No hay un folio validado (Refresca la página).'); }
+
             let tieneProductos = false;
-            productos.forEach(p => {
+            productosEls.forEach(p => {
                 const radios = p.querySelectorAll('input[type="radio"]');
                 const cantidad = parseInt([...radios].find(r => r.checked)?.value || 0);
-                if (cantidad > 0) {
-                    tieneProductos = true;
-                }
+                if (cantidad > 0) tieneProductos = true;
             });
+            
             if (!tieneProductos) {
-                valid = false;
-                errores.push("Debes seleccionar al menos un producto (mínimo 1 caja).");
+                ok = false;
+                errs.push("Debes seleccionar al menos un producto (mínimo 1 caja).");
             }
-            if (!valid) {
-                alert("Por favor corrige los campos resaltados.\n" + errores.join("\n"));
-                console.log("Valores de campos:", campos.reduce((obj, id) => ({ ...obj, [id]: document.getElementById(id).value }), {}));
+            
+            if (!ok) {
+                alert("Atención:\n\n" + errs.join("\n"));
                 return;
             }
-            let info = `<p><strong>Nombre:</strong> ${document.getElementById("nombre").value}</p>`;
-            info += `<p><strong>Celular:</strong> ${document.getElementById("celular").value}</p>`;
-            info += `<p><strong>Correo:</strong> ${document.getElementById("correo").value}</p>`;
-            info += `<p><strong>Empresa:</strong> ${document.getElementById("empresa").value}</p>`;
+
+            let info = `<p><strong>Folio:</strong> ${vFolio.textContent}</p>`;
+            info += `<p><strong>Nombre:</strong> ${vNombre.textContent}</p>`;
+            info += `<p><strong>Celular:</strong> ${vCelular.textContent}</p>`;
+            info += `<p><strong>Correo:</strong> ${vCorreo.textContent}</p>`;
+            info += `<p><strong>Empresa:</strong> ${vEmpresa.textContent}</p>`;
             info += `<h4>Productos Seleccionados:</h4>`;
-            productos.forEach(p => {
+            
+            productosEls.forEach(p => {
                 const nombre = p.dataset.nombre;
                 const precio = parseInt(p.dataset.precio);
                 const radios = p.querySelectorAll('input[type="radio"]');
@@ -683,15 +1230,159 @@
                     info += `<p>${nombre} x ${cantidad} = $${(precio * cantidad).toLocaleString()} MXN</p>`;
                 }
             });
+            
             document.getElementById("detallePedido").innerHTML = info;
             document.getElementById("modalConfirmacion").style.display = "flex";
         });
+
+        function confirmarEnvio() {
+            document.getElementById("modalConfirmacion").style.display = "none";
+            document.getElementById("modalAvisoSeleccion").style.display = "flex";
+        }
+
+        async function ejecutarEnvio() {
+            const btnAceptar = document.querySelector("#modalAvisoSeleccion .confirmar");
+            btnAceptar.disabled = true;
+            btnAceptar.innerText = "Procesando...";
+
+            const folio = vFolio.textContent;
+            
+            // Verificamos si alguien más lo bloqueó en el intermedio
+            const docSnap = await db.doc(`bloqueados/${folio}`).get();
+            if (docSnap.exists) {
+                alert("Este folio ya ha registrado una compra.");
+                location.reload();
+                return;
+            }
+            
+            const productosSeleccionados = [];
+            productosEls.forEach(p => {
+                const nombre = p.dataset.nombre;
+                const id = p.dataset.nombre;
+                const precio = parseInt(p.dataset.precio);
+                const radios = p.querySelectorAll('input[type="radio"]');
+                const cantidad = parseInt([...radios].find(r => r.checked)?.value || 0);
+                if (cantidad > 0) {
+                    productosSeleccionados.push({
+                        id,
+                        nombre,
+                        cantidad,
+                        total: precio * cantidad
+                    });
+                }
+            });
+            
+            try {
+                const result = await db.runTransaction(async tx => {
+                    const lecturas = await Promise.all(productosSeleccionados.map(async it => {
+                        const ref = db.doc(`stock_e/${it.id}`); // STOCK EXTERNO
+                        const snap = await tx.get(ref);
+                        return { it, ref, disp: Number(snap.data()?.disponible || 0) };
+                    }));
+                    
+                    let huboAjustes = false;
+                    for (const { it, disp } of lecturas) {
+                        if (disp < it.cantidad) {
+                            huboAjustes = true;
+                        }
+                    }
+
+                    if (huboAjustes) {
+                        return { ok: false, msg: "⚠️ Algunos productos seleccionados ya se agotaron. Cierra esta ventana y revisa el catálogo." };
+                    }
+
+                    lecturas.forEach(({ it, ref, disp }) => {
+                        tx.update(ref, { disponible: disp - it.cantidad });
+                    });
+
+                    if (folio) {
+                        tx.set(db.doc(`bloqueados/${folio}`), {
+                            fecha: firebase.firestore.FieldValue.serverTimestamp(),
+                            motivo: 'Confirmó pedido'
+                        }, { merge: true });
+                    }
+                    return { ok: true };
+                });
+
+                if (!result.ok) {
+                    alert(result.msg);
+                    location.reload();
+                    return;
+                }
+
+                const productosStr = productosSeleccionados
+                    .map(p => `${p.nombre} x ${p.cantidad}=${p.total}`)
+                    .join(',');
+                    
+                fetch(EXT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: new URLSearchParams({
+                        tipo: 'Externo',
+                        folio: folio,
+                        Nombre: vNombre.textContent,
+                        Correo: vCorreo.textContent,
+                        Celular: vCelular.textContent,
+                        Empresa: vEmpresa.textContent,
+                        Productos: productosStr,
+                        Total: totalResumen.textContent.replace('$', '').replace(' MXN', '').replace(',', '')
+                    })
+                });
+
+                const totalConfirmado = productosSeleccionados.reduce((acc, curr) => acc + curr.total, 0);
+                document.getElementById('fotoFolio').textContent = folio;
+                document.getElementById('fotoTotal').textContent = `$${totalConfirmado.toLocaleString()} MXN`;
+
+                document.getElementById("modalAvisoSeleccion").style.display = "none";
+                document.getElementById('modalFotografia').style.display = 'flex';
+
+            } catch (e) {
+                alert('⚠️ ' + (e.message || 'Error al confirmar. Intenta de nuevo'));
+                btnAceptar.disabled = false;
+                btnAceptar.innerText = "Aceptar";
+            }
+        }
+        
+        document.getElementById('btnAceptarFoto').addEventListener('click', () => {
+            alert('✅ Tu pedido se ha guardado exitosamente.');
+            setTimeout(() => location.href = '/gracias_vme/', 250);
+        });
+        
+        let __scrollY = 0;
+        function lockScroll() {
+            __scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${__scrollY}px`;
+            document.body.style.width = '100%';
+        }
+        function unlockScroll() {
+            document.documentElement.style.overflow = '';
+            document.body.style.overflow = '';
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            window.scrollTo(0, __scrollY);
+        }
+
+        // Initialize App
+        (async () => {
+            try {
+                await cargarCatalogoYStock();
+                actualizarResumen();
+                
+                modalEmpleado.style.display = 'flex';
+                lockScroll();
+            } catch (e) {
+                alert('Error de conexión a la base de datos: ' + (e.message || e));
+            }
+        })();
+        
         function mostrarAviso() {
             fetch("/docs/aviso.txt")
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error("No se pudo cargar el archivo de aviso.");
-                    }
+                    if (!response.ok) throw new Error("");
                     return response.text();
                 })
                 .then(texto => {
@@ -699,55 +1390,9 @@
                     document.getElementById("modalAviso").style.display = "flex";
                 })
                 .catch(error => {
-                    console.error("Error al cargar el aviso:", error);
-                    document.getElementById("contenidoAviso").textContent = "No se pudo cargar el aviso. Por favor, intenta de nuevo más tarde.";
+                    document.getElementById("contenidoAviso").textContent = "No se pudo cargar el aviso.";
                     document.getElementById("modalAviso").style.display = "flex";
                 });
-        }
-
-        // Función actualizada: Oculta el resumen y muestra el nuevo aviso
-        function confirmarEnvio() {
-            document.getElementById("modalConfirmacion").style.display = "none";
-            document.getElementById("modalAvisoSeleccion").style.display = "flex";
-        }
-
-        // Nueva función: Se ejecuta al dar "Aceptar" en el modal de aviso
-        function ejecutarEnvio() {
-            // Ocultamos el nuevo modal
-            document.getElementById("modalAvisoSeleccion").style.display = "none";
-
-            const productosSeleccionados = [];
-            productos.forEach(p => {
-                const nombre = p.dataset.nombre;
-                const precio = parseInt(p.dataset.precio);
-                const radios = p.querySelectorAll('input[type="radio"]');
-                const cantidad = parseInt([...radios].find(r => r.checked)?.value || 0);
-                if (cantidad > 0) {
-                    productosSeleccionados.push({
-                        nombre,
-                        cantidad,
-                        total: precio * cantidad
-                    });
-                }
-            });
-            const productosStr = productosSeleccionados
-                .map(p => `${p.nombre} x ${p.cantidad}=${p.total}`)
-                .join(',');
-            fetch(EXT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: new URLSearchParams({
-                    tipo: 'Externo',
-                    Nombre: document.getElementById("nombre").value,
-                    Correo: document.getElementById("correo").value,
-                    Celular: document.getElementById("celular").value,
-                    Empresa: document.getElementById("empresa").value,
-                    Productos: productosStr,
-                    Total: totalResumen.textContent.replace('$', '').replace(' MXN', '').replace(',', '')
-                })
-            });
-            alert("✅ Hemos recibido tu solicitud. Recuerda que el envío no asegura tu lugar; si resultas seleccionado, te avisaremos para confirmar tu pedido.");
-            setTimeout(() => window.location.href = "/gracias_vme/", 500);
         }
     </script>
 </body>
