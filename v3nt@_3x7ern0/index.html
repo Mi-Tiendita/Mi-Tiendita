@@ -1180,49 +1180,62 @@
             return m;
         };
 
-        async function cargarCatalogoYStock() {
-            productosEls.forEach((el, idx) => {
-                const numEl = el.querySelector('[data-num]');
-                if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
-            });
+       async function cargarCatalogoYStock() {
+    // Numeramos los productos visualmente
+    productosEls.forEach((el, idx) => {
+        const numEl = el.querySelector('[data-num]');
+        if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
+    });
 
-            await Promise.all(productosEls.map(async el => {
-                const nombre = el.dataset.nombre;
-                const id = el.dataset.nombre; 
+    await Promise.all(productosEls.map(async el => {
+        const nombre = el.dataset.nombre;
+        const id = el.dataset.nombre; 
 
-                const stockSnap = await db.doc(`stock_e/${id}`).get(); 
+        try {
+            const stockSnap = await db.doc(`stock_e/${id}`).get(); 
+            
+            if (!stockSnap.exists) {
+                console.warn(`[❌ ELIMINADO] El producto "${id}" no existe en Firestore.`);
+                el.remove();
+                return;
+            }
+            
+            // Forzamos a que sea un Número sí o sí
+            const stock = Number(stockSnap.data()?.disponible ?? 0);
+
+            if (stock <= 0) {
+                console.warn(`[❌ ELIMINADO] El producto "${id}" tiene stock 0 o menor.`);
+                el.remove();
+                return;
+            }
+
+            console.log(`[✅ CARGADO] "${id}" - Stock real en Firebase: ${stock}`);
+            CATALOGO[id] = { stock, nombre };
+
+            const radiosWrap = el.querySelector(`.radios`);
+            if(radiosWrap){
+                radiosWrap.dataset.radios = id;
+                const labels = [...radiosWrap.querySelectorAll('label')];
                 
-                if (!stockSnap.exists) {
-                    el.remove();
-                    return;
-                }
-                
-                const stock = Number(stockSnap.data()?.disponible ?? 0);
-
-                if (stock <= 0) {
-                    el.remove();
-                    return;
-                }
-
-                CATALOGO[id] = { stock, nombre };
-
-                const radiosWrap = el.querySelector(`.radios`);
-                if(radiosWrap){
-                   radiosWrap.dataset.radios = id;
-                   const labels = [...radiosWrap.querySelectorAll('label')];
-                   labels.forEach(l => {
-                       const r = l.querySelector('input[type="radio"]');
-                       const v = parseInt(r?.value || 0);
-                       if (v > 0 && v > stock) {
-                           // Inhabilitamos en lugar de borrar
-                           r.disabled = true;
-                           l.classList.add('radio-disabled');
-                           l.title = "Stock insuficiente";
-                       }
-                   });
-                }
-            }));
+                labels.forEach(l => {
+                    const r = l.querySelector('input[type="radio"]');
+                    const v = parseInt(r?.value || 0);
+                    
+                    // Si el valor de la opción es mayor al stock disponible
+                    if (v > 0 && v > stock) {
+                        r.disabled = true; // Deshabilita el input
+                        r.checked = false; // Por si acaso estaba seleccionado
+                        l.classList.add('radio-disabled'); // Opaca el texto
+                        l.title = `Solo hay ${stock} en stock`;
+                        console.log(`   -> Bloqueando opción de ${v} cajas para "${id}"`);
+                    }
+                });
+            }
+        } catch (error) {
+            console.error(`Error cargando el producto ${id}:`, error);
         }
+    }));
+}
 
         function actualizarResumen() {
             let total = 0;
