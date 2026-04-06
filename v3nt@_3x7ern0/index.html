@@ -237,6 +237,44 @@
             font-size: 12px;
             margin-left: 8px;
         }
+
+        /* --- NUEVO ESTILO PARA MYSTERY BOX --- */
+        .mystery-box-promo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #fffaf0;
+            border: 2px dashed #ffb300;
+            border-radius: 12px;
+            padding: 15px;
+            max-width: 150px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(255, 179, 0, 0.2);
+            animation: latidoMystery 2s infinite;
+            margin-left: 15px;
+        }
+
+        .mystery-box-promo img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            margin-bottom: 8px;
+            border-radius: 0;
+        }
+
+        .mystery-box-promo span {
+            font-size: 12px;
+            color: var(--azul);
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        @keyframes latidoMystery {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); border-color: #ff9100; box-shadow: 0 4px 15px rgba(255, 145, 0, 0.4);}
+            100% { transform: scale(1); }
+        }
         
         .timer-float {
             position: fixed;
@@ -293,10 +331,18 @@
             .producto {
                 flex-direction: column;
                 align-items: center;
+                text-align: center;
             }
 
             .producto img {
                 max-width: 100%;
+            }
+
+            .mystery-box-promo {
+                margin-left: 0;
+                margin-top: 15px;
+                max-width: 100%;
+                width: 100%;
             }
             
             .timer-float {
@@ -319,18 +365,9 @@
         
         /* --- ANIMACIÓN DE DESTELLO AMARILLO --- */
         @keyframes resplandorAmarillo {
-            0% {
-                box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
-                border: 3px solid transparent;
-            }
-            50% {
-                box-shadow: 0 0 25px rgba(255, 215, 0, 1);
-                border: 3px solid #FFD700;
-            }
-            100% {
-                box-shadow: 0 0 5px rgba(255, 215, 0, 0.4);
-                border: 3px solid transparent;
-            }
+            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.4); border: 3px solid transparent; }
+            50% { box-shadow: 0 0 25px rgba(255, 215, 0, 1); border: 3px solid #FFD700; }
+            100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.4); border: 3px solid transparent; }
         }
 
         .alerta-brillante {
@@ -451,7 +488,8 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>04</span>
                 </div>
-                <img src="/img/item_4.jpg" alt="PROTECTOR SOLAR COPPERTONE FACE 74ML" /> <div class="producto-info">
+                <img src="/img/item_6.jpg" alt="PROTECTOR SOLAR COPPERTONE FACE 74ML" /> 
+                <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>PROTECTOR SOLAR COPPERTONE FACE 74ML</strong>
                         <span class="badge-agotado" style="display:none" data-badge="PROTECTOR SOLAR COPPERTONE FACE 74ML">Agotado</span>
@@ -471,7 +509,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>05</span>
                 </div>
-                <img src="/img/item_5.jpg" alt="ACEITE EUCERIN DE DUCHA 200ML" />
+                <img src="/img/item_7.jpg" alt="ACEITE EUCERIN DE DUCHA 200ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>ACEITE EUCERIN DE DUCHA 200ML</strong>
@@ -494,12 +532,8 @@
                     <span class="numero-producto" data-num>06</span>
                 </div>
                 
-                <div style="display:flex; flex-direction:column; align-items:center; max-width: 110px; margin-right: 10px;">
-                    <img src="/img/mysterybox.png" alt="Mystery Box" style="width: 80px; height: 80px; border-radius: 8px; object-fit: contain; margin: 0; padding: 0; border: none;" />
-                    <span style="font-size: 11px; color: var(--azul); text-align: center; font-weight: bold; margin-top: 5px; line-height: 1.2;">En la compra mínima de 3 cajas te llevas una Mystery Box</span>
-                </div>
-
-                <img src="/img/item_6.jpg" alt="CREMA EUCERIN PIEL GRASA SPF50 75ML" />
+                <img src="/img/item_10.jpg" alt="CREMA EUCERIN PIEL GRASA SPF50 75ML" />
+                
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA EUCERIN PIEL GRASA SPF50 75ML</strong>
@@ -521,13 +555,19 @@
                         <label><input type="radio" name="producto6" value="10" /> 10 cajas</label>
                     </div>
                 </div>
+
+                <div class="mystery-box-promo">
+                    <img src="/img/mysterybox.png" alt="Mystery Box" />
+                    <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                </div>
             </div>
             
-            <div class="producto" data-id="DESODORANTE NIVEA MEN DEEP CARBON 50ML" data-nombre="DESODORANTE NIVEA MEN DEEP CARBON 50ML" data-precio="120"> <div class="numero-producto-wrapper">
+            <div class="producto" data-id="DESODORANTE NIVEA MEN DEEP CARBON 50ML" data-nombre="DESODORANTE NIVEA MEN DEEP CARBON 50ML" data-precio="120"> 
+                <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>07</span>
                 </div>
-                <img src="/img/item_7.jpg" alt="DESODORANTE NIVEA MEN DEEP CARBON 50ML" />
+                <img src="/img/item_12.jpg" alt="DESODORANTE NIVEA MEN DEEP CARBON 50ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>DESODORANTE NIVEA MEN DEEP CARBON 50ML</strong>
@@ -556,7 +596,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>08</span>
                 </div>
-                <img src="/img/item_8.jpg" alt="CREMA NIVEA LATA 50ML" />
+                <img src="/img/item_13.jpg" alt="CREMA NIVEA LATA 50ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA LATA 50ML</strong>
@@ -586,12 +626,8 @@
                     <span class="numero-producto" data-num>09</span>
                 </div>
 
-                <div style="display:flex; flex-direction:column; align-items:center; max-width: 110px; margin-right: 10px;">
-                    <img src="/img/mysterybox.png" alt="Mystery Box" style="width: 80px; height: 80px; border-radius: 8px; object-fit: contain; margin: 0; padding: 0; border: none;" />
-                    <span style="font-size: 11px; color: var(--azul); text-align: center; font-weight: bold; margin-top: 5px; line-height: 1.2;">En la compra mínima de 3 cajas te llevas una Mystery Box</span>
-                </div>
+                <img src="/img/item_14.jpg" alt="CREMA NIVEA LATA 60ML" />
 
-                <img src="/img/item_9.jpg" alt="CREMA NIVEA LATA 60ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA LATA 60ML</strong>
@@ -613,6 +649,11 @@
                         <label><input type="radio" name="producto9" value="10" /> 10 cajas</label>
                     </div>
                 </div>
+
+                <div class="mystery-box-promo">
+                    <img src="/img/mysterybox.png" alt="Mystery Box" />
+                    <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                </div>
             </div>
             
             <div class="producto" data-id="JABON NIVEA IN MILK 250ML" data-nombre="JABON NIVEA IN MILK 250ML" data-precio="120">
@@ -620,7 +661,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>10</span>
                 </div>
-                <img src="/img/item_10.jpg" alt="JABON NIVEA IN MILK 250ML" />
+                <img src="/img/item_15.jpg" alt="JABON NIVEA IN MILK 250ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>JABON NIVEA IN MILK 250ML</strong>
@@ -642,7 +683,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>11</span>
                 </div>
-                <img src="/img/item_11.jpg" alt="CREMA NIVEA INTENSE HEALING 500ML" />
+                <img src="/img/item_17.jpg" alt="CREMA NIVEA INTENSE HEALING 500ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA INTENSE HEALING 500ML</strong>
@@ -665,12 +706,8 @@
                     <span class="numero-producto" data-num>12</span>
                 </div>
 
-                <div style="display:flex; flex-direction:column; align-items:center; max-width: 110px; margin-right: 10px;">
-                    <img src="/img/mysterybox.png" alt="Mystery Box" style="width: 80px; height: 80px; border-radius: 8px; object-fit: contain; margin: 0; padding: 0; border: none;" />
-                    <span style="font-size: 11px; color: var(--azul); text-align: center; font-weight: bold; margin-top: 5px; line-height: 1.2;">En la compra mínima de 3 cajas te llevas una Mystery Box</span>
-                </div>
+                <img src="/img/item_18.jpg" alt="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" />
 
-                <img src="/img/item_12.jpg" alt="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA FACIAL 7 NUTRITIVA 375ML</strong>
@@ -692,6 +729,11 @@
                         <label><input type="radio" name="producto12" value="10" /> 10 cajas</label>
                     </div>
                 </div>
+
+                <div class="mystery-box-promo">
+                    <img src="/img/mysterybox.png" alt="Mystery Box" />
+                    <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                </div>
             </div>
             
             <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-nombre="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-precio="900">
@@ -699,7 +741,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>13</span>
                 </div>
-                <img src="/img/item_13.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 250ML" />
+                <img src="/img/item_19.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 250ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA Q10 REAFIRMANTE 250ML</strong>
@@ -728,7 +770,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>14</span>
                 </div>
-                <img src="/img/item_14.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 473ML" />
+                <img src="/img/item_20.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 473ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA Q10 REAFIRMANTE 473ML</strong>
@@ -757,7 +799,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>15</span>
                 </div>
-                <img src="/img/item_15.jpg" alt="CREMA NIVEA SOFT TARRO 500ML" />
+                <img src="/img/item_21.jpg" alt="CREMA NIVEA SOFT TARRO 500ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA SOFT TARRO 500ML</strong>
@@ -781,7 +823,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>16</span>
                 </div>
-                <img src="/img/item_16.jpg" alt="CREMA NIVEA PROTECCION SOLAR 100ML" />
+                <img src="/img/item_22.jpg" alt="CREMA NIVEA PROTECCION SOLAR 100ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA PROTECCION SOLAR 100ML</strong>
@@ -810,7 +852,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>17</span>
                 </div>
-                <img src="/img/item_17.jpg" alt="CREMA NIVEA PROTECCION SOLAR 220ML" />
+                <img src="/img/item_23.jpg" alt="CREMA NIVEA PROTECCION SOLAR 220ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA PROTECCION SOLAR 220ML</strong>
@@ -839,7 +881,7 @@
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>18</span>
                 </div>
-                <img src="/img/item_18.jpg" alt="CREMA NIVEA TONO NATURAL 220ML" />
+                <img src="/img/item_24.jpg" alt="CREMA NIVEA TONO NATURAL 220ML" />
                 <div class="producto-info">
                     <div class="producto-titulo">
                         <strong>CREMA NIVEA TONO NATURAL 220ML</strong>
@@ -969,9 +1011,9 @@
         const vNombre = document.getElementById('vNombre');
         
         const totalFloatText = document.getElementById('totalFloatText');
+        let isModalOpen = false;
 
         // --- SISTEMA DE LOGEO Y FIREBASE ---
-        
         async function cargarFolio(folio) {
             if (!folio) return { exists: false };
 
@@ -1048,6 +1090,7 @@
             vNombre.textContent = nombre;
 
             modalEmpleado.style.display = 'none';
+            isModalOpen = false;
             unlockScroll();
         });
         
@@ -1103,7 +1146,13 @@
                        const r = l.querySelector('input[type="radio"]');
                        const v = parseInt(r?.value || 0);
                        if (v > 0 && v > stock) {
-                           l.remove();
+                           // Inhabilitamos en lugar de borrar para que el usuario sepa que había más stock antes
+                           r.disabled = true;
+                           l.style.opacity = '0.4';
+                           l.style.textDecoration = 'line-through';
+                           l.style.cursor = 'not-allowed';
+                           r.style.cursor = 'not-allowed';
+                           l.title = "Stock insuficiente";
                        }
                    });
                 }
@@ -1489,17 +1538,17 @@
         });
 
         // Initialize App
+        modalEmpleado.style.display = 'flex';
+        isModalOpen = true;
+        lockScroll();
+
         (async () => {
             try {
                 await aplicarBloqueoDiferidoSiExiste();
                 await cargarCatalogoYStock();
                 actualizarResumen();
-                
-                // Mostrar Modal de Ingreso para Externos
-                modalEmpleado.style.display = 'flex';
-                lockScroll();
             } catch (e) {
-                alert('Error de conexión a la base de datos: ' + (e.message || e));
+                console.error('Error de conexión a la base de datos: ', e);
             }
         })();
         
