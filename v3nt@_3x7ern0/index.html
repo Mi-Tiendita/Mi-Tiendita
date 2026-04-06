@@ -133,7 +133,9 @@
             text-decoration: line-through;
             cursor: not-allowed;
             color: #999;
+            pointer-events: none; /* <--- ESTA ES LA LÍNEA MÁGICA */
         }
+        
         .radio-disabled input {
             cursor: not-allowed;
         }
