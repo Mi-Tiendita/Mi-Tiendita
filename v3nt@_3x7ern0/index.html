@@ -133,11 +133,11 @@
             text-decoration: line-through;
             cursor: not-allowed;
             color: #999;
-            pointer-events: none; /* <--- ESTA ES LA LÍNEA MÁGICA */
+            pointer-events: none; /* ESTO BLOQUEA LOS CLICS EN EL TEXTO DEL LABEL */
         }
-        
         .radio-disabled input {
             cursor: not-allowed;
+            pointer-events: none;
         }
 
         #btnEnviar {
@@ -274,7 +274,7 @@
             text-align: center;
             box-shadow: 0 4px 8px rgba(255, 179, 0, 0.2);
             animation: latidoMystery 2s infinite;
-            margin: 0 20px; /* Margen para centrar entre imagen e información */
+            margin: 0 20px;
         }
 
         .mystery-box-promo img {
@@ -450,7 +450,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$432 MXN</p>
-                        <div class="radios" data-radios="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">
+                        <div class="radios">
                             <label><input type="radio" name="producto1" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto1" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto1" value="2" /> 2 cajas</label>
@@ -476,7 +476,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$792 MXN</p>
-                        <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS">
+                        <div class="radios">
                             <label><input type="radio" name="producto2" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto2" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto2" value="2" /> 2 cajas</label>
@@ -502,7 +502,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$1,560 MXN</p>
-                        <div class="radios" data-radios="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS">
+                        <div class="radios">
                             <label><input type="radio" name="producto3" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto3" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto3" value="2" /> 2 cajas</label>
@@ -528,7 +528,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$336 MXN</p>
-                        <div class="radios" data-radios="PROTECTOR SOLAR COPPERTONE FACE 74ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto4" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto4" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto4" value="2" /> 2 cajas</label>
@@ -551,7 +551,7 @@
                         </div>
                         <span>CAJA CON 6 PIEZAS</span>
                         <p class="precio">$288 MXN</p>
-                        <div class="radios" data-radios="ACEITE EUCERIN DE DUCHA 200ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto5" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto5" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto5" value="2" /> 2 cajas</label>
@@ -582,7 +582,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$1,380 MXN</p>
-                        <div class="radios" data-radios="CREMA EUCERIN PIEL GRASA SPF50 75ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto6" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto6" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto6" value="2" /> 2 cajas</label>
@@ -613,7 +613,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$120 MXN</p>
-                        <div class="radios" data-radios="DESODORANTE NIVEA MEN DEEP CARBON 50ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto7" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto7" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto7" value="2" /> 2 cajas</label>
@@ -644,7 +644,7 @@
                         </div>
                         <span>CAJA CON 60 PIEZAS</span>
                         <p class="precio">$444 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA LATA 50ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto8" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto8" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto8" value="2" /> 2 cajas</label>
@@ -682,7 +682,7 @@
                         </div>
                         <span>CAJA CON 36 PIEZAS</span>
                         <p class="precio">$612 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA LATA 60ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto9" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto9" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto9" value="2" /> 2 cajas</label>
@@ -713,7 +713,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$120 MXN</p>
-                        <div class="radios" data-radios="JABON NIVEA IN MILK 250ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto10" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto10" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto10" value="2" /> 2 cajas</label>
@@ -737,7 +737,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$120 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA INTENSE HEALING 500ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto11" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto11" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto11" value="2" /> 2 cajas</label>
@@ -768,7 +768,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$768 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto12" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto12" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto12" value="2" /> 2 cajas</label>
@@ -799,7 +799,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$900 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA Q10 REAFIRMANTE 250ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto13" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto13" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto13" value="2" /> 2 cajas</label>
@@ -830,7 +830,7 @@
                         </div>
                         <span>CAJA CON 6 PIEZAS</span>
                         <p class="precio">$828 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA Q10 REAFIRMANTE 473ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto14" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto14" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto14" value="2" /> 2 cajas</label>
@@ -861,7 +861,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$684 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA SOFT TARRO 500ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto15" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto15" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto15" value="2" /> 2 cajas</label>
@@ -887,7 +887,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$318 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA PROTECCION SOLAR 100ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto16" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto16" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto16" value="2" /> 2 cajas</label>
@@ -918,7 +918,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$180 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA PROTECCION SOLAR 220ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto17" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto17" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto17" value="2" /> 2 cajas</label>
@@ -949,7 +949,7 @@
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
                         <p class="precio">$276 MXN</p>
-                        <div class="radios" data-radios="CREMA NIVEA TONO NATURAL 220ML">
+                        <div class="radios">
                             <label><input type="radio" name="producto18" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto18" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto18" value="2" /> 2 cajas</label>
@@ -991,8 +991,8 @@
         <div class="modal-content">
             <h3>Confirmar Pedido</h3>
             <div id="detallePedido"></div>
-            <button class="cancelar" onclick="document.getElementById('modalConfirmacion').style.display='none'">Cancelar</button>
-            <button class="confirmar" onclick="confirmarEnvio()">Confirmar Pedido</button>
+            <button class="cancelar" id="btnCancelarPop">Cancelar</button>
+            <button class="confirmar" id="btnConfirmarPop" onclick="confirmarEnvio()">Confirmar Pedido</button>
         </div>
     </div>
 
@@ -1122,7 +1122,6 @@
             }
         });
         
-        // Mostrar modal inicial SIEMPRE QUE CARGUE LA PÁGINA
         window.addEventListener('DOMContentLoaded', () => {
              modalEmpleado.style.display = 'flex';
              isModalOpen = true;
@@ -1163,84 +1162,87 @@
         });
         
         // --- CATÁLOGO Y STOCK ---
+
+        // Helpers de forma 100% segura usando DOM scope y evitando CSS.escape
+        const getProductoEl = (id) => productosEls.find(el => el.dataset.nombre === id);
+
         const getCantidad = (id) => {
-            const radios = document.querySelectorAll(`[data-radios="${CSS.escape(id)}"] input[type="radio"]`);
-            const r = [...radios].find(x => x.checked);
-            return parseInt(r?.value || 0);
+            const p = getProductoEl(id);
+            if (!p) return 0;
+            const r = p.querySelector('input[type="radio"]:checked');
+            return r ? parseInt(r.value) : 0;
         };
         
         const setCantidad = (id, val) => {
-            const radios = document.querySelectorAll(`[data-radios="${CSS.escape(id)}"] input[type="radio"]`);
-            [...radios].forEach(r => r.checked = (parseInt(r.value) === val));
+            const p = getProductoEl(id);
+            if (!p) return;
+            const radios = p.querySelectorAll('input[type="radio"]');
+            radios.forEach(r => r.checked = (parseInt(r.value) === val));
         };
         
         const maxRadioFor = (id) => {
-            const radios = document.querySelectorAll(`[data-radios="${CSS.escape(id)}"] input[type="radio"]`);
-            let m = 0; [...radios].forEach(r => { const v = parseInt(r.value); if (Number.isFinite(v)) m = Math.max(m, v); });
-            return m;
+            const p = getProductoEl(id);
+            if (!p) return 0;
+            let max = 0;
+            p.querySelectorAll('input[type="radio"]').forEach(r => {
+                const v = parseInt(r.value);
+                if (Number.isFinite(v) && v > max) max = v;
+            });
+            return max;
         };
 
-       async function cargarCatalogoYStock() {
-    // Numeramos los productos visualmente
-    productosEls.forEach((el, idx) => {
-        const numEl = el.querySelector('[data-num]');
-        if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
-    });
+        async function cargarCatalogoYStock() {
+            // Numeramos visualmente
+            productosEls.forEach((el, idx) => {
+                const numEl = el.querySelector('[data-num]');
+                if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
+            });
 
-    await Promise.all(productosEls.map(async el => {
-        const nombre = el.dataset.nombre;
-        const id = el.dataset.nombre; 
+            await Promise.all(productosEls.map(async el => {
+                const id = el.dataset.nombre;
+                const nombre = el.dataset.nombre; 
 
-        try {
-            const stockSnap = await db.doc(`stock_e/${id}`).get(); 
-            
-            if (!stockSnap.exists) {
-                console.warn(`[❌ ELIMINADO] El producto "${id}" no existe en Firestore.`);
-                el.remove();
-                return;
-            }
-            
-            // Forzamos a que sea un Número sí o sí
-            const stock = Number(stockSnap.data()?.disponible ?? 0);
-
-            if (stock <= 0) {
-                console.warn(`[❌ ELIMINADO] El producto "${id}" tiene stock 0 o menor.`);
-                el.remove();
-                return;
-            }
-
-            console.log(`[✅ CARGADO] "${id}" - Stock real en Firebase: ${stock}`);
-            CATALOGO[id] = { stock, nombre };
-
-            const radiosWrap = el.querySelector(`.radios`);
-            if(radiosWrap){
-                radiosWrap.dataset.radios = id;
-                const labels = [...radiosWrap.querySelectorAll('label')];
-                
-                labels.forEach(l => {
-                    const r = l.querySelector('input[type="radio"]');
-                    const v = parseInt(r?.value || 0);
+                try {
+                    const stockSnap = await db.doc(`stock_e/${id}`).get(); 
                     
-                    // Si el valor de la opción es mayor al stock disponible
-                    if (v > 0 && v > stock) {
-                        r.disabled = true; // Deshabilita el input
-                        r.checked = false; // Por si acaso estaba seleccionado
-                        l.classList.add('radio-disabled'); // Opaca el texto
-                        l.title = `Solo hay ${stock} en stock`;
-                        console.log(`   -> Bloqueando opción de ${v} cajas para "${id}"`);
+                    if (!stockSnap.exists) {
+                        el.remove();
+                        return;
                     }
-                });
-            }
-        } catch (error) {
-            console.error(`Error cargando el producto ${id}:`, error);
+                    
+                    const stock = Number(stockSnap.data()?.disponible ?? 0);
+
+                    if (stock <= 0) {
+                        el.remove();
+                        return;
+                    }
+
+                    CATALOGO[id] = { stock, nombre };
+
+                    const labels = el.querySelectorAll('.radios label');
+                    labels.forEach(l => {
+                        const r = l.querySelector('input[type="radio"]');
+                        const v = parseInt(r?.value || 0);
+                        
+                        if (v > 0 && v > stock) {
+                            r.disabled = true;
+                            r.checked = false; // Desmarcar porsiaca
+                            l.classList.add('radio-disabled');
+                            l.title = `Stock insuficiente, restan ${stock}`;
+                        }
+                    });
+                } catch (error) {
+                    console.error(`Error al cargar la BD para: ${id}:`, error);
+                    el.remove(); // Seguridad: Si falla la conexión de este ítem, no lo mostramos.
+                }
+            }));
         }
-    }));
-}
 
         function actualizarResumen() {
             let total = 0;
             let resumen = '<h4>Productos Seleccionados:</h4>';
             let tieneProductos = false;
+            
             productosEls.forEach(p => {
                 const nombre = p.dataset.nombre;
                 const precioBase = parseInt(p.dataset.precio); 
@@ -1272,7 +1274,7 @@
         
         function construirDraftDeSeleccion() {
             const items = [];
-            for (const el of document.querySelectorAll('.producto')) {
+            productosEls.forEach(el => {
                 const id = el.dataset.nombre;
                 const n = el.dataset.nombre;
                 const precioBase = parseInt(el.dataset.precio);
@@ -1281,7 +1283,7 @@
                     const s = precioBase * c;
                     items.push({ id, nombre: n, c, s, precioBase });
                 }
-            }
+            });
             return items;
         }
         
@@ -1292,7 +1294,6 @@
             const total = items.reduce((a, b) => a + b.s, 0);
 
             const cont = document.getElementById('detallePedido');
-
             const folio = vFolio.textContent || '';
             const nombre = vNombre.textContent || '';
 
@@ -1322,15 +1323,15 @@
                 }).join('');
 
                 return `
-                <div class="linea">
+                <div class="linea" style="display:flex; justify-content:space-between; margin-bottom:8px; align-items:center;">
                     <div style="flex:1">
-                    <small><b>${it.nombre}</b></small>
+                        <small><b>${it.nombre}</b></small>
                     </div>
-                    <div>
-                    <label style="font-size:12px;display:block;margin-bottom:2px">Cantidad</label>
-                    <select data-idx="${i}" class="sel-ajuste">${opciones}</select>
+                    <div style="margin: 0 10px;">
+                        <label style="font-size:12px;display:block;margin-bottom:2px">Cantidad</label>
+                        <select data-idx="${i}" class="sel-ajuste">${opciones}</select>
                     </div>
-                    <button class="quitar" data-idx="${i}">Eliminar</button>
+                    <button class="quitar" style="padding: 4px 8px; background: #e5e5e5; border:none; cursor:pointer;" data-idx="${i}">Eliminar</button>
                 </div>
                 `;
 
@@ -1356,11 +1357,14 @@
             cont.querySelectorAll('.quitar').forEach(btn => {
                 btn.onclick = () => {
                     const idx = parseInt(btn.dataset.idx);
+                    const it = items[idx];
+                    setCantidad(it.id, 0); // Lo bajamos a 0 visualmente
                     items.splice(idx, 1);
                     renderPopup(items);
                     actualizarResumen();
                 };
             });
+
             cont.querySelectorAll('.sel-ajuste').forEach(sel => {
                 sel.onchange = (e) => {
                     const idx = parseInt(sel.dataset.idx);
@@ -1388,36 +1392,20 @@
                     it.c = Math.max(0, disp);
                     setCantidad(it.id, it.c);
 
-                    const badge = document.querySelector(`[data-badge="${CSS.escape(it.id)}"]`);
+                    const badge = document.querySelector(`[data-badge="${it.id}"]`);
                     if (disp === 0 && badge) badge.style.display = "inline-block";
 
-                    // Actualizar el DOM para reflejar inhabilitacion de radios extra si aun queda algo
-                    const radiosWrap = document.querySelector(`.radios[data-radios="${CSS.escape(it.id)}"]`);
-                    if(radiosWrap){
-                       const labels = [...radiosWrap.querySelectorAll('label')];
+                    const p = getProductoEl(it.id);
+                    if(p) {
+                       const labels = p.querySelectorAll('.radios label');
                        labels.forEach(l => {
                            const r = l.querySelector('input[type="radio"]');
                            const v = parseInt(r?.value || 0);
                            if (v > 0 && v > disp) {
                                r.disabled = true;
                                l.classList.add('radio-disabled');
-                               l.title = "Stock insuficiente";
                            }
                        });
-                    }
-
-                    if (disp === 0) {
-                        const lineas = document.querySelectorAll(`#detallePedido .linea`);
-                        lineas.forEach(l => {
-                            if (l.innerHTML.includes(it.nombre)) {
-                                l.querySelector("select")?.remove();
-                                const msg = document.createElement("span");
-                                msg.textContent = "Producto agotado, eliminarlo";
-                                msg.style.color = "red";
-                                msg.style.fontWeight = "700";
-                                l.insertBefore(msg, l.querySelector(".quitar"));
-                            }
-                        });
                     }
                 }
             });
@@ -1500,7 +1488,7 @@
                     if (huboAjustes) {
                         ajustarStockVisual(draft, lecturas);
                         renderPopup(draft);
-                        return { ok: false, msg: "⚠️ Algunos productos fueron ajustados por falta de stock. Revisa de nuevo tu pedido." };
+                        return { ok: false, msg: "⚠️ Algunos productos fueron ajustados por falta de stock. Revisa de nuevo tu pedido en el botón de Enviar Pedido." };
                     }
 
                     lecturas.forEach(({ it, ref, disp }) => {
@@ -1565,7 +1553,7 @@
             setTimeout(() => location.href = '/gracias_vme/', 250);
         });
         
-        // --- MANEJO DE VENTANA, RECARGA Y SEGURIDAD ---
+        // --- MANEJO DE VENTANA Y SEGURIDAD ---
         let __scrollY = 0;
         function lockScroll() {
             __scrollY = window.scrollY || document.documentElement.scrollTop || 0;
