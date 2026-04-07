@@ -1530,7 +1530,8 @@
                 }
                 
                 // --- AJUSTE: LEER EL PRECIO DE 1 CAJA ---
-                const precioCaja = Number(catSnap.data()?.precios || 0);
+                const objPrecios = catSnap.data()?.precios || {};
+                const precioCaja = Number(objPrecios["1"] || 0);
                 const stock = Number(stockSnap.data()?.disponible ?? 0);
 
                 if (stock <= 0) {
