@@ -422,13 +422,43 @@
         .alerta-brillante {
             animation: resplandorAmarillo 1.5s infinite;
         }
+        /* --- ESTILOS PANTALLA DE ESPERA (OVERLAY) --- */
+        #pantallaEspera {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--gris); /* Fondo gris claro, o usa rgba(0,0,0,0.9) para fondo oscuro */
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #pantallaEspera img {
+            max-width: 100%;
+            max-height: 90vh; /* Se adapta a pantallas altas sin deformarse */
+            border-radius: var(--radio);
+            box-shadow: var(--sombra);
+            object-fit: contain;
+        }
+        
+        /* Ocultamos el scroll del body mientras esté la pantalla de espera activa */
+        body.espera-activa {
+            overflow: hidden;
+        }
     </style>
 
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
 
-<body>
+<body class="espera-activa">
+    <div id="pantallaEspera">
+        <img src="/img/flyer.png" alt="La venta iniciará pronto">
+    </div>
     <header>
         <img src="/img/getsitelogo.png" alt="Beiersdorf" class="logo-principal" />
         <h1>Venta Masiva Abril 2026</h1>
@@ -1106,7 +1136,7 @@
             <h3 style="text-align:center;color:var(--azul);font-weight:800;margin-top:0">Validación de Usuario</h3>
 
             <label><b>Folio de Invitación</b> <span class="req">*</span></label>
-            <input type="text" id="m_nomina" placeholder="Ingresa tu folio" disabled />
+            <input type="text" id="m_nomina" placeholder="Ingresa tu folio" />
 
             <label><b>Nombre</b></label>
             <input type="text" id="m_nombre" placeholder="Se llenará automáticamente" disabled style="color:#000;" />
