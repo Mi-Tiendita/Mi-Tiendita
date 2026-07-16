@@ -1482,6 +1482,18 @@
         const URL_SHEETS_NOMINAS = "https://script.google.com/macros/s/AKfycbzVVbkR-1rEpDB9y3Ht7vAQ7bSRtiShbWELrXjsxGbGm3HqOo8Yd-ZxkFhzzyivu_-7Jg/exec";
         const DURACION_MS = 7 * 60 * 1000;
 
+        let NOMINAS_CACHE = null;
+        const nominasPromise = (async () => {
+            try {
+                const res = await fetch(`${URL_SHEETS_NOMINAS}?all=1`);
+                const data = await res.json();
+                NOMINAS_CACHE = data.nominas || {};
+            } catch (err) {
+                console.error('No se pudo precargar nóminas, se usará búsqueda individual:', err);
+                NOMINAS_CACHE = null;
+            }
+        })();
+
         const productosEls = [...document.querySelectorAll('.producto')];
         const CATALOGO = {};
         const listaResumen = document.getElementById('listaResumen');
@@ -1556,6 +1568,16 @@
                     return { exists: false, bloqueado: true, motivo: bloqueadoSnap.data()?.motivo || 'Bloqueado' };
                 }
 
+                await nominasPromise; // normalmente ya terminó antes de que el usuario escriba
+
+                if (NOMINAS_CACHE) {
+                    if (Object.prototype.hasOwnProperty.call(NOMINAS_CACHE, nomina)) {
+                        return { exists: true, nombre: NOMINAS_CACHE[nomina] };
+                    }
+                    return { exists: false };
+                }
+
+                // Fallback: si la precarga falló, se busca individual (comportamiento anterior)
                 const response = await fetch(`${URL_SHEETS_NOMINAS}?nomina=${nomina}`);
                 const data = await response.json();
 
