@@ -422,6 +422,7 @@
         .alerta-brillante {
             animation: resplandorAmarillo 1.5s infinite;
         }
+
         /* --- ESTILOS PANTALLA DE ESPERA (OVERLAY) --- */
         #pantallaEspera {
             position: fixed;
@@ -429,7 +430,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--gris); /* Fondo gris claro, o usa rgba(0,0,0,0.9) para fondo oscuro */
+            background-color: var(--gris);
+            /* Fondo gris claro, o usa rgba(0,0,0,0.9) para fondo oscuro */
             z-index: 9999;
             display: flex;
             justify-content: center;
@@ -439,12 +441,13 @@
 
         #pantallaEspera img {
             max-width: 100%;
-            max-height: 90vh; /* Se adapta a pantallas altas sin deformarse */
+            max-height: 90vh;
+            /* Se adapta a pantallas altas sin deformarse */
             border-radius: var(--radio);
             box-shadow: var(--sombra);
             object-fit: contain;
         }
-        
+
         /* Ocultamos el scroll del body mientras esté la pantalla de espera activa */
         body.espera-activa {
             overflow: hidden;
@@ -456,6 +459,13 @@
 </head>
 
 <body>
+
+    <!-- ===== PANTALLA DE ESPERA (descomentar para activar) =====
+    <div id="pantallaEspera">
+        <img src="/img/proximamente.png" alt="Próximamente disponible" />
+    </div>
+    ===== FIN PANTALLA DE ESPERA =====
+    Para activarla: 1) descomenta el div de arriba, 2) agrega class="espera-activa" a la etiqueta <body>. -->
 
     <header>
         <img src="/img/getsitelogo.png" alt="Beiersdorf" class="logo-principal" />
@@ -489,7 +499,7 @@
             <h2>Catálogo de Productos</h2>
 
             <div class="producto" data-id="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS"
-                data-nombre="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" data-precio="480">
+                data-nombre="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS" data-precio="432">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>01</span>
@@ -503,14 +513,12 @@
                                 data-badge="UNGÜENTO AQUAPHOR BABY REPARADOR 85GMS">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$480 MXN</p>
+                        <p class="precio">$432 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto1" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto1" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto1" value="2" /> 2 cajas</label>
                             <label><input type="radio" name="producto1" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto1" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto1" value="5" /> 5 cajas</label>
                         </div>
                     </div>
                 </div>
@@ -524,6 +532,11 @@
                 </div>
                 <img src="/img/item_2.jpg" alt="UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS" />
                 <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/mysterybox.png" alt="Mystery Box" />
+                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                    </div>
+
                     <div class="producto-info">
                         <div class="producto-titulo">
                             <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 198GMS</strong>
@@ -537,29 +550,32 @@
                             <label><input type="radio" name="producto2" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto2" value="2" /> 2 cajas</label>
                             <label><input type="radio" name="producto2" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto2" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto2" value="5" /> 5 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS"
-                data-nombre="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS" data-precio="288">
+            <div class="producto" data-id="CREMA EUCERIN PIEL GRASA SPF50 TUBO 75ML"
+                data-nombre="CREMA EUCERIN PIEL GRASA SPF50 TUBO 75ML" data-precio="1296">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>03</span>
                 </div>
-                <img src="/img/item_3.jpg" alt="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS" />
+                <img src="/img/item_3.jpg" alt="CREMA EUCERIN PIEL GRASA SPF50 TUBO 75ML" />
                 <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/i_regalo.jpg" alt="Caja de Regalo Radiant Tone" />
+                        <span>En la compra mínima de 3 cajas te llevas una caja de regalo "Radiant Tone"</span>
+                    </div>
+
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS</strong>
+                            <strong>CREMA EUCERIN PIEL GRASA SPF50 TUBO 75ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="UNGÜENTO AQUAPHOR REPARADOR TUBO 40GMS">Agotado</span>
+                                data-badge="CREMA EUCERIN PIEL GRASA SPF50 TUBO 75ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$288 MXN</p>
+                        <p class="precio">$1,296 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto3" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto3" value="1" /> 1 caja</label>
@@ -567,52 +583,62 @@
                             <label><input type="radio" name="producto3" value="3" /> 3 cajas</label>
                             <label><input type="radio" name="producto3" value="4" /> 4 cajas</label>
                             <label><input type="radio" name="producto3" value="5" /> 5 cajas</label>
+                            <label><input type="radio" name="producto3" value="6" /> 6 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="PROTECTOR SOLAR COPPERTONE FACE 74ML"
-                data-nombre="PROTECTOR SOLAR COPPERTONE FACE 74ML" data-precio="1020">
+            <div class="producto" data-id="CREMA NIVEA LATA DE 60ML" data-nombre="CREMA NIVEA LATA DE 60ML"
+                data-precio="576">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>04</span>
                 </div>
-                <img src="/img/item_4.jpg" alt="PROTECTOR SOLAR COPPERTONE FACE 74ML" />
+                <img src="/img/item_4.jpg" alt="CREMA NIVEA LATA DE 60ML" />
                 <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/mysterybox.png" alt="Mystery Box" />
+                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                    </div>
+
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>PROTECTOR SOLAR COPPERTONE FACE 74ML</strong>
+                            <strong>CREMA NIVEA LATA DE 60ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="PROTECTOR SOLAR COPPERTONE FACE 74ML">Agotado</span>
+                                data-badge="CREMA NIVEA LATA DE 60ML">Agotado</span>
                         </div>
-                        <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$1,020 MXN</p>
+                        <span>CAJA CON 36 PIEZAS</span>
+                        <p class="precio">$576 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto4" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto4" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto4" value="2" /> 2 cajas</label>
+                            <label><input type="radio" name="producto4" value="3" /> 3 cajas</label>
+                            <label><input type="radio" name="producto4" value="4" /> 4 cajas</label>
+                            <label><input type="radio" name="producto4" value="5" /> 5 cajas</label>
+                            <label><input type="radio" name="producto4" value="6" /> 6 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="ACEITE EUCERIN DE DUCHA 200ML" data-nombre="ACEITE EUCERIN DE DUCHA 200ML"
-                data-precio="618">
+            <div class="producto" data-id="CREMA NIVEA LATA DE 30ML" data-nombre="CREMA NIVEA LATA DE 30ML"
+                data-precio="360">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>05</span>
                 </div>
-                <img src="/img/item_5.jpg" alt="ACEITE EUCERIN DE DUCHA 200ML" />
+                <img src="/img/item_5.jpg" alt="CREMA NIVEA LATA DE 30ML" />
                 <div class="info-y-promo">
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>ACEITE EUCERIN DE DUCHA 200ML</strong>
+                            <strong>CREMA NIVEA LATA DE 30ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="ACEITE EUCERIN DE DUCHA 200ML">Agotado</span>
+                                data-badge="CREMA NIVEA LATA DE 30ML">Agotado</span>
                         </div>
-                        <span>CAJA CON 6 PIEZAS</span>
-                        <p class="precio">$618 MXN</p>
+                        <span>CAJA CON 36 PIEZAS</span>
+                        <p class="precio">$360 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto5" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto5" value="1" /> 1 caja</label>
@@ -623,29 +649,22 @@
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA EUCERIN PIEL GRASA SPF50 75ML"
-                data-nombre="CREMA EUCERIN PIEL GRASA SPF50 75ML" data-precio="1440">
+            <div class="producto" data-id="DESODORANTE NIVEA MEN DEEP CARBON 50ML"
+                data-nombre="DESODORANTE NIVEA MEN DEEP CARBON 50ML" data-precio="156">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>06</span>
                 </div>
-
-                <img src="/img/item_6.jpg" alt="CREMA EUCERIN PIEL GRASA SPF50 75ML" />
-
+                <img src="/img/item_6.jpg" alt="DESODORANTE NIVEA MEN DEEP CARBON 50ML" />
                 <div class="info-y-promo">
-                    <div class="mystery-box-promo">
-                        <img src="/img/mysterybox.png" alt="Mystery Box" />
-                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
-                    </div>
-
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA EUCERIN PIEL GRASA SPF50 75ML</strong>
+                            <strong>DESODORANTE NIVEA MEN DEEP CARBON 50ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA EUCERIN PIEL GRASA SPF50 75ML">Agotado</span>
+                                data-badge="DESODORANTE NIVEA MEN DEEP CARBON 50ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$1,440 MXN</p>
+                        <p class="precio">$156 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto6" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto6" value="1" /> 1 caja</label>
@@ -657,85 +676,18 @@
                             <label><input type="radio" name="producto6" value="7" /> 7 cajas</label>
                             <label><input type="radio" name="producto6" value="8" /> 8 cajas</label>
                             <label><input type="radio" name="producto6" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto6" value="10" /> 10 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="DESODORANTE NIVEA MEN DEEP CARBON 50ML"
-                data-nombre="DESODORANTE NIVEA MEN DEEP CARBON 50ML" data-precio="156">
+            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 100ML"
+                data-nombre="CREMA NIVEA PROTECCION SOLAR 100ML" data-precio="204">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>07</span>
                 </div>
-                <img src="/img/item_7.jpg" alt="DESODORANTE NIVEA MEN DEEP CARBON 50ML" />
-                <div class="info-y-promo">
-                    <div class="producto-info">
-                        <div class="producto-titulo">
-                            <strong>DESODORANTE NIVEA MEN DEEP CARBON 50ML</strong>
-                            <span class="badge-agotado" style="display:none"
-                                data-badge="DESODORANTE NIVEA MEN DEEP CARBON 50ML">Agotado</span>
-                        </div>
-                        <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$156 MXN</p>
-                        <div class="radios">
-                            <label><input type="radio" name="producto7" value="0" checked /> 0 cajas</label>
-                            <label><input type="radio" name="producto7" value="1" /> 1 caja</label>
-                            <label><input type="radio" name="producto7" value="2" /> 2 cajas</label>
-                            <label><input type="radio" name="producto7" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto7" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto7" value="5" /> 5 cajas</label>
-                            <label><input type="radio" name="producto7" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto7" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto7" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto7" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto7" value="10" /> 10 cajas</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="producto" data-id="CREMA NIVEA LATA 50ML" data-nombre="CREMA NIVEA LATA 50ML" data-precio="900">
-                <div class="numero-producto-wrapper">
-                    <span class="item-label">ITEM</span>
-                    <span class="numero-producto" data-num>08</span>
-                </div>
-                <img src="/img/item_8.jpg" alt="CREMA NIVEA LATA 50ML" />
-                <div class="info-y-promo">
-                    <div class="producto-info">
-                        <div class="producto-titulo">
-                            <strong>CREMA NIVEA LATA 50ML</strong>
-                            <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA LATA 50ML">Agotado</span>
-                        </div>
-                        <span>CAJA CON 60 PIEZAS</span>
-                        <p class="precio">$900 MXN</p>
-                        <div class="radios">
-                            <label><input type="radio" name="producto8" value="0" checked /> 0 cajas</label>
-                            <label><input type="radio" name="producto8" value="1" /> 1 caja</label>
-                            <label><input type="radio" name="producto8" value="2" /> 2 cajas</label>
-                            <label><input type="radio" name="producto8" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto8" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto8" value="5" /> 5 cajas</label>
-                            <label><input type="radio" name="producto8" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto8" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto8" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto8" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto8" value="10" /> 10 cajas</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="producto" data-id="CREMA NIVEA LATA 60ML" data-nombre="CREMA NIVEA LATA 60ML" data-precio="648">
-                <div class="numero-producto-wrapper">
-                    <span class="item-label">ITEM</span>
-                    <span class="numero-producto" data-num>09</span>
-                </div>
-
-                <img src="/img/item_9.jpg" alt="CREMA NIVEA LATA 60ML" />
-
+                <img src="/img/item_7.jpg" alt="CREMA NIVEA PROTECCION SOLAR 100ML" />
                 <div class="info-y-promo">
                     <div class="mystery-box-promo">
                         <img src="/img/mysterybox.png" alt="Mystery Box" />
@@ -744,12 +696,75 @@
 
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA NIVEA LATA 60ML</strong>
+                            <strong>CREMA NIVEA PROTECCION SOLAR 100ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA LATA 60ML">Agotado</span>
+                                data-badge="CREMA NIVEA PROTECCION SOLAR 100ML">Agotado</span>
                         </div>
-                        <span>CAJA CON 36 PIEZAS</span>
-                        <p class="precio">$648 MXN</p>
+                        <span>CAJA CON 12 PIEZAS</span>
+                        <p class="precio">$204 MXN</p>
+                        <div class="radios">
+                            <label><input type="radio" name="producto7" value="0" checked /> 0 cajas</label>
+                            <label><input type="radio" name="producto7" value="1" /> 1 caja</label>
+                            <label><input type="radio" name="producto7" value="2" /> 2 cajas</label>
+                            <label><input type="radio" name="producto7" value="3" /> 3 cajas</label>
+                            <label><input type="radio" name="producto7" value="4" /> 4 cajas</label>
+                            <label><input type="radio" name="producto7" value="5" /> 5 cajas</label>
+                            <label><input type="radio" name="producto7" value="6" /> 6 cajas</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 220ML"
+                data-nombre="CREMA NIVEA PROTECCION SOLAR 220ML" data-precio="324">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>08</span>
+                </div>
+                <img src="/img/item_8.jpg" alt="CREMA NIVEA PROTECCION SOLAR 220ML" />
+                <div class="info-y-promo">
+                    <div class="producto-info">
+                        <div class="producto-titulo">
+                            <strong>CREMA NIVEA PROTECCION SOLAR 220ML</strong>
+                            <span class="badge-agotado" style="display:none"
+                                data-badge="CREMA NIVEA PROTECCION SOLAR 220ML">Agotado</span>
+                        </div>
+                        <span>CAJA CON 12 PIEZAS</span>
+                        <p class="precio">$324 MXN</p>
+                        <div class="radios">
+                            <label><input type="radio" name="producto8" value="0" checked /> 0 cajas</label>
+                            <label><input type="radio" name="producto8" value="1" /> 1 caja</label>
+                            <label><input type="radio" name="producto8" value="2" /> 2 cajas</label>
+                            <label><input type="radio" name="producto8" value="3" /> 3 cajas</label>
+                            <label><input type="radio" name="producto8" value="4" /> 4 cajas</label>
+                            <label><input type="radio" name="producto8" value="5" /> 5 cajas</label>
+                            <label><input type="radio" name="producto8" value="6" /> 6 cajas</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 250ML"
+                data-nombre="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-precio="252">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>09</span>
+                </div>
+                <img src="/img/item_9.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 250ML" />
+                <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/mysterybox.png" alt="Mystery Box" />
+                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                    </div>
+
+                    <div class="producto-info">
+                        <div class="producto-titulo">
+                            <strong>CREMA NIVEA Q10 REAFIRMANTE 250ML</strong>
+                            <span class="badge-agotado" style="display:none"
+                                data-badge="CREMA NIVEA Q10 REAFIRMANTE 250ML">Agotado</span>
+                        </div>
+                        <span>CAJA CON 12 PIEZAS</span>
+                        <p class="precio">$252 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto9" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto9" value="1" /> 1 caja</label>
@@ -758,76 +773,52 @@
                             <label><input type="radio" name="producto9" value="4" /> 4 cajas</label>
                             <label><input type="radio" name="producto9" value="5" /> 5 cajas</label>
                             <label><input type="radio" name="producto9" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto9" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto9" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto9" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto9" value="10" /> 10 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="JABON NIVEA IN MILK 250ML" data-nombre="JABON NIVEA IN MILK 250ML"
-                data-precio="396">
+            <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 473ML"
+                data-nombre="CREMA NIVEA Q10 REAFIRMANTE 473ML" data-precio="234">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>10</span>
                 </div>
-                <img src="/img/item_10.jpg" alt="JABON NIVEA IN MILK 250ML" />
+                <img src="/img/item_10.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 473ML" />
                 <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/mysterybox.png" alt="Mystery Box" />
+                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                    </div>
+
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>JABON NIVEA IN MILK 250ML</strong>
+                            <strong>CREMA NIVEA Q10 REAFIRMANTE 473ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="JABON NIVEA IN MILK 250ML">Agotado</span>
+                                data-badge="CREMA NIVEA Q10 REAFIRMANTE 473ML">Agotado</span>
                         </div>
-                        <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$396 MXN</p>
+                        <span>CAJA CON 6 PIEZAS</span>
+                        <p class="precio">$234 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto10" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto10" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto10" value="2" /> 2 cajas</label>
                             <label><input type="radio" name="producto10" value="3" /> 3 cajas</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="producto" data-id="CREMA NIVEA INTENSE HEALING 500ML"
-                data-nombre="CREMA NIVEA INTENSE HEALING 500ML" data-precio="516">
-                <div class="numero-producto-wrapper">
-                    <span class="item-label">ITEM</span>
-                    <span class="numero-producto" data-num>11</span>
-                </div>
-                <img src="/img/item_11.jpg" alt="CREMA NIVEA INTENSE HEALING 500ML" />
-                <div class="info-y-promo">
-                    <div class="producto-info">
-                        <div class="producto-titulo">
-                            <strong>CREMA NIVEA INTENSE HEALING 500ML</strong>
-                            <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA INTENSE HEALING 500ML">Agotado</span>
-                        </div>
-                        <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$516 MXN</p>
-                        <div class="radios">
-                            <label><input type="radio" name="producto11" value="0" checked /> 0 cajas</label>
-                            <label><input type="radio" name="producto11" value="1" /> 1 caja</label>
-                            <label><input type="radio" name="producto11" value="2" /> 2 cajas</label>
-                            <label><input type="radio" name="producto11" value="3" /> 3 cajas</label>
+                            <label><input type="radio" name="producto10" value="4" /> 4 cajas</label>
+                            <label><input type="radio" name="producto10" value="5" /> 5 cajas</label>
+                            <label><input type="radio" name="producto10" value="6" /> 6 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="producto" data-id="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML"
-                data-nombre="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" data-precio="792">
+                data-nombre="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" data-precio="708">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
-                    <span class="numero-producto" data-num>12</span>
+                    <span class="numero-producto" data-num>11</span>
                 </div>
-
-                <img src="/img/item_12.jpg" alt="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" />
-
+                <img src="/img/item_11.jpg" alt="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML" />
                 <div class="info-y-promo">
                     <div class="mystery-box-promo">
                         <img src="/img/mysterybox.png" alt="Mystery Box" />
@@ -841,40 +832,67 @@
                                 data-badge="CREMA NIVEA FACIAL 7 NUTRITIVA 375ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$792 MXN</p>
+                        <p class="precio">$708 MXN</p>
                         <div class="radios">
-                            <label><input type="radio" name="producto12" value="0" checked /> 0 cajas</label>
-                            <label><input type="radio" name="producto12" value="1" /> 1 caja</label>
-                            <label><input type="radio" name="producto12" value="2" /> 2 cajas</label>
-                            <label><input type="radio" name="producto12" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto12" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto12" value="5" /> 5 cajas</label>
-                            <label><input type="radio" name="producto12" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto12" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto12" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto12" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto12" value="10" /> 10 cajas</label>
+                            <label><input type="radio" name="producto11" value="0" checked /> 0 cajas</label>
+                            <label><input type="radio" name="producto11" value="1" /> 1 caja</label>
+                            <label><input type="radio" name="producto11" value="2" /> 2 cajas</label>
+                            <label><input type="radio" name="producto11" value="3" /> 3 cajas</label>
+                            <label><input type="radio" name="producto11" value="4" /> 4 cajas</label>
+                            <label><input type="radio" name="producto11" value="5" /> 5 cajas</label>
+                            <label><input type="radio" name="producto11" value="6" /> 6 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 250ML"
-                data-nombre="CREMA NIVEA Q10 REAFIRMANTE 250ML" data-precio="288">
+            <div class="producto" data-id="CREMA NIVEA TARRO PLASTICO 100ML"
+                data-nombre="CREMA NIVEA TARRO PLASTICO 100ML" data-precio="456">
+                <div class="numero-producto-wrapper">
+                    <span class="item-label">ITEM</span>
+                    <span class="numero-producto" data-num>12</span>
+                </div>
+                <img src="/img/item_12.jpg" alt="CREMA NIVEA TARRO PLASTICO 100ML" />
+                <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/mysterybox.png" alt="Mystery Box" />
+                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                    </div>
+
+                    <div class="producto-info">
+                        <div class="producto-titulo">
+                            <strong>CREMA NIVEA TARRO PLASTICO 100ML</strong>
+                            <span class="badge-agotado" style="display:none"
+                                data-badge="CREMA NIVEA TARRO PLASTICO 100ML">Agotado</span>
+                        </div>
+                        <span>CAJA CON 24 PIEZAS</span>
+                        <p class="precio">$456 MXN</p>
+                        <div class="radios">
+                            <label><input type="radio" name="producto12" value="0" checked /> 0 cajas</label>
+                            <label><input type="radio" name="producto12" value="1" /> 1 caja</label>
+                            <label><input type="radio" name="producto12" value="2" /> 2 cajas</label>
+                            <label><input type="radio" name="producto12" value="3" /> 3 cajas</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="producto" data-id="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 1000ML"
+                data-nombre="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 1000ML" data-precio="261">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>13</span>
                 </div>
-                <img src="/img/item_13.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 250ML" />
+                <img src="/img/item_13.jpg" alt="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 1000ML" />
                 <div class="info-y-promo">
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA NIVEA Q10 REAFIRMANTE 250ML</strong>
+                            <strong>CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 1000ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA Q10 REAFIRMANTE 250ML">Agotado</span>
+                                data-badge="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 1000ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$288 MXN</p>
+                        <p class="precio">$261 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto13" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto13" value="1" /> 1 caja</label>
@@ -892,22 +910,27 @@
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA NIVEA Q10 REAFIRMANTE 473ML"
-                data-nombre="CREMA NIVEA Q10 REAFIRMANTE 473ML" data-precio="264">
+            <div class="producto" data-id="CREMA NIVEA TONO NATURAL BOTELLA 220ML"
+                data-nombre="CREMA NIVEA TONO NATURAL BOTELLA 220ML" data-precio="252">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>14</span>
                 </div>
-                <img src="/img/item_14.jpg" alt="CREMA NIVEA Q10 REAFIRMANTE 473ML" />
+                <img src="/img/item_14.jpg" alt="CREMA NIVEA TONO NATURAL BOTELLA 220ML" />
                 <div class="info-y-promo">
+                    <div class="mystery-box-promo">
+                        <img src="/img/mysterybox.png" alt="Mystery Box" />
+                        <span>En la compra mínima de 3 cajas te llevas una Mystery Box</span>
+                    </div>
+
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA NIVEA Q10 REAFIRMANTE 473ML</strong>
+                            <strong>CREMA NIVEA TONO NATURAL BOTELLA 220ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA Q10 REAFIRMANTE 473ML">Agotado</span>
+                                data-badge="CREMA NIVEA TONO NATURAL BOTELLA 220ML">Agotado</span>
                         </div>
-                        <span>CAJA CON 6 PIEZAS</span>
-                        <p class="precio">$264 MXN</p>
+                        <span>CAJA CON 12 PIEZAS</span>
+                        <p class="precio">$252 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto14" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto14" value="1" /> 1 caja</label>
@@ -916,141 +939,89 @@
                             <label><input type="radio" name="producto14" value="4" /> 4 cajas</label>
                             <label><input type="radio" name="producto14" value="5" /> 5 cajas</label>
                             <label><input type="radio" name="producto14" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto14" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto14" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto14" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto14" value="10" /> 10 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA NIVEA SOFT TARRO 500ML" data-nombre="CREMA NIVEA SOFT TARRO 500ML"
-                data-precio="636">
+            <div class="producto" data-id="CREMA NIVEA SOFT MILK BOTELLA 220ML"
+                data-nombre="CREMA NIVEA SOFT MILK BOTELLA 220ML" data-precio="204">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>15</span>
                 </div>
-                <img src="/img/item_15.jpg" alt="CREMA NIVEA SOFT TARRO 500ML" />
+                <img src="/img/item_15.jpg" alt="CREMA NIVEA SOFT MILK BOTELLA 220ML" />
                 <div class="info-y-promo">
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA NIVEA SOFT TARRO 500ML</strong>
+                            <strong>CREMA NIVEA SOFT MILK BOTELLA 220ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA SOFT TARRO 500ML">Agotado</span>
+                                data-badge="CREMA NIVEA SOFT MILK BOTELLA 220ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$636 MXN</p>
+                        <p class="precio">$204 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto15" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto15" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto15" value="2" /> 2 cajas</label>
                             <label><input type="radio" name="producto15" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto15" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto15" value="5" /> 5 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 100ML"
-                data-nombre="CREMA NIVEA PROTECCION SOLAR 100ML" data-precio="228">
+            <div class="producto" data-id="SHOWER CREMOSO NIVEA NOURISHING CARE BOTELLA 591ML"
+                data-nombre="SHOWER CREMOSO NIVEA NOURISHING CARE BOTELLA 591ML" data-precio="684">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>16</span>
                 </div>
-                <img src="/img/item_16.jpg" alt="CREMA NIVEA PROTECCION SOLAR 100ML" />
+                <img src="/img/item_16.jpg" alt="SHOWER CREMOSO NIVEA NOURISHING CARE BOTELLA 591ML" />
                 <div class="info-y-promo">
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA NIVEA PROTECCION SOLAR 100ML</strong>
+                            <strong>SHOWER CREMOSO NIVEA NOURISHING CARE BOTELLA 591ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA PROTECCION SOLAR 100ML">Agotado</span>
+                                data-badge="SHOWER CREMOSO NIVEA NOURISHING CARE BOTELLA 591ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$228 MXN</p>
+                        <p class="precio">$684 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto16" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto16" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto16" value="2" /> 2 cajas</label>
                             <label><input type="radio" name="producto16" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto16" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto16" value="5" /> 5 cajas</label>
-                            <label><input type="radio" name="producto16" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto16" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto16" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto16" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto16" value="10" /> 10 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA NIVEA PROTECCION SOLAR 220ML"
-                data-nombre="CREMA NIVEA PROTECCION SOLAR 220ML" data-precio="324">
+            <div class="producto" data-id="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 75ML"
+                data-nombre="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 75ML" data-precio="225">
                 <div class="numero-producto-wrapper">
                     <span class="item-label">ITEM</span>
                     <span class="numero-producto" data-num>17</span>
                 </div>
-                <img src="/img/item_17.jpg" alt="CREMA NIVEA PROTECCION SOLAR 220ML" />
+                <img src="/img/item_17.jpg" alt="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 75ML" />
                 <div class="info-y-promo">
                     <div class="producto-info">
                         <div class="producto-titulo">
-                            <strong>CREMA NIVEA PROTECCION SOLAR 220ML</strong>
+                            <strong>CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 75ML</strong>
                             <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA PROTECCION SOLAR 220ML">Agotado</span>
+                                data-badge="CREMA NIVEA ACEITE DE ALMENDRAS BOTELLA 75ML">Agotado</span>
                         </div>
                         <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$324 MXN</p>
+                        <p class="precio">$225 MXN</p>
                         <div class="radios">
                             <label><input type="radio" name="producto17" value="0" checked /> 0 cajas</label>
                             <label><input type="radio" name="producto17" value="1" /> 1 caja</label>
                             <label><input type="radio" name="producto17" value="2" /> 2 cajas</label>
                             <label><input type="radio" name="producto17" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto17" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto17" value="5" /> 5 cajas</label>
-                            <label><input type="radio" name="producto17" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto17" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto17" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto17" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto17" value="10" /> 10 cajas</label>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="producto" data-id="CREMA NIVEA TONO NATURAL 220ML" data-nombre="CREMA NIVEA TONO NATURAL 220ML"
-                data-precio="288">
-                <div class="numero-producto-wrapper">
-                    <span class="item-label">ITEM</span>
-                    <span class="numero-producto" data-num>18</span>
-                </div>
-                <img src="/img/item_18.jpg" alt="CREMA NIVEA TONO NATURAL 220ML" />
-                <div class="info-y-promo">
-                    <div class="producto-info">
-                        <div class="producto-titulo">
-                            <strong>CREMA NIVEA TONO NATURAL 220ML</strong>
-                            <span class="badge-agotado" style="display:none"
-                                data-badge="CREMA NIVEA TONO NATURAL 220ML">Agotado</span>
-                        </div>
-                        <span>CAJA CON 12 PIEZAS</span>
-                        <p class="precio">$288 MXN</p>
-                        <div class="radios">
-                            <label><input type="radio" name="producto18" value="0" checked /> 0 cajas</label>
-                            <label><input type="radio" name="producto18" value="1" /> 1 caja</label>
-                            <label><input type="radio" name="producto18" value="2" /> 2 cajas</label>
-                            <label><input type="radio" name="producto18" value="3" /> 3 cajas</label>
-                            <label><input type="radio" name="producto18" value="4" /> 4 cajas</label>
-                            <label><input type="radio" name="producto18" value="5" /> 5 cajas</label>
-                            <label><input type="radio" name="producto18" value="6" /> 6 cajas</label>
-                            <label><input type="radio" name="producto18" value="7" /> 7 cajas</label>
-                            <label><input type="radio" name="producto18" value="8" /> 8 cajas</label>
-                            <label><input type="radio" name="producto18" value="9" /> 9 cajas</label>
-                            <label><input type="radio" name="producto18" value="10" /> 10 cajas</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section id="resumenPedido">
@@ -1158,6 +1129,19 @@
         const db = firebase.firestore();
 
         const EXT_URL = "https://script.google.com/macros/s/AKfycbzgMKRaneoWHg4OoBaYIEN04p74LPvNLY0lWfrvRTMvHhRBMnu0_NmckAg10xwEsQ9QIA/exec";
+        const URL_SHEETS_FOLIOS = "https://script.google.com/macros/s/AKfycbzVVbkR-1rEpDB9y3Ht7vAQ7bSRtiShbWELrXjsxGbGm3HqOo8Yd-ZxkFhzzyivu_-7Jg/exec";
+
+        let FOLIOS_CACHE = null;
+        const foliosPromise = (async () => {
+            try {
+                const res = await fetch(`${URL_SHEETS_FOLIOS}?allFolios=1`);
+                const data = await res.json();
+                FOLIOS_CACHE = data.folios || {};
+            } catch (err) {
+                console.error('No se pudo precargar folios, se usará búsqueda individual:', err);
+                FOLIOS_CACHE = null;
+            }
+        })();
 
         const productosEls = [...document.querySelectorAll('.producto')];
         const CATALOGO = {};
@@ -1179,19 +1163,34 @@
         async function cargarFolio(folio) {
             if (!folio) return { exists: false };
 
-            const [s, bloqueadoSnap] = await Promise.all([
-                db.doc(`folios_e/${folio}`).get(),
-                db.doc(`bloqueados/${folio}`).get()
-            ]);
+            try {
+                const bloqueadoSnap = await db.doc(`bloqueados/${folio}`).get();
+                if (bloqueadoSnap.exists) {
+                    return { exists: false, bloqueado: true, motivo: bloqueadoSnap.data()?.motivo || 'Bloqueado' };
+                }
 
-            if (bloqueadoSnap.exists) {
-                return { exists: false, bloqueado: true, motivo: bloqueadoSnap.data()?.motivo || 'Bloqueado' };
+                await foliosPromise; // normalmente ya terminó antes de que el usuario escriba
+
+                if (FOLIOS_CACHE) {
+                    if (Object.prototype.hasOwnProperty.call(FOLIOS_CACHE, folio)) {
+                        return { exists: true, nombre: FOLIOS_CACHE[folio] };
+                    }
+                    return { exists: false };
+                }
+
+                // Fallback: si la precarga falló, se busca individual
+                const response = await fetch(`${URL_SHEETS_FOLIOS}?folio=${folio}`);
+                const data = await response.json();
+
+                if (data.encontrado) {
+                    return { exists: true, nombre: data.nombre };
+                } else {
+                    return { exists: false };
+                }
+            } catch (error) {
+                console.error("Error validando folio:", error);
+                return { exists: false, errorConexion: true };
             }
-
-            if (!s.exists) return { exists: false };
-
-            const d = s.data();
-            return { exists: true, nombre: d?.nombre || '' };
         }
 
         m_nomina.addEventListener('input', async () => {
