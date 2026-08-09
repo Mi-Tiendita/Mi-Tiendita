@@ -493,7 +493,7 @@
 
                 const weekend = (wd === 0 || wd === 6);
                 const monday = (wd === 1);
-                const beforeToday = (monthOffset === 0 && iso < todayISO);
+                const beforeToday = (monthOffset === 0 && iso <= todayISO);
 
                 if (weekend || monday || FESTIVOS.includes(iso) || beforeToday) {
                     cell.classList.add("disabled");
